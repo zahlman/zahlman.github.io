@@ -1,18 +1,10 @@
 ---
 layout: page
-title: About
+title: About the Author
 permalink: /about/
 ---
+I have used Python extensively, in both personal and professional contexts, since 2005. I also have prior experience with C, C++, C#, Java, Javascript (using jQuery and node.js), Scala (using the Play framework) and more.
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
+While my professional experience has been mainly in game development, I consider myself primarily a tools developer, as well as a Python educator. I especially enjoy making tools that help make sense of complex data (binary data formats or deeply nested JSON) or help create such data from a more human-manageable form.
 
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
-
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
-
-
-[jekyll-organization]: https://github.com/jekyll
+You can see my Github [here](https://github.com/zahlman). I also post [on Stack Overflow](https://stackoverflow.com/users/523612/karl-knechtel).
