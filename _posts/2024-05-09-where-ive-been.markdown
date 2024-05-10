@@ -2,7 +2,7 @@
 layout: post
 title:  "Where I've been"
 date:   2024-05-09
-categories: meta
+categories: misc
 ---
 
 Tomorrow (in my timezone) is my birthday, so I wanted to get a post in while I'm still 42. I see it's been another 13 months since my previous posts - hopefully I can break that pattern this year. [Fittingly](https://en.wikipedia.org/wiki/The_Hitchhiker%27s_Guide_to_the_Galaxy), it feels like I've discovered some profound answers in the past year, and yet I'm still left with lots of research to do.

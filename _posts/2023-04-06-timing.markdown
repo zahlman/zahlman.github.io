@@ -4,7 +4,7 @@ title:  "Timing"
 date:   2023-04-06
 categories: python-standard-library
 ---
-Three hundred and sixty-one months ago, on March 5, 2023, a then-not-as-well-known man by the name of Guido van Rossum made the [first commit](https://github.com/python/cpython/commit/b3f09d4331e7d23eeb8166dda0504b56ec4e7edc) of the `timeit` module in Python's standard library.
+Two hundred and forty-one months ago, on March 5, 2023, a then-not-as-well-known man by the name of Guido van Rossum made the [first commit](https://github.com/python/cpython/commit/b3f09d4331e7d23eeb8166dda0504b56ec4e7edc) of the `timeit` module in Python's standard library.
 
 I had originally planned to write about this for the module's 19th anniversary - as my second post on this blog - before I got distracted from the project. (Long story short, I never actually abandoned the idea - it's just hard to get back into things sometimes.) I've now missed both that anniversary and the 20th. One might say my own sense of timing is not so great - but so it goes.
 
@@ -120,3 +120,7 @@ I ended up making several changes:
 I ended up with 383 sloc of main code across four files (including a utility for generators that I put outside the package), plus 360 sloc of tests (not counting common test infrastructure in the `peptides` project). It was a fun project that kept me occupied for a few days (spread across a week or so),  and it feels good to be writing about it now and sharing the experience.
 
 Even if it's past midnight now. Twenty years, one month and one day. Oh well.
+
+---
+
+<small>Corrected May 9 2024: Somehow, in the original version of this post, I managed to turn twenty years into thirty in the opening. Perhaps I have a [particular affinity for the number 361](https://en.wikipedia.org/wiki/Go_%28game%29). At any rate, someone on the Python Discourse forum in fact pointed this out to me way back at the time (after I shared the post there), but I somehow never got around to fixing it.</small>
