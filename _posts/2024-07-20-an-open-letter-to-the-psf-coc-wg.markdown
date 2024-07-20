@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "An open letter to Łukasz Langa (and the PSF CoC WG)"
-date:   2024-07-19
+title:  "An open letter to the PSF CoC WG"
+date:   2024-07-20
 categories: politics, Python, the PSF
 ---
 
