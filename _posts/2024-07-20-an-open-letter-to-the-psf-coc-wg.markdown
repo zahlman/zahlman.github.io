@@ -25,36 +25,6 @@ I refuse to be silenced on this matter - this post will *not even remotely* be t
 
 Unfortunately, I cannot say the same about the huge collection of post bookmarks I had been making about the problems with packaging in Python. However, I expect this will only be a minor setback in my goal of independently critiquing Python packaging and attempting to contribute my own solutions.
 
-## To set the record straight
-
-For reference:
-
-* [Parting statement made against me](https://discuss.python.org/t/im-leaving-too/58408/11)
-
-* [Parting statement made against Dr. Mertz](https://discuss.python.org/t/why-i-am-withdrawing-fellowship-status-in-psf/58301/4)
-
-1. I **absolutely did not, in any way, shape or form**, claim that moderation actions taken against me "were an example of reverse racism". Not only is this *completely* untrue, it puts terminology in my mouth which I was *explicitly arguing against using*, because I consider it problematic. My entire point was that people with my belief system **do not use** this nonsensical term (nor "reverse sexism"). Rather, my experience has been that the term is used by those who ideologically align with the WG, specifically in order to mock and dismiss obvious and serious real-world harms.
-
-1. Further, I barely mentioned racism anyway, choosing to focus on sexism instead. But above all, **nothing I said** about this utterly nonsensical term **had anything to do with objections to moderation actions taken against me**. I was very explicit about that - this point was *specifically* about the enforcement policy in the abstract.
-
-1. Rather than "reverse sexism", the correct term is "sexism against men", which is how I describe it. **This concept** which you mislabel **is, in fact, abundantly evidenced** - but discussion of this point is out of scope here.
-
-1. **Neither I nor Dr. Mertz "attacked"** (a word that is consciously chosen to create a false impression of threat to physical safety - a ludicrous notion on the Internet) "the forum staff, the COC WG, the PSF in general" or anyone else. Rather, we *criticized your actions* - because they merit criticism. At no point did we make any kind of insulting or disparaging remark, nor accuse you of anything we couldn't prove. Anyway, to suppose that this has anything to do with a failure to "acknowledge time and effort" is so utterly ridiculous that I genuinely can't think of a meaningful response.
-
-1. **There is objectively nothing wrong**, in any reasonably governed community, with "explicit voicing of lack of trust against moderator actions". It's interesting that "moderator actions" here supposedly include "getting our posts hidden", since that is supposedly the result of community flags instead. Regardless, by saying such a thing, **you effectively admit to intent to run a dictatorship and stifle dissent**. Or, as you put it, intent to expect users to "gracefully accept constructive criticism".
-
-1. Just to be perfectly clear: **there is no possible "constructive criticism"** involved in censoring someone else without comment.
-
-1. **It is abundantly clear to me that you do not care in the slightest about "empathy"**. You haven't shown any for me; and you don't, as far as I can tell, show any for neurodivergent individuals generally; nor for members of groups that aren't on a list of approved recipients of empathy. So it is hypocritical in the extreme to accuse me of a "pattern" of failure to "show empathy towards other community members" - in fact, I have gone out of my way on a regular basis to ensure such empathy to the best of my ability.
-
-1. Dr. Mertz **did not in any way, shape or form** "defend the use of a derogatory term used against women". To say so is to ignore [one of the most basic tenets of logic and philosophy](https://en.wikipedia.org/wiki/Use%E2%80%93mention_distinction) (by the way, what do you suppose is the subject of Dr. Mertz's PhD?), and I frankly think it's defamatory. Aside from that, I have to wonder: do you suppose that women are supposedly *inherently* harmed by the mere act of *seeing* certain words in print? (I am not a sexist, so I don't imagine women to be so fragile.)
-
-1. Dr. Mertz *disagreed* with you regarding changes to the PSF bylaws. That was **not, in any way, shape or form, a "refusal to accept"** those opinions. On the contrary, he provided evidence that *you* are the ones who show disrespect to dissenting opinions - for example, Ms. Nanjekye's. Aside from that, Dr. Mertz showed the *utmost* "respect for differing viewpoints and experiences". But you did not, by my assessment, respect his.
-
-1. When you say that the WG's "gender, ethnic, cultural, economical, and religious" diversity "provides the working group with excellent representation of differing viewpoints", you are inherently supposing such immutable traits of individuals necessarily cause them to *have* such differing viewpoints. **That is both bigoted and demonstrably false**.
-
-1. Your "busy" week (amounting to approximately one (1) flag per moderator, per day) does not, in my opinion, in any way excuse such ignorance of the truth.
-
 ## A timeline of related events
 
 On June 13, 2024, a PSF board member posted a [thread](https://discuss.python.org/t/for-your-consideration-proposed-bylaws-changes-to-improve-our-membership-experience/55696) to discuss three new ballot measures to change PSF bylaws. To my understanding, these measures were also discussed on a members-only mailing list, and possibly also elsewhere. These measures [all passed](https://discuss.python.org/t/psf-board-election-proposed-bylaws-changes-results-announcement/58465) - despite quite a bit of opposition voiced in that discussion, the most controversial measure received over 80% votes in favour.
@@ -99,12 +69,33 @@ The same day - a few hours before this moderation - Łukasz Langa [revived](http
 
 Also the same day, a new banner appeared on the forum, promoting new ["community guidelines"](https://discuss.python.org/guidelines/) which had come seemingly out of nowhere.
 
-## Math, science, history
+## To set the record straight
 
+First, I want to address the parting statements the WG left [for myself](https://discuss.python.org/t/im-leaving-too/58408/11) and [for Dr. Mertz](https://discuss.python.org/t/why-i-am-withdrawing-fellowship-status-in-psf/58301/4):
 
+1. I **absolutely did not, in any way, shape or form**, claim that moderation actions taken against me "were an example of reverse racism". Not only is this *completely* untrue, it puts terminology in my mouth which I was *explicitly arguing against using*, because I consider it problematic. My entire point was that people with my belief system **do not use** this nonsensical term (nor "reverse sexism"). Rather, my experience has been that the term is used by those who ideologically align with the WG, specifically in order to mock and dismiss obvious and serious real-world harms.
 
+1. Further, I barely mentioned racism anyway, choosing to focus on sexism instead. But above all, **nothing I said** about this utterly nonsensical term **had anything to do with objections to moderation actions taken against me**. I was very explicit about that - this point was *specifically* about the enforcement policy in the abstract.
 
-And most importantly, let me explain the understanding I arrived at of Mr. Peters' supposed sins:
+1. Rather than "reverse sexism", the correct term is "sexism against men", which is how I describe it. **This concept** which you mislabel **is, in fact, abundantly evidenced** - but discussion of this point is out of scope here.
+
+1. **Neither I nor Dr. Mertz "attacked"** (a word that is consciously chosen to create a false impression of threat to physical safety - a ludicrous notion on the Internet) "the forum staff, the COC WG, the PSF in general" or anyone else. Rather, we *criticized your actions* - because they merit criticism. At no point did we make any kind of insulting or disparaging remark, nor accuse you of anything we couldn't prove. Anyway, to suppose that this has anything to do with a failure to "acknowledge time and effort" is so utterly ridiculous that I genuinely can't think of a meaningful response.
+
+1. **There is objectively nothing wrong**, in any reasonably governed community, with "explicit voicing of lack of trust against moderator actions". It's interesting that "moderator actions" here supposedly include "getting our posts hidden", since that is supposedly the result of community flags instead. Regardless, by saying such a thing, **you effectively admit to intent to run a dictatorship and stifle dissent**. Or, as you put it, intent to expect users to "gracefully accept constructive criticism".
+
+1. Just to be perfectly clear: **there is no possible "constructive criticism"** involved in censoring someone else without comment.
+
+1. **It is abundantly clear to me that you do not care in the slightest about "empathy"**. You haven't shown any for me; and you don't, as far as I can tell, show any for neurodivergent individuals generally; nor for members of groups that aren't on a list of approved recipients of empathy. So it is hypocritical in the extreme to accuse me of a "pattern" of failure to "show empathy towards other community members" - in fact, I have gone out of my way on a regular basis to ensure such empathy to the best of my ability.
+
+1. Dr. Mertz **did not in any way, shape or form** "defend the use of a derogatory term used against women". To say so is to ignore [one of the most basic tenets of logic and philosophy](https://en.wikipedia.org/wiki/Use%E2%80%93mention_distinction) (by the way, what do you suppose is the subject of Dr. Mertz's PhD?), and I frankly think it's defamatory. Aside from that, I have to wonder: do you suppose that women are supposedly *inherently* harmed by the mere act of *seeing* certain words in print? (I am not a sexist, so I don't imagine women to be so fragile.)
+
+1. Dr. Mertz *disagreed* with you regarding changes to the PSF bylaws. That was **not, in any way, shape or form, a "refusal to accept"** those opinions. On the contrary, he provided evidence that *you* are the ones who show disrespect to dissenting opinions - for example, Ms. Nanjekye's. Aside from that, Dr. Mertz showed the *utmost* "respect for differing viewpoints and experiences". But you did not, by my assessment, respect his.
+
+1. When you say that the WG's "gender, ethnic, cultural, economical, and religious" diversity "provides the working group with excellent representation of differing viewpoints", you are inherently supposing such immutable traits of individuals necessarily cause them to *have* such differing viewpoints. **That is both bigoted and demonstrably false**.
+
+1. Your "busy" week (amounting to approximately one (1) flag per moderator, per day) does not, in my opinion, in any way excuse such ignorance of the truth.
+
+Second, I wish to present the understanding I arrived at of Mr. Peters' supposed sins:
 
 * The "example" of sexual harassment he "brought up" was nothing at all about the harassment itself, but a simple statement that executives at places where he'd previously worked had been accused of it.
 
@@ -114,27 +105,7 @@ And most importantly, let me explain the understanding I arrived at of Mr. Peter
 
 * "Resisting soft conduct moderation" entails standing up for neurodivergent individuals, continuing to talk about topics from posts that had been anonymously flagged (for absolutely no rational reason I can fathom), critiquing previous moderation decisions, and refusing (correctly, in my view) to accept that he had done something wrong. Or at least, that's the best I can make of it. The only clear example of "soft conduct moderation" I could find in the thread was Carol Willing's request "that the rehashing of sexual terms here and on the mailing list cease" - **and it did cease immediately**.
 
-## And then it got worse
-
-The treatment of Tim Peters in this disgusting excuse for "discussion" was already bad enough to make up my mind - I was out. But it was worse than that.
-
-Further horrible things were said about Mr. Peters, Mr. Holden and Dr. Mertz.
-
-And as I kept writing responses - doing my utmost to keep my cool - and reading background, I discovered the "enforcement procedures", whereupon the penny dropped.
-
-## The PSF Code of Conduct does not mean what it says
-
-It *cannot* mean what it says, because it preaches fairness and equal treatment for everyone, but is enforced - necessarily and by policy - in a blatantly biased manner.
-
-I knew that the wording had been inspired by a lot of previous Codes of Conduct, ultimately tracing back in places to work by such... luminaries as Sage Sharp and Coraline Ada Ehmke. But it seemed sound and reasonable in its literal wording, so I didn't initially check any further.
-
-But the enforcement of this policy demands a worldview wherein harm that befalls men or white people doesn't count... because reasons; and where neurodiversity doesn't matter worth a damn; and where challenges to the claim that intersectional feminism is the only legitimate approach to gender etc. equality, are somehow inherently offensive.
-
-And I saw from previous discussions that a significant fraction of important people in the community have swallowed all of these ideas wholesale.
-
-And I saw that, on the other hand, it is perfectly within the WG's interpretation of "being respectful of differing viewpoints and experiences", "showing empathy towards other community members" and "using welcoming and inclusive language" to *insinuate that someone else is a fascist bigot* who needs to be [paradox of tolerance](https://en.wikipedia.org/wiki/Paradox_of_tolerance)'d out of the community for the high crime of not wanting to voice affirmative support for specific supposedly "anti-racist" organizations like BLM.
-
-Did I mention I don't like hypocrisy? I don't like intellectual dishonesty, either.
+Finally: I wish to assert that, on the basis of what is written in the Enforcement Procedures, **the PSF Code of Conduct does not mean what it says**. However, I will keep my explanation of this for a future post.
 
 ## Dramatis Personae
 
