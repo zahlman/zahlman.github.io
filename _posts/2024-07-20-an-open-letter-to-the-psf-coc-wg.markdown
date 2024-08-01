@@ -19,6 +19,8 @@ Furthermore, the manner in which this was handled shocks and appalls me. In my e
 
 Aside from my own mistreatment, the WG similarly banned Dr. David Mertz - whose reputation in the Python community *as a community member in good standing* is nothing short of astounding - with a similar parting statement which I consider similarly unacceptable.
 
+Further, while nothing serious seems to have befallen Tim Peters so far, I'm appalled at how he has been treated through all of this. (I first got to interact with Mr. Peters - who I consider something of a personal hero - [on Stack Overflow](https://stackoverflow.com/questions/21297887/), on a question related to sorting, receiving praise for my answer. You can imagine how star-struck I was, and thus the extra importance this issue has for me.)
+
 I refuse to be silenced on this matter - this post will *not even remotely* be the end of it. Because I happen to have found myself in a similar position before, I had the foresight to save my posts locally before I lost access to my account. I will be sharing these on this blog as reference pages, so as to show everyone that I indeed said nothing that could reasonably be said to violate the Code of Conduct.
 
 Unfortunately, I cannot say the same about the huge collection of post bookmarks I had been making about the problems with packaging in Python. However, I expect this will only be a minor setback in my goal of independently critiquing Python packaging and attempting to contribute my own solutions.
@@ -99,7 +101,6 @@ Also the same day, a new banner appeared on the forum, promoting new ["community
 
 ## Math, science, history
 
-And for me personally, I first got to interact with Mr. Peters [on Stack Overflow](https://stackoverflow.com/questions/21297887/), on a question related to sorting, receiving praise for my answer. You can imagine how star-struck I was.
 
 
 
