@@ -9,7 +9,19 @@ categories: [ politics, the-PSF ]
 
 As a content warning, this post includes: words which refer to serious crimes; refusal to accept "social justice" orthodoxy; and Unicode code point U+1F609 WINKING FACE. Don't worry - it will make sense in due time.
 
-For those who are not generally familiar with big names in the Python community, a basic description of the parties involved is provided near the end (section "Dramatis Personae"). If you do generally recognize such names, just know that in this post, by "WG" I mean the PSF's Code of Conduct Work Group (or Working Group).
+For those who are not generally familiar with big names in the Python community, a basic description of the parties involved is provided at the end (section "Dramatis Personae"). If you do generally recognize such names, just know that in this post, by "WG" I mean the PSF's Code of Conduct Work Group (or Working Group).
+
+For those interested in digging deeper into the history of conflict in the Python community surrounding the Code of Conduct and other political matters - e.g. to get a sneak peek at what I may write about in the future - I recommend the following links to threads from the Python Discourse forum:
+
+[Howto engage Python contributors in the long term?](https://discuss.python.org/t/_/771)
+
+[The PSF should be less political, not more](https://discuss.python.org/t/_/4329)
+
+[Discussion about recent CoC events](https://discuss.python.org/t/_/5778)
+
+As well as [this search result](https://www.mail-archive.com/search?l=python-dev%40python.org&q=amend+pep+strunk&x=0&y=0) for old mailing list discussion (this discussion didn't thread very neatly, so I can't really give a direct link to a single page).
+
+This material will, I believe, give the reader considerable insight into the mindset of a certain subset of PSF members, particularly vis-a-vis the concept of "social justice".
 
 ## Introduction
 
@@ -119,15 +131,3 @@ The PSF is the Python Software Foundation, which is exactly what it sounds like.
 [Joannah Nanjekye](https://github.com/nanjekyejoannah) is another Python core dev. As far as I am able to discern, she is the only female core dev who is not white.
 
 I, Karl Knechtel, am a Pythonista with close to 20 years of experience using Python (and further experience with other languages). I am somewhat active [as a curator of Stack Overflow](https://stackoverflow.com/users/523612) and a [Q&A author on Codidact](https://software.codidact.com/users/64656). Starting in March 2023 until now, I was [one of the most prolific users](https://discuss.python.org/u/kknechtel/summary) of the [official Discourse forum for Python](https://discuss.python.org).
-
-## Further reading
-
-There's an awful lot I could say about that discussion, as well as about previous threads. All of that is far out of scope for what I want to talk about in this post - not to worry, for those who are actually interested in my blog, more will follow. For now, let me just link a few of the more interesting threads I uncovered:
-
-[Howto engage Python contributors in the long term?](https://discuss.python.org/t/_/771)
-
-[The PSF should be less political, not more](https://discuss.python.org/t/_/4329)
-
-[Discussion about recent CoC events](https://discuss.python.org/t/_/5778)
-
-I entreat all who read this to look at those threads as well, and draw their own respective conclusions. The old mailing list discussion does not thread as neatly, but [this search result](https://www.mail-archive.com/search?l=python-dev%40python.org&q=amend+pep+strunk&x=0&y=0) will also produce quite a bit of insight into how PSF members think about, and expect each other to think about, issues surrounding the Code of Conduct, as well as matters of what is broadly termed "social justice".
