@@ -53,15 +53,13 @@ For reference:
 
 1. Your "busy" week (amounting to approximately one (1) flag per moderator, per day) does not, in my opinion, in any way excuse such ignorance of the truth.
 
-## How I got involved
+## A timeline of related events
 
-Though I do not wish to speak for them, it is clear that our grievances have a common root: the [aftermath](https://discuss.python.org/t/inclusive-communications-expectations-in-python-spaces/57950) of discussion of a then-upcoming PSF vote on changes to bylaws. The measures proposed in [that discussion](https://discuss.python.org/t/for-your-consideration-proposed-bylaws-changes-to-improve-our-membership-experience/55696) (also, to my understanding, discussed on a members-only mailing list, and possibly also on some Discord servers that I don't know anything about) have since [all passed](https://discuss.python.org/t/psf-board-election-proposed-bylaws-changes-results-announcement/58465) - despite quite a bit of opposition voiced in that discussion, the most controversial measure received over 80% votes in favour.
+On June 13, 2024, a PSF board member posted a [thread](https://discuss.python.org/t/for-your-consideration-proposed-bylaws-changes-to-improve-our-membership-experience/55696) to discuss three new ballot measures to change PSF bylaws. To my understanding, these measures were also discussed on a members-only mailing list, and possibly also elsewhere. These measures [all passed](https://discuss.python.org/t/psf-board-election-proposed-bylaws-changes-results-announcement/58465) - despite quite a bit of opposition voiced in that discussion, the most controversial measure received over 80% votes in favour.
 
-- opposed the controversial motion, and her arguments were brushed off and she was generally not respected. There was also discussion about how the PSF had previously [failed in adequately funding PyCon events in Africa and helping them run smoothly](https://pythonafrica.blogspot.com/2023/12/an-open-letter-to-python-software_5.html) (Note that the linked article, also an "open letter", is signed by Ms. Nanjekye, and was shared in the discussion by Dr. Mertz.)
+In that thread, Joannah Nanjekye opposed the controversial motion, but her arguments were brushed off and her point of view was, as I saw it, generally not respected. There was also discussion in that thread about how the PSF had previously [failed in adequately funding PyCon events in Africa and helping them run smoothly](https://pythonafrica.blogspot.com/2023/12/an-open-letter-to-python-software_5.html). (The link there is to another "open letter" which Dr. Mertz shared in the discussion, signed by Ms. Nanjekye.)
 
-But it's certainly not the measure itself that got me upset enough to leave. No, that was the result of the aftermath thread linked above, and several things said in that thread, mainly by other core devs.
-
-I didn't habitually read the PSF section of the forum, because I've never been a PSF member. But for whatever reason, the forum software suggested the aftermath thread to me, and I had a look at the OP, which proposed that the following "not okay" things had transpired:
+On July 11, a [new thread](https://discuss.python.org/t/inclusive-communications-expectations-in-python-spaces/57950) was posted "collectively for the entire 2024 Python Steering Council". The OP proposed that the following "not okay" things had transpired:
 
 > Bringing up examples of sexual harassment and making light of workplace sexual harassment training.
 
@@ -81,15 +79,28 @@ and informed that
 
 strongly implying that someone of considerable reputation - someone from the "old guard", so to speak - was being called out.
 
-Between those contextual clues and the content of the thread, it was quite easy to suss out what this was supposedly about. And it was furthermore quite obvious to me that this was a smear job.
+I didn't habitually read the PSF section of the forum, because I've never been a PSF member. But at some point, the forum software suggested the latter thread to me, and I followed the link to the former thread.
+
+Between those contextual clues and the content of the thread, it was quite easy to suss out what this was supposedly about. And it was furthermore quite clear to me that this was a smear job.
+
+On July 12, Tim Peters - the person I had guessed was being targeted - initially [posted](https://discuss.python.org/t/inclusive-communications-expectations-in-python-spaces/57950/4) in his defense, followed up the next day by pointing out the [chilling effect](https://discuss.python.org/t/inclusive-communications-expectations-in-python-spaces/57950/6) that the WG (and the steering) has had on discussion - according to reports made to him privately. In these posts I got some hints about the hypocrisy in the WG's actions.
+
+Also on July 13, Steve Holden [announced his departure from the forum](https://discuss.python.org/t/why-im-leaving-discuss-python-org/58093).
+
+The day after that (the 14th), I first [voiced my support](https://discuss.python.org/t/inclusive-communications-expectations-in-python-spaces/57950/7) for Mr. Peters, and explained why I felt that posts like the OP are counterproductive if the goal is "inclusivity". (As of this writing, that post has not been taken down.) Probably by later that day I had decided to leave the forum, but I didn't declar this intent [until the 16th](https://discuss.python.org/t/im-leaving-too/58408).
+
+Most likely on the 17th, I discovered documentation of the [WG's "enforcement procedures"](https://policies.python.org/python.org/code-of-conduct/Enforcement-Procedures/), which had been hiding in plain sight the whole time. What I read there was truly egregious, but will have to wait for another post.
+
+As mentioned, on the 19th, Dr. Mertz and I were banned. I did not receive a forum email about this, but I was able to gather that [I](https://discuss.python.org/u/kknechtel/summary) - the first recipient of the forum's [gold "Empathetic" badge](https://discuss.python.org/badges/39/empathetic) outside of the core Python dev team - had been deemed "too combative" for this environment.
+
+The same day - a few hours before this moderation - Łukasz Langa [revived](https://github.com/pypi/support/issues/2771#issuecomment-2239047177) the very GitHub issue that motivated me to join the forum in the first place. The timing of this seems rather suspicious to me, but I can't really say anything more concrete about it.
+
+Also the same day, a new banner appeared on the forum, promoting new ["community guidelines"](https://discuss.python.org/guidelines/) which had come seemingly out of nowhere.
 
 ## Math, science, history
 
-I don't like smear jobs. Especially not when they're directed at personal heroes like [Tim Peters](https://github.com/tim-one).
-
 And for me personally, I first got to interact with Mr. Peters [on Stack Overflow](https://stackoverflow.com/questions/21297887/), on a question related to sorting, receiving praise for my answer. You can imagine how star-struck I was.
 
-Anyway, the ensuing replies neatly confirmed my suspicions - after two of the sort of sycophantic replies that one should always expect for this sort of business, came Mr. Peters' [highly well-spoken objections](https://discuss.python.org/t/inclusive-communications-expectations-in-python-spaces/57950/4), followed by pointing out the [chilling effect](https://discuss.python.org/t/inclusive-communications-expectations-in-python-spaces/57950/6) that the Code of Conduct Working Group (as well as the Steering Council - it turns out that Python community governance is rather complex) has had on discussion. He also managed to scratch the surface of the hypocrisy that the WG has demonstrated in enforcing the CoC.
 
 It turns out that I also don't like hypocrisy. I very, very much dislike it (I also dislike strained attempts to claim hypocrisy on the part of someone who has actually been quite consistent). So at that point I tripped and fell down the rabbit hole, and spent a good portion of my waking hours for an entire week unraveling the mystery of how things had gotten to this point -  where there could be such political tensions within the PSF, and so much energy to find fault with pillars of the community.
 
@@ -136,22 +147,6 @@ But I never violated the Code of Conduct as it is written. I was absolutely resp
 One of my own posts got auto-hidden by community flags as "offensive", apparently because I dared to suggest that bad things happen to men that aren't the fault of other men, and that feminists commonly blame men for those things. (I also dared to point out a phenomenon that media insists on painting as a women's issue even though it objectively happens more than twice as often to men.) And at the same time, my [thread](https://discuss.python.org/t/im-leaving-too/58408) was put into a 12-hour slow mode. (I'm assuming the latter was done by you, Mr. Langa, simply because your name is attached to every other externally-verifiable moderation action in this mess.)
 
 And when I found that I couldn't edit the hidden post to bring it back (the slow-mode limit counts against that, you see), I resolved to fix it the next day.
-
-## The next day
-
-And that brings us back to the beginning.
-
-I went back to my browser tab with the forum open, with the plan of restoring my post (on the advice of some others, including Mr. Peters) and then challenging Hugo van Kemenade's misinformation about the mass exodus of core developers in late 2020. (By the way, Mr. Langa, I thank you for showing me the exact resource needed to debunk that narrative - again, a matter for a separate post.)
-
-I didn't get the chance. When I came back, I found that I had been logged out, and couldn't log back in. You were in the middle of a spree of locking threads, posting official mod messages and "indefinitely suspending" (i.e., banning) accounts - specifically, mine and Dr. Mertz's. Plus there was a new banner on the site promoting new ["community guidelines"](https://discuss.python.org/guidelines/) which had come seemingly out of nowhere.
-
-I did not receive a forum email about this, but I was able to gather that [I](https://discuss.python.org/u/kknechtel/summary) - the first recipient of the forum's [gold "Empathetic" badge](https://discuss.python.org/badges/39/empathetic) outside of the core Python dev team - had been deemed "too combative" for this environment.
-
-"You can't quit; you're fired". Very well then.
-
-The truly amazing part, to me, is that a few hours before this moderation, you found time to [revive](https://github.com/pypi/support/issues/2771#issuecomment-2239047177) the very GitHub issue that motivated me to join the forum in the first place, which went ignored by the woefully inadequate volunteer resources of PyPI (to be fair, this seems to have been left almost entirely on the shoulders of Dustin Ingram - who incidentally [recently became a PSF Fellow](https://www.python.org/psf/fellows/)) for over a year until this very day.
-
-But the truly *offensive* part is the pair of messages, about [me](https://discuss.python.org/t/im-leaving-too/58408/11) and [Dr. Mertz](https://discuss.python.org/t/why-i-am-withdrawing-fellowship-status-in-psf/58301/4), that you relayed from the WG.
 
 ## Dramatis Personae
 
