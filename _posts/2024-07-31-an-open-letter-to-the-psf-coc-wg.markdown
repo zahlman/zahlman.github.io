@@ -5,6 +5,8 @@ date:   2024-07-31
 categories: [ politics, the-PSF ]
 ---
 
+[![Hits](https://hits.sh/zahlman.github.io/politics/the-psf/2024/07/31/an-open-letter-to-the-psf-coc-wg.html.svg?view=today-total&label=Temporary%20hit%20counter%20powered%20by%20hits.sh&color=grey&labelColor=informational)](https://hits.sh/zahlman.github.io/politics/the-psf/2024/07/31/an-open-letter-to-the-psf-coc-wg.html/)
+
 ## Preamble
 
 As a content warning, this post includes: words which refer to serious crimes; refusal to accept "social justice" orthodoxy; and Unicode code point U+1F609 WINKING FACE. Don't worry - it will make sense in due time.
