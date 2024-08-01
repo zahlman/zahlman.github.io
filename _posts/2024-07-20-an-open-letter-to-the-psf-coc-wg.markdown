@@ -5,17 +5,23 @@ date:   2024-07-20
 categories: politics, Python, the PSF
 ---
 
-(Content warning: words which refer to serious crimes; refusal to accept "social justice" - which is neither just nor eusocial - orthodoxy; Unicode code point U+1F609 WINKING FACE. Don't worry - it will make sense in due time.)
+## Preamble
 
-## Epilogue
+As a content warning: this post includes words which refer to serious crimes; refusal to accept "social justice" orthodoxy; and Unicode code point U+1F609 WINKING FACE. Don't worry - it will make sense in due time.
 
-There is an *awful* lot to explain here, Mr. Langa, and I hope you will excuse me for addressing most of it to the audience. But to give a brief summary: in banning me, you and the Working Group have acted unjustly and with astounding hypocrisy; in your parting statement you and the Working Group misrepresent my position in egregious and indefensible ways; the ideology you have espoused with these actions is fundamentally corrupt and enables serious real-world harm; and you cannot silence me.
+For those who are not generally familiar with big names in the Python community, a basic description of the parties involved is provided near the end (section "Dramatis Personae"). If you do generally recognize such names, just know that in this post, by "WG" I mean the PSF's Code of Conduct Work Group (or Working Group).
 
-Being cut off from my account means I have lost access to a huge collection of bookmarks for posts about the problem with packaging in Python. So it will take me that much longer to say productive, useful things that could actually help Python developers. Unfortunate.
+## Introduction
 
-On the bright side, I anticipated that I would be subjected to some kind of interference like this, so I locally saved all the posts I was making about this topic, as I posted them. That which has been "flagged by the community and is temporarily hidden" (and to be clear, I don't imagine for a second that you have any intention of restoring any of it, even though no reasonable person could possibly find that it violates the Code of Conduct as written) is not lost; I will repost it all here on my blog in due time. Make no mistake - I am *not even remotely* finished with this issue.
+On July 19th, I was banned ("indefinitely suspended") from the official Python Discourse forum, and several of my most recent posts were "temporarily" hidden by flagging "by the community" (per the stock phrasing of the Discourse software). I was already voluntarily about to leave, so I don't particularly mind losing access - but it was nevertheless unjust. 
 
-- opposed the controversial motion, and her arguments were brushed off and she was generally not respected. There was also discussion about how the PSF had previously [failed in adequately funding PyCon events in Africa and helping them run smoothly](https://pythonafrica.blogspot.com/2023/12/an-open-letter-to-python-software_5.html) (Note that the linked article, also an "open letter", is signed by Ms. Nanjekye, and was shared in the discussion by Dr. Mertz.)
+Furthermore, the manner in which this was handled shocks and appalls me. In my estimation, the WG has acted with astounding hypocrisy, which I will allude to in this post and attempt to elucidate in later posts. In announcing my ban, they made a parting statement which misrepresents my position in egregious and indefensible ways. Further, it is my considered opinion that these actions reflect a "social justice" ideology which is neither just nor eusocial - one which I believe is fundamentally corrupt and enables serious real-world harm.
+
+Aside from my own mistreatment, the WG similarly banned Dr. David Mertz - whose reputation in the Python community *as a community member in good standing* is nothing short of astounding - with a similar parting statement which I consider similarly unacceptable.
+
+I refuse to be silenced on this matter - this post will *not even remotely* be the end of it. Because I happen to have found myself in a similar position before, I had the foresight to save my posts locally before I lost access to my account. I will be sharing these on this blog as reference pages, so as to show everyone that I indeed said nothing that could reasonably be said to violate the Code of Conduct.
+
+Unfortunately, I cannot say the same about the huge collection of post bookmarks I had been making about the problems with packaging in Python. However, I expect this will only be a minor setback in my goal of independently critiquing Python packaging and attempting to contribute my own solutions.
 
 ## To set the record straight
 
@@ -38,6 +44,8 @@ On the bright side, I anticipated that I would be subjected to some kind of inte
 ## How I got involved
 
 Though I do not wish to speak for them, it is clear that our grievances have a common root: the [aftermath](https://discuss.python.org/t/inclusive-communications-expectations-in-python-spaces/57950) of discussion of a then-upcoming PSF vote on changes to bylaws. The measures proposed in [that discussion](https://discuss.python.org/t/for-your-consideration-proposed-bylaws-changes-to-improve-our-membership-experience/55696) (also, to my understanding, discussed on a members-only mailing list, and possibly also on some Discord servers that I don't know anything about) have since [all passed](https://discuss.python.org/t/psf-board-election-proposed-bylaws-changes-results-announcement/58465) - despite quite a bit of opposition voiced in that discussion, the most controversial measure received over 80% votes in favour.
+
+- opposed the controversial motion, and her arguments were brushed off and she was generally not respected. There was also discussion about how the PSF had previously [failed in adequately funding PyCon events in Africa and helping them run smoothly](https://pythonafrica.blogspot.com/2023/12/an-open-letter-to-python-software_5.html) (Note that the linked article, also an "open letter", is signed by Ms. Nanjekye, and was shared in the discussion by Dr. Mertz.)
 
 But it's certainly not the measure itself that got me upset enough to leave. No, that was the result of the aftermath thread linked above, and several things said in that thread, mainly by other core devs.
 
