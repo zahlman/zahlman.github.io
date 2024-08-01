@@ -23,19 +23,19 @@ As well as [this search result](https://www.mail-archive.com/search?l=python-dev
 
 This material will, I believe, give the reader considerable insight into the mindset of a certain subset of PSF members, particularly vis-a-vis the concept of "social justice".
 
-## Introduction
+## Overview 
 
 On July 19th, I was banned ("indefinitely suspended") from the official Python Discourse forum, and several of my most recent posts were "temporarily" hidden by flagging "by the community" (per the stock phrasing of the Discourse software). I was already voluntarily about to leave, so I don't particularly mind losing access - but it was nevertheless unjust. 
 
-Furthermore, the manner in which this was handled shocks and appalls me. In my estimation, the WG has acted with astounding hypocrisy, which I will allude to in this post and attempt to elucidate in later posts. In announcing my ban, they made a parting statement which misrepresents my position in egregious and indefensible ways. Further, it is my considered opinion that these actions reflect a "social justice" ideology which is neither just nor eusocial - one which I believe is fundamentally corrupt and enables serious real-world harm.
+Furthermore, the manner in which this was handled shocks and appalls me. In my estimation, the WG has acted with *astounding* hypocrisy, which I will allude to in this post and attempt to elucidate in later posts. In announcing my ban, they made a parting statement which misrepresents my position in egregious and indefensible ways. Further, it is my considered opinion that these actions reflect a "social justice" ideology which is neither just nor eusocial - one which I believe is fundamentally corrupt and enables serious real-world harm.
 
-Aside from my own mistreatment, the WG similarly banned Dr. David Mertz - whose reputation in the Python community *as a community member in good standing* is nothing short of astounding - with a similar parting statement which I consider similarly unacceptable.
+Aside from my own mistreatment, the WG similarly banned Dr. David Mertz - whose reputation in the Python community *as a community member in good standing* is truly incredible - with a similar parting statement which I consider similarly unacceptable.
 
 Further, while nothing serious seems to have befallen Tim Peters so far, I'm appalled at how he has been treated through all of this. (I first got to interact with Mr. Peters - who I consider something of a personal hero - [on Stack Overflow](https://stackoverflow.com/questions/21297887/), on a question related to sorting, receiving praise for my answer. You can imagine how star-struck I was, and thus the extra importance this issue has for me.)
 
 I refuse to be silenced on this matter - this post will *not even remotely* be the end of it. Because I happen to have found myself in a similar position before, I had the foresight to save my posts locally before I lost access to my account. I will be sharing these on this blog as reference pages, so as to show everyone that I indeed said nothing that could reasonably be said to violate the Code of Conduct.
 
-Unfortunately, I cannot say the same about the huge collection of post bookmarks I had been making about the problems with packaging in Python. However, I expect this will only be a minor setback in my goal of independently critiquing Python packaging and attempting to contribute my own solutions.
+I had been bookmarking quite a few posts about the problems with packaging in Python (using the site features), and now I have lost that information. However, I expect this will only be a minor setback in my goal of independently critiquing Python packaging and attempting to contribute my own solutions.
 
 ## A timeline of related events
 
@@ -84,7 +84,7 @@ First, let me address the parting statements the WG left [for myself](https://di
 
 1. I **absolutely did not, in any way, shape or form**, claim that moderation actions taken against me "were an example of reverse racism". Not only is this *completely* untrue, it puts terminology in my mouth which I was *explicitly arguing against using*, because I consider it problematic. My entire point was that people with my belief system **do not use** this nonsensical term (nor "reverse sexism"). Rather, my experience has been that the term is used by those who ideologically align with the WG, specifically in order to mock and dismiss obvious and serious real-world harms.
 
-1. Further, I barely mentioned racism anyway, choosing to focus on sexism instead. But above all, **nothing I said** about this utterly nonsensical term **had anything to do with objections to moderation actions taken against me**. I was very explicit about that - this point was *specifically* about the enforcement policy in the abstract.
+1. Further, I barely mentioned racism anyway, choosing to focus on sexism instead. But above all, **nothing I said** about this utterly nonsensical term **had anything to do with objections to moderation actions taken against me**. I was very explicit about that - this point was *specifically* about the enforcement policy in the abstract. But just for what it's worth, I stood up for Ms. Nanjekye, just as Dr. Mertz did.
 
 1. Rather than "reverse sexism", the correct term is "sexism against men", which is how I describe it. The existence of such discrimination in the real world **is, in fact, abundantly evidenced**; and in fact I presented a significant amount of evidence in one of my hidden posts - but discussion of this point is out of scope here.
 
@@ -100,7 +100,7 @@ First, let me address the parting statements the WG left [for myself](https://di
 
 1. Dr. Mertz *disagreed* with you regarding changes to the PSF bylaws. That was **not, in any way, shape or form, a "refusal to accept"** those opinions. On the contrary, he provided evidence that *you* are the ones who show disrespect to dissenting opinions - for example, Ms. Nanjekye's. Aside from that, Dr. Mertz showed the *utmost* "respect for differing viewpoints and experiences". But you did not, by my assessment, respect his.
 
-1. When you say that the WG's "gender, ethnic, cultural, economical, and religious" diversity "provides the working group with excellent representation of differing viewpoints", you are inherently supposing such immutable traits of individuals necessarily cause them to *have* such differing viewpoints. **That is both bigoted and demonstrably false**.
+1. By saying that the WG's "gender, ethnic, cultural, economical, and religious" diversity "provides the working group with excellent representation of differing viewpoints", you imply that these traits *necessarily cause people to have* such differing viewpoints - which is both **bigoted and demonstrably false**.
 
 1. Your "busy" week (amounting, apparently, to approximately one (1) flag per moderator, per day) **does not**, in my opinion, in any way **excuse such ignorance of the truth**.
 
