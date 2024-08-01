@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "An open letter to the PSF CoC WG"
-date:   2024-07-20
+date:   2024-07-31
 categories: politics, Python, the PSF
 ---
 
