@@ -87,7 +87,7 @@ On July 12, Tim Peters - the person I had guessed was being targeted - initially
 
 Also on July 13, Steve Holden [announced his departure from the forum](https://discuss.python.org/t/why-im-leaving-discuss-python-org/58093).
 
-The day after that (the 14th), I first [voiced my support](https://discuss.python.org/t/inclusive-communications-expectations-in-python-spaces/57950/7) for Mr. Peters, and explained why I felt that posts like the OP are counterproductive if the goal is "inclusivity". (As of this writing, that post has not been taken down.) Probably by later that day I had decided to leave the forum, but I didn't declar this intent [until the 16th](https://discuss.python.org/t/im-leaving-too/58408).
+The day after that (the 14th), I first [voiced my support](https://discuss.python.org/t/inclusive-communications-expectations-in-python-spaces/57950/7) for Mr. Peters, and explained why I felt that posts like the OP are counterproductive if the goal is "inclusivity". (As of this writing, that post has not been taken down.) Probably by later that day I had decided to leave the forum, but I didn't declar this intent [until the 16th](https://discuss.python.org/t/im-leaving-too/58408). Over the next several days I spent quite a large fraction of my waking hours composing and presenting my thoughts on these issues, while also reading through a backlog of old posts about Python packaging, as well as researching previous instances of, shall we say, political tension in the community.
 
 Most likely on the 17th, I discovered documentation of the [WG's "enforcement procedures"](https://policies.python.org/python.org/code-of-conduct/Enforcement-Procedures/), which had been hiding in plain sight the whole time. What I read there was truly egregious, but will have to wait for another post.
 
@@ -102,9 +102,6 @@ Also the same day, a new banner appeared on the forum, promoting new ["community
 And for me personally, I first got to interact with Mr. Peters [on Stack Overflow](https://stackoverflow.com/questions/21297887/), on a question related to sorting, receiving praise for my answer. You can imagine how star-struck I was.
 
 
-It turns out that I also don't like hypocrisy. I very, very much dislike it (I also dislike strained attempts to claim hypocrisy on the part of someone who has actually been quite consistent). So at that point I tripped and fell down the rabbit hole, and spent a good portion of my waking hours for an entire week unraveling the mystery of how things had gotten to this point -  where there could be such political tensions within the PSF, and so much energy to find fault with pillars of the community.
-
-## Just for the record
 
 And most importantly, let me explain the understanding I arrived at of Mr. Peters' supposed sins:
 
@@ -137,16 +134,6 @@ And I saw from previous discussions that a significant fraction of important peo
 And I saw that, on the other hand, it is perfectly within the WG's interpretation of "being respectful of differing viewpoints and experiences", "showing empathy towards other community members" and "using welcoming and inclusive language" to *insinuate that someone else is a fascist bigot* who needs to be [paradox of tolerance](https://en.wikipedia.org/wiki/Paradox_of_tolerance)'d out of the community for the high crime of not wanting to voice affirmative support for specific supposedly "anti-racist" organizations like BLM.
 
 Did I mention I don't like hypocrisy? I don't like intellectual dishonesty, either.
-
-## Coming to a head
-
-As you can probably imagine, I was increasingly upset by all of this - enough to inspire quite a bit of critical posting.
-
-But I never violated the Code of Conduct as it is written. I was absolutely respectful to others. I did not use slurs, nor any kind of insulting epithets, nor profanity. I was challenged to defend my views, so I did - bringing appropriate evidence. I took utmost care at all times to ensure that I only expressed my hurt, and not my anger.
-
-One of my own posts got auto-hidden by community flags as "offensive", apparently because I dared to suggest that bad things happen to men that aren't the fault of other men, and that feminists commonly blame men for those things. (I also dared to point out a phenomenon that media insists on painting as a women's issue even though it objectively happens more than twice as often to men.) And at the same time, my [thread](https://discuss.python.org/t/im-leaving-too/58408) was put into a 12-hour slow mode. (I'm assuming the latter was done by you, Mr. Langa, simply because your name is attached to every other externally-verifiable moderation action in this mess.)
-
-And when I found that I couldn't edit the hidden post to bring it back (the slow-mode limit counts against that, you see), I resolved to fix it the next day.
 
 ## Dramatis Personae
 
