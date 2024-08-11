@@ -9,7 +9,7 @@ categories: [ politics, the-PSF ]
 
 ## Preamble
 
-First, thanks to everyone who has contacted me with praise, thanks etc. since [my previous post](/politics/the-psf/2024/07/31/an-open-letter-to-the-psf-coc-wg.html/), or shared the link. I'm truly grateful for all such support.
+First, thanks to everyone who has contacted me with praise, thanks etc. since [my previous post](/politics/the-psf/2024/07/31/an-open-letter-to-the-psf-coc-wg.html), or shared the link. I'm truly grateful for all such support.
 
 If you haven't seen that post yet, please take a moment to read it first. It gives important context (such as explanations of acronyms), which I will not be repeating here.
 
