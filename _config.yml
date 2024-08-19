@@ -27,6 +27,12 @@ url: "https://zahlman.github.io" # the base hostname & protocol for your site, e
 # twitter_username: 
 github_username:  zahlman
 
+# Add a collection for archived posts from discuss.python.org.
+collections:
+  dpo_archive:
+    output: true
+    permalink: /dpo_archive/:path.html
+
 # Build settings
 theme: minima
 plugins:
