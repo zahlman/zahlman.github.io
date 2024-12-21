@@ -53,7 +53,7 @@ Nearly two months after *that* post, as I stared at `TODO.txt` on my desktop, al
 
 *"But I can give myself a few days to enjoy the summer first."*
 
-Only "a few days" later, I found myself wrapped up in that [PSF brouhaha](politics/the-psf/2024/07/31/an-open-letter-to-the-psf-coc-wg.html) that led to my [ban](/dpo_archive) from the Discourse (and eventually to [Tim Peters' suspension from core development](politics/the-psf/2024/08/10/open-letter-psf-coc-wg-addendum-1-tim-peters.html) - about which he has also [written extensively](https://tim-one.github.io/psf/)).
+Only "a few days" later, I found myself wrapped up in that [PSF brouhaha](/politics/the-psf/2024/07/31/an-open-letter-to-the-psf-coc-wg.html) that led to my [ban](/dpo_archive) from the Discourse (and eventually to [Tim Peters' suspension from core development](/politics/the-psf/2024/08/10/open-letter-psf-coc-wg-addendum-1-tim-peters.html) - about which he has also [written extensively](https://tim-one.github.io/psf/)).
 
 When I got banned, I wrote up an initial draft for my first post promptly - the next day, July 20 - but decided to let cooler heads prevail. The draft was about 4000 words that flowed effortlessly, which I eventually cut down to 3000 words (with much more effort and quite a bit of rewriting and reorganization). I really didn't want the end of the month to pass without saying anything, so on July 31 I pushed myself to get it all hammered out. Mr. Peters' suspension (which didn't really surprise me) happened shortly after, so I collected some notes and made one more post.
 
@@ -65,15 +65,15 @@ Such as the [Python 3.13 release](https://www.python.org/downloads/release/pytho
 
 I just... didn't.
 
-At least I haven't been idle the last few months. The time that I would have spent helping people on the Discourse forum is now largely taken up on [HN](https://news.ycombinator.com) and the Linux Mint forums - and a lot of my comments in both places have been about technical Python-related material (that I'll surely write about here eventually).
+At least I haven't been idle the last few months. The time that I would have spent helping people on the Discourse is now largely taken up on [HN](https://news.ycombinator.com) and the Linux Mint forums - and a lot of my comments in both places have been about technical Python-related material (that I'll surely write about here eventually).
 
 I even started drafting some more blog posts - I just didn't finish any of them.
 
 # Future
 
-I've come to realize that, for non-recreational purposes, posting on forums **really isn't an efficient use of my time** (and neither was most of what I was writing on the Discourse forum). My recent forum posts show me that I really do enjoy writing about these topics (as well as others that I'd prefer to skip here) - but helping someone troubleshoot a problem on a forum generally only helps that person. Even if I write, say, a guide or a tutorial or other useful information that helps people understand Python packaging, it's only useful if people who need that information can find it.
+I've come to realize that, for non-recreational purposes, posting on forums **really isn't an efficient use of my time** (and neither was most of what I was writing on the Discourse). My recent forum posts show me that I really do enjoy writing about these topics (as well as others that I'd prefer to skip here) - but helping someone troubleshoot a problem on a forum generally only helps that person. Even if I write, say, a guide or a tutorial or other useful information that helps people understand Python packaging, it's only useful if people who need that information can find it.
 
-With a blog, I can at least refer people to past articles instead of rewriting explanations. And with luck, eventually other people will start linking them, too. For reasons I'll have to cover separately, I no longer write questions or answers on Stack Overflow - although I do edit content there. I've also written questions and answers [on Codidact](https://codidact.com) - and I hope to get back into that in the new year.
+With a blog, I can at least refer people to past articles instead of rewriting explanations. And with luck, eventually other people will start linking them, too. For reasons I'll have to cover separately, I no longer write questions or answers on Stack Overflow - although I do edit content there. I've also written questions and answers on [Codidact](https://codidact.com) - and I hope to get back into that in the new year.
 
 But for now, I'm focusing on the blog, and on the code projects I currently find most important: a replacement for Pip and Pipx which I'm calling PAPER (still in planning), and a [build backend for Python packages called `bbbb`](https://github.com/zahlman/bbbb/). (In its current state, `bbbb` is... technically usable, but perhaps only by me. Please don't mind the broken link in `README.md`. During my various attempts to get back into coding in the last few months, I set up some new-project tooling with a template that doesn't quite suit my current workflow. At least not until I get up to speed with [RTD](https://about.readthedocs.com/), anyway.)
 
