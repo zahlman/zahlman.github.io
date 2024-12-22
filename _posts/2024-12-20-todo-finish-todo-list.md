@@ -39,7 +39,7 @@ I didn't end up with a perfect record through January and February, but I was do
 
 *"No problem. Now that I have this daily coding habit established, surely I can keep it going and also make a few blog posts each month. Surely."*
 
-But then, somehow, I promptly dropped everything, seemingly fell into depression, got sick, and basically did nothing of note until May (when I [participated](https://github.com/AcidCubeGames/RodOneOut) in a [local game jam](https://www.tojam.ca/) with a friend of mine). And after that, precious little that would merit writing about here.
+But then, somehow, I promptly dropped everything, seemingly fell into depression, got sick, and basically did nothing of note until May (when I [participated](https://acidcube.itch.io/rod-one-out) in a [local game jam](https://www.tojam.ca/) with a friend of mine). And after that, precious little that would merit writing about here.
 
 As already mentioned, a year later I tried again. I had recently joined the [official Python discussion forum using Discourse forum software](https://discuss.python.org) (hereafter "the Discourse", because that amuses me) to follow up on [a major effort on Stack Overflow](https://stackoverflow.com/questions/76105218) (now also available [on Codidact](https://software.codidact.com/posts/291791)). That reminded me that I had a blog, and I figured I would be well served by getting back to it - and perhaps also to [personal projects](https://github.com/zahlman/data).
 
@@ -92,3 +92,7 @@ These are expected minimums I'm setting for myself. I won't hold myself back fro
 You don't have to believe I'll follow through with this, but I hope you'll see that I do. I figure I have an awfully long backlog, so I imagine that I can find enough material to write like this for quite some time.
 
 And now that I have it written down, I can tell myself "for real, this time".
+
+----
+
+*Update Dec 21 2024*: replaced a not-publicly-visible link.
