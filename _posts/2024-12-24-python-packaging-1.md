@@ -5,6 +5,8 @@ date:   2024-12-24
 categories: [ python-packaging ]
 ---
 
+[![Hits](https://hits.sh/zahlman.github.io+2024+python-packaging-1.svg?view=today-total&label=Temporary%20hit%20counter%20powered%20by%20hits.sh&color=grey&labelColor=informational)](https://hits.sh/zahlman.github.io+2024+python-packaging-1/)
+
 # The old refrain
 
 This post is a start of a series I've planned about how packaging currently works in Python, what's wrong with it, and how to cope with the problems. But before I get into the meat of it, I want to talk about common complaints that *don't* resonate with me.
