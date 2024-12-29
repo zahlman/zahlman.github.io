@@ -1,9 +1,8 @@
----
-layout: post
-title:  "Ah yes, I'm back, by the way"
-date:   2023-04-09
-categories: meta
----
+<!--
+.. title:  "Ah yes, I'm back, by the way"
+.. date:   2023-04-09
+.. categories: meta
+-->
 
 Attentive readers of my previous post may have found the following bit odd:
 

@@ -1,9 +1,8 @@
----
-layout: post
-title:  "Python packaging: Why we can't have nice things, Part 1"
-date:   2024-12-24
-categories: [ python-packaging ]
----
+<!--
+.. title:  "Python packaging: Why we can't have nice things, Part 1"
+.. date:   2024-12-24
+.. category: python-packaging
+-->
 
 [![Hits](https://hits.sh/zahlman.github.io+2024+python-packaging-1.svg?view=today-total&label=Temporary%20hit%20counter%20powered%20by%20hits.sh&color=grey&labelColor=informational)](https://hits.sh/zahlman.github.io+2024+python-packaging-1/)
 

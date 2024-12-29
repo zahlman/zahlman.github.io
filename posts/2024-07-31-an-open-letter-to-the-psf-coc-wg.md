@@ -1,9 +1,8 @@
----
-layout: post
-title:  "An open letter to the PSF CoC WG"
-date:   2024-07-31
-categories: [ politics, the-PSF ]
----
+<!--
+.. title:  "An open letter to the PSF CoC WG"
+.. date:   2024-07-31
+.. category: the-PSF
+-->
 
 [![Hits](https://hits.sh/zahlman.github.io/politics/the-psf/2024/07/31/an-open-letter-to-the-psf-coc-wg.html.svg?view=today-total&label=Temporary%20hit%20counter%20powered%20by%20hits.sh&color=grey&labelColor=informational)](https://hits.sh/zahlman.github.io/politics/the-psf/2024/07/31/an-open-letter-to-the-psf-coc-wg.html/)
 

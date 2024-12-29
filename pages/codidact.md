@@ -1,8 +1,6 @@
----
-layout: page
-title: Codidact
-permalink: /codidact/
----
+<!--
+.. title: Codidact
+-->
 
 # An explanation of [Codidact](https://codidact.com) and my involvement with it
 

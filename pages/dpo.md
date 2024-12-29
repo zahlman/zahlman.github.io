@@ -1,8 +1,6 @@
----
-layout: page
-title: My archived posts from discuss.python.org
-permalink: /dpo_archive/
----
+<!--
+.. title: My archived posts from discuss.python.org
+-->
 
 This is an archive of some posts I made on the Python Discourse forum at https://discuss.python.org (hereafter "DPO"), leading up to [my ban on July 19, 2024](/politics/the_psf/2024-07-31/an-open-letter-to-the-psf-coc-wg.html). Before I was banned, I saved the original Markdown source of my posts locally, expecting some interference.
 

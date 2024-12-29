@@ -1,9 +1,8 @@
----
-layout: post
-title:  "An open letter to the PSF CoC WG, addendum 1/n: the suspension of Tim Peters"
-date:   2024-08-10
-categories: [ politics, the-PSF ]
----
+<!--
+.. title:  "An open letter to the PSF CoC WG, addendum 1/n: the suspension of Tim Peters"
+.. date:   2024-08-10
+.. category: the-PSF
+-->
 
 [![Hits](https://hits.sh/zahlman.github.io/politics/the-psf/2024/08/10/open-letter-psf-coc-wg-addendum-1-tim-peters.html.svg?view=today-total&label=Temporary%20hit%20counter%20powered%20by%20hits.sh&color=grey&labelColor=informational)](https://hits.sh/zahlman.github.io/politics/the-psf/2024/08/10/open-letter-psf-coc-wg-addendum-1-tim-peters.html)
 
