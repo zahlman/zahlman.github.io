@@ -1,18 +1,28 @@
 <!--
-.. title:  "An open letter to the PSF CoC WG, addendum 1/n: the suspension of Tim Peters"
+.. title:  "An open letter to the PSF CoC WG, addendum 1/n"
 .. date:   2024-08-10
 .. category: the-PSF
 -->
 
-[![Hits](https://hits.sh/zahlman.github.io/politics/the-psf/2024/08/10/open-letter-psf-coc-wg-addendum-1-tim-peters.html.svg?view=today-total&label=Temporary%20hit%20counter%20powered%20by%20hits.sh&color=grey&labelColor=informational)](https://hits.sh/zahlman.github.io/politics/the-psf/2024/08/10/open-letter-psf-coc-wg-addendum-1-tim-peters.html)
+# The Suspension of Tim Peters
 
-## Preamble
-
-First, thanks to everyone who has contacted me with praise, thanks etc. since [my previous post](/politics/the-psf/2024/07/31/an-open-letter-to-the-psf-coc-wg.html), or shared the link. I'm truly grateful for all such support.
+Thanks to everyone who contacted me with praise, thanks etc. for [my previous post](/politics/the-psf/2024/07/31/an-open-letter-to-the-psf-coc-wg.html), or shared the link. I'm truly grateful for all such support.
 
 If you haven't seen that post yet, please take a moment to read it first. It gives important context (such as explanations of acronyms), which I will not be repeating here.
 
-In my next post (not an "addendum"), I plan to give my thoughts on what to do about all of this, and going into more detail about my mindset. But for now, I want to focus on current events.
+On August 7, Python core developer Tim Peters was issued a 3-month (although it ended November 1, perhaps due to a clerical error) suspension from that role, accompanied by a suspension from the [official Python Discourse forum](https://discuss.python.org). This was connected to my own (permanent) ban from that forum (issued July 19), a fact which other sources have largely ignored.
+
+In this post, I describe key events between those two dates, tell my story, and respond to the charges laid against Mr. Peters (spoiler: I find them ludicrous).
+
+<!-- TEASER_END -->
+
+## Meta
+
+[![Hits](https://hits.sh/zahlman.github.io/politics/the-psf/2024/08/10/open-letter-psf-coc-wg-addendum-1-tim-peters.html.svg?view=today-total&label=Temporary%20hit%20counter%20powered%20by%20hits.sh&color=grey&labelColor=informational)](https://hits.sh/zahlman.github.io/politics/the-psf/2024/08/10/open-letter-psf-coc-wg-addendum-1-tim-peters.html)
+
+### Changelog
+
+**December 29, 2024**: Reworked the original "preamble" into a teaser section, since the Nikola default configuration expects one and because my original plans for the "next post" didn't come to fruition. Also added this Meta section and moved the hit counter into it, to keep the counter out of the teaser (where it would log extra hits).
 
 ## Updates
 

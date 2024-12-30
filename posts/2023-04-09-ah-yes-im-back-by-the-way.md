@@ -10,6 +10,8 @@ Attentive readers of my previous post may have found the following bit odd:
 
 given that it *actually was* my second post on this blog.
 
+<!-- TEASER_END -->
+
 As hinted there, it was definitely never my plan to go a year or more between posts. Now that I have committed to starting up again, my current plan is to post three times a week:
 
 * Sundays, something of personal interest

@@ -4,7 +4,7 @@
 .. category: meta
 -->
 
-# Present
+# `# TODO: finish todo list`
 
 This is a difficult post to write, largely because of the self-critique involved. Which is part of why I've been putting it off. For months, if I'm honest with myself.
 
@@ -12,7 +12,17 @@ But putting it off has only made it harder to write. I also seem to have reached
 
 It's no secret that the history of this blog so far has been dominantly one of false starts. Please allow me a moment to explain how that came to be.
 
-# Past
+<!-- TEASER_END -->
+
+## Meta
+
+### Changelog
+
+**December 21, 2024**: replaced a not-publicly-visible link.
+
+**December 29, 2024**: rearranged to have this Meta section, and adjusted some other Markdown.
+
+## Past
 
 I can still recall a morning near the end of this June where I woke up at some ungodly hour, with this strange sense of determination to... clean up my computer desktop. And in the process, I happened to notice a file sitting there, named `TODO.txt`.
 
@@ -68,7 +78,7 @@ At least I haven't been idle the last few months. The time that I would have spe
 
 I even started drafting some more blog posts - I just didn't finish any of them.
 
-# Future
+## Future
 
 I've come to realize that, for non-recreational purposes, posting on forums **really isn't an efficient use of my time** (and neither was most of what I was writing on the Discourse). My recent forum posts show me that I really do enjoy writing about these topics (as well as others that I'd prefer to skip here) - but helping someone troubleshoot a problem on a forum generally only helps that person. Even if I write, say, a guide or a tutorial or other useful information that helps people understand Python packaging, it's only useful if people who need that information can find it.
 
@@ -91,7 +101,3 @@ These are expected minimums I'm setting for myself. I won't hold myself back fro
 You don't have to believe I'll follow through with this, but I hope you'll see that I do. I figure I have an awfully long backlog, so I imagine that I can find enough material to write like this for quite some time.
 
 And now that I have it written down, I can tell myself "for real, this time".
-
-----
-
-*Update Dec 21 2024*: replaced a not-publicly-visible link.

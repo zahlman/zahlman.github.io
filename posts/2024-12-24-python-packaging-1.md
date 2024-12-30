@@ -4,11 +4,21 @@
 .. category: python-packaging
 -->
 
-[![Hits](https://hits.sh/zahlman.github.io+2024+python-packaging-1.svg?view=today-total&label=Temporary%20hit%20counter%20powered%20by%20hits.sh&color=grey&labelColor=informational)](https://hits.sh/zahlman.github.io+2024+python-packaging-1/)
-
 # The old refrain
 
 This post is a start of a series I've planned about how packaging currently works in Python, what's wrong with it, and how to cope with the problems. But before I get into the meat of it, I want to talk about common complaints that *don't* resonate with me.
+
+<!-- TEASER_END -->
+
+## Meta
+
+[![Hits](https://hits.sh/zahlman.github.io+2024+python-packaging-1.svg?view=today-total&label=Temporary%20hit%20counter%20powered%20by%20hits.sh&color=grey&labelColor=informational)](https://hits.sh/zahlman.github.io+2024+python-packaging-1/)
+
+### Changelog
+
+**December 29, 2024**: Split off most of the original intro section, leaving the first paragraph as a teaser (since the default Nikola configuration expects one). Also added this Meta section and moved the hit counter into it, to keep the counter out of the teaser (where it would log extra hits).
+
+## Simple is better than complex, complex is better than complicated
 
 It's no secret that [lots of people are unhappy with the system](https://duckduckgo.com/?q=python+packaging+is+a+mess) and have been for a long time. It's [practically a meme](https://xkcd.com/1987/). And to be clear, things [really aren't as good as they ought to be](https://nielscautaerts.xyz/python-dependency-management-is-a-dumpster-fire.html). There are plenty of problems that can be fixed, should be fixed, don't happen for other programming languages and have existed for an embarrassingly long time. And there are plenty of [discussions about how to fix things properly that drag on forever](https://discuss.python.org/t/pep-751-now-with-graphs/69721), sometimes [ultimately leading to a dead end](https://discuss.python.org/t/pep-582-python-local-packages-directory/963). (More about the ways that *discussing change proposals* fails, in a later post.)
 

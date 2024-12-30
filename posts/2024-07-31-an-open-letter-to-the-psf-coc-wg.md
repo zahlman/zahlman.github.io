@@ -4,7 +4,25 @@
 .. category: the-PSF
 -->
 
+On July 19th, I was banned ("indefinitely suspended") from the official Python Discourse forum, and several of my most recent posts were "temporarily" hidden by flagging "by the community" (per the stock phrasing of the Discourse software). I was already voluntarily about to leave, so I don't particularly mind losing access - but it was nevertheless unjust.
+
+Furthermore, the manner in which this was handled shocks and appalls me. In my estimation, the WG has acted with *astounding* hypocrisy, which I will allude to in this post and attempt to elucidate in later posts. In announcing my ban, they made a parting statement which misrepresents my position in egregious and indefensible ways. Further, it is my considered opinion that these actions reflect a "social justice" ideology which is neither just nor eusocial - one which I believe is fundamentally corrupt and enables serious real-world harm.
+
+<!-- TEASER_END -->
+
+## Meta
+
 [![Hits](https://hits.sh/zahlman.github.io/politics/the-psf/2024/07/31/an-open-letter-to-the-psf-coc-wg.html.svg?view=today-total&label=Temporary%20hit%20counter%20powered%20by%20hits.sh&color=grey&labelColor=informational)](https://hits.sh/zahlman.github.io/politics/the-psf/2024/07/31/an-open-letter-to-the-psf-coc-wg.html/)
+
+### Changelog
+
+**December 29, 2024**: Moved the first two paragraphs of the original "Overview" into the teaser section, since the Nikola default configuration expects one (and the original preamble doesn't work well in that role). Also added this Meta section and moved the hit counter into it, to keep the counter out of the teaser (where it would log extra hits).
+
+### Corrections and disputes
+
+**December 29, 2024**: In the "Dramatis Personae" section, I describe Joannah Nanjekye as "as far as I am able to discern... the only female core [Python] dev who is not white". In private correspondence from a third party, it was brought to my attention that [Mariatta](https://mariatta.ca/) ([Wijaya](https://ca.linkedin.com/in/mariatta), but it appears she normally goes by first name only) could also be described that way.
+
+I don't think that accords with my personal construction of race, but this is not at all an objective matter and others are welcome to see things differently. Although not directly relevant to the post, Mariatta is a prominent figure on the Python dev team (for example, she [ran (unsuccessfully) in the recent Steering Council election](https://discuss.python.org/t/_/71950), and is a two-time PyCon chair) so this note is definitely worth including. I apologize for the delay in doing so.
 
 ## Preamble
 
@@ -24,11 +42,7 @@ As well as [this search result](https://www.mail-archive.com/search?l=python-dev
 
 This material will, I believe, give the reader considerable insight into the mindset of a certain subset of PSF members, particularly vis-a-vis the concept of "social justice".
 
-## Overview 
-
-On July 19th, I was banned ("indefinitely suspended") from the official Python Discourse forum, and several of my most recent posts were "temporarily" hidden by flagging "by the community" (per the stock phrasing of the Discourse software). I was already voluntarily about to leave, so I don't particularly mind losing access - but it was nevertheless unjust. 
-
-Furthermore, the manner in which this was handled shocks and appalls me. In my estimation, the WG has acted with *astounding* hypocrisy, which I will allude to in this post and attempt to elucidate in later posts. In announcing my ban, they made a parting statement which misrepresents my position in egregious and indefensible ways. Further, it is my considered opinion that these actions reflect a "social justice" ideology which is neither just nor eusocial - one which I believe is fundamentally corrupt and enables serious real-world harm.
+## Overview
 
 Aside from my own mistreatment, the WG similarly banned Dr. David Mertz - whose reputation in the Python community *as a community member in good standing* is truly incredible - with a similar parting statement which I consider similarly unacceptable.
 
