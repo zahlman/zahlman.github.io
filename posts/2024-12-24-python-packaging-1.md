@@ -12,7 +12,7 @@ This post is a start of a series I've planned about how packaging currently work
 
 ## Meta
 
-[![Hits](https://hits.sh/zahlman.github.io+2024+python-packaging-1.svg?view=today-total&label=Temporary%20hit%20counter%20powered%20by%20hits.sh&color=grey&labelColor=informational)](https://hits.sh/zahlman.github.io+2024+python-packaging-1/)
+[![Hits in 2025 (powered by hits.sh)](https://hits.sh/zahlman.github.io+2025+python-packaging-1.svg?view=today-total&label=Hits in 2025+%28powered by hits.sh%29&color=333&labelColor=066)](https://hits.sh/zahlman.github.io+2025+python-packaging-1/) (Temporary hit counter at last check before migration: 915)
 
 ### Changelog
 
