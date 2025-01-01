@@ -1,5 +1,5 @@
 <!--
-.. title:  "Python packaging: Why we can't have nice things, Part 1"
+.. title:  Python packaging: Why we can't have nice things, Part 1
 .. date:   2024-12-24
 .. category: python-packaging
 -->
