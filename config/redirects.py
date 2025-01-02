@@ -16,7 +16,7 @@ REDIRECTIONS = [
     ("misc/2024/05/09/where-ive-been.html", "/posts/2024/05/09/where-ive-been"),
     ("politics/the-psf/2024/07/31/an-open-letter-to-the-psf-coc-wg.html", "/posts/2024/07/31/an-open-letter-to-the-psf-coc-wg"),
     ("politics/the-psf/2024/08/10/open-letter-psf-coc-wg-addendum-1-tim-peters.html", "/posts/2024/08/10/open-letter-psf-coc-wg-addendum-1-tim-peters"),
-    ("meta/2024/12/20/todo-finish-todo-list.html", "/posts/20/todo-finish-todo-list"),
-    ("python-packaging/2024/12/24/python-packaging-1.html", "/posts/24/python-packaging-1"),
+    ("meta/2024/12/20/todo-finish-todo-list.html", "/posts/2024/12/20/todo-finish-todo-list"),
+    ("python-packaging/2024/12/24/python-packaging-1.html", "/posts/2024/12/24/python-packaging-1"),
     ("meta/2024/12/31/todo-list-2.html", "/posts/2024/12/31/todo-list-2"),
 ]
