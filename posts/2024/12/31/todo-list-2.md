@@ -14,7 +14,7 @@ Today's post is about a folder on my desktop named `dev`. It's where I've kept (
 
 ## Meta
 
-[![Hits in 2025 (powered by hits.sh)](https://hits.sh/zahlman.github.io+2025+new-setup-test.svg?view=today-total&label=Hits in 2025+%28powered by hits.sh%29&color=333&labelColor=066)](https://hits.sh/zahlman.github.io+2025+new-setup-test/)
+{{% hitcounter year=2025 %}}
 
 ### Changelog
 

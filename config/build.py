@@ -217,7 +217,7 @@ INDEX_DISPLAY_POST_COUNT = 5
 # An example re is the following:
 # '.*\/(?P<date>\d{4}-\d{2}-\d{2})-(?P<slug>.*)-(?P<title>.*)\.rst'
 # (Note the '.*\/' in the beginning -- matches source paths relative to conf.py)
-# FILE_METADATA_REGEXP = None
+FILE_METADATA_REGEXP = r'.*\/(?P<slug>[a-z0-9-]+)\.md'
 
 # Should titles fetched from file metadata be unslugified (made prettier?)
 # FILE_METADATA_UNSLUGIFY_TITLES = True
