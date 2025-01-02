@@ -6,4 +6,5 @@ GITHUB_SOURCE_BRANCH = 'nikola'
 GITHUB_DEPLOY_BRANCH = 'master'
 GITHUB_REMOTE_NAME = 'origin'
 # Commit to the source branch automatically before deploying?
-GITHUB_COMMIT_SOURCE = True
+# Disabled just to make sure that the SSH password isn't phished.
+GITHUB_COMMIT_SOURCE = False
