@@ -1,6 +1,5 @@
 <!--
 .. title:  Welcome to the ZahlBlog
-.. date:   2022-03-02
 .. category: meta
 -->
 After many years of trying to share wisdom on discussion forums, social media and Stack Overflow, I finally got around to starting a blog. I'll be talking about my experiences as a programmer, mainly with Python specifically.

@@ -1,6 +1,5 @@
 <!--
 .. title:  An open letter to the PSF CoC WG, addendum 1/n
-.. date:   2024-08-10
 .. category: the-PSF
 -->
 

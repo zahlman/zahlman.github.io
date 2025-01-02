@@ -1,6 +1,5 @@
 <!--
 .. title:  Ah yes, I'm back, by the way
-.. date:   2023-04-09
 .. categories: meta
 -->
 

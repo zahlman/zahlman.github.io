@@ -1,6 +1,5 @@
 <!--
 .. title:  `# TODO: finish todo list`
-.. date:   2024-12-20
 .. category: meta
 -->
 
