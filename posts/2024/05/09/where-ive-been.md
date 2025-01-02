@@ -5,9 +5,17 @@
 
 Tomorrow (in my timezone) is my birthday, so I wanted to get a post in while I'm still 42. I see it's been another 13 months since my previous posts - hopefully I can break that pattern this year. [Fittingly](https://en.wikipedia.org/wiki/The_Hitchhiker%27s_Guide_to_the_Galaxy), it feels like I've discovered some profound answers in the past year, and yet I'm still left with lots of research to do.
 
-So, a recap of some notable events.
-
 <!-- TEASER_END -->
+
+## Meta
+
+{{% hitcounter %}}
+
+### Changelog
+
+**January 1, 2025**: Added this meta section, and a heading (immediately below) for the rest of the article after the teaser.
+
+## A recap of notable events
 
 On Mar 8, 2023, I joined the official [Python Discourse forum](https://discuss.python.org), hosted on the [official Python website](https://python.org). I had been trying to hunt down some information about why the Python included with my Linux distribution didn't appear to have any Tkinter-related functionality, and found a *lot* of old, disorganized Q&A on Stack Overflow, mainly from beginners who were failing to import `turtle` for various reasons. On the 7th I posted [on the official issue tracker, seeking improvements to the documentation](https://github.com/python/cpython/issues/102501), and found out about the Discourse forum from there. (The link is really not so easily found on the main site; but it was still stunning to learn that this forum had existed for years - from what I can tell, [since late September of 2018](https://discuss.python.org/t/about-the-discourse-feedback-category/2).)
 

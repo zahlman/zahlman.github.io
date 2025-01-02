@@ -11,11 +11,11 @@ This post is a start of a series I've planned about how packaging currently work
 
 ## Meta
 
-[![Hits in 2025 (powered by hits.sh)](https://hits.sh/zahlman.github.io+2025+python-packaging-1.svg?view=today-total&label=Hits in 2025+%28powered by hits.sh%29&color=333&labelColor=066)](https://hits.sh/zahlman.github.io+2025+python-packaging-1/) (Temporary hit counter at last check before migration: 915)
+{{% hitcounter %}} ([Stats for old temporary hit counter](https://hits.sh/zahlman.github.io%202024%20python-packaging-1/))
 
 ### Changelog
 
-**December 29, 2024**: Split off most of the original intro section, leaving the first paragraph as a teaser (since the default Nikola configuration expects one). Also added this Meta section and moved the hit counter into it, to keep the counter out of the teaser (where it would log extra hits).
+**January 1, 2025**: Split off most of the original intro section, leaving the first paragraph as a teaser (since the default Nikola configuration expects one). Also added this Meta section and moved the hit counter into it (using a new and improved hit counter setup), to keep the counter out of the teaser (where it would log extra hits).
 
 ## Simple is better than complex, complex is better than complicated
 

@@ -8,6 +8,16 @@ I had originally planned to write about this for the module's 19th anniversary -
 
 <!-- TEASER_END -->
 
+## Meta
+
+{{% hitcounter %}}
+
+### Changelog
+
+**May 9, 2024**: Somehow, in the original intro for this post, I managed to turn twenty years into thirty, referring to "three hundred and sixty-one months". Perhaps I have a [particular affinity for the number 361](https://en.wikipedia.org/wiki/Go_%28game%29). At any rate, someone on the Python Discourse forum in fact pointed this out to me way back at the time (after I shared the post there), but I somehow never got around to fixing it.
+
+**January 1, 2025**: Added this meta section and moved an old correction notice into it, with a bit of editing.
+
 ## The need for (tools to measure) speed
 
 The `timeit` module works quite well for its purpose. One might think that checking how long it takes for some code to run is trivial: simply get a system timestamp before and after, and subtract them - right? Well, GvR seemed to disagree. From the original docstring for the module:
@@ -120,7 +130,3 @@ I ended up making several changes:
 I ended up with 383 sloc of main code across four files (including a utility for generators that I put outside the package), plus 360 sloc of tests (not counting common test infrastructure in the `peptides` project). It was a fun project that kept me occupied for a few days (spread across a week or so),  and it feels good to be writing about it now and sharing the experience.
 
 Even if it's past midnight now. Twenty years, one month and one day. Oh well.
-
----
-
-<small>Corrected May 9 2024: Somehow, in the original version of this post, I managed to turn twenty years into thirty in the opening. Perhaps I have a [particular affinity for the number 361](https://en.wikipedia.org/wiki/Go_%28game%29). At any rate, someone on the Python Discourse forum in fact pointed this out to me way back at the time (after I shared the post there), but I somehow never got around to fixing it.</small>

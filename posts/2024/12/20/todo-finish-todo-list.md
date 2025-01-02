@@ -15,11 +15,13 @@ It's no secret that the history of this blog so far has been dominantly one of f
 
 ## Meta
 
+{{% hitcounter %}}
+
 ### Changelog
 
 **December 21, 2024**: replaced a not-publicly-visible link.
 
-**December 29, 2024**: rearranged to have this Meta section, and adjusted some other Markdown.
+**January 1, 2025**: rearranged to have this Meta section with a new and improved hit counter setup, and adjusted some other Markdown; added a hit counter (going forward, most if not all posts will use this setup).
 
 ## Past
 

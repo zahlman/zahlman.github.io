@@ -17,7 +17,7 @@ Today's post is about a folder on my desktop named `dev`. It's where I've kept (
 
 ### Changelog
 
-**January 1, 2025**: Added this meta section; reorganized the introduction to allow for a short, sensible teaser (and to update on blog migration status).
+**January 1, 2025**: Added this meta section; reorganized the introduction to allow for a short, sensible teaser (and to update on blog migration status); added a hit counter (going forward, most if not all posts will use this setup).
 
 ## But first...
 

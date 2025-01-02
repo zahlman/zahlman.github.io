@@ -17,11 +17,11 @@ In this post, I describe key events between those two dates, tell my story, and 
 
 ## Meta
 
-[![Hits](https://hits.sh/zahlman.github.io/politics/the-psf/2024/08/10/open-letter-psf-coc-wg-addendum-1-tim-peters.html.svg?view=today-total&label=Temporary%20hit%20counter%20powered%20by%20hits.sh&color=grey&labelColor=informational)](https://hits.sh/zahlman.github.io/politics/the-psf/2024/08/10/open-letter-psf-coc-wg-addendum-1-tim-peters.html)
+{{% hitcounter %}} ([Stats for old temporary hit counter](https://hits.sh/zahlman.github.io/politics/the-psf/2024/08/10/open-letter-psf-coc-wg-addendum-1-tim-peters.html))
 
 ### Changelog
 
-**December 29, 2024**: Reworked the original "preamble" into a teaser section, since the Nikola default configuration expects one and because my original plans for the "next post" didn't come to fruition. Also added this Meta section and moved the hit counter into it, to keep the counter out of the teaser (where it would log extra hits).
+**January 1, 2025**: Reworked the original "preamble" into a teaser section, since the Nikola default configuration expects one and because my original plans for the "next post" didn't come to fruition. Also added this Meta section and moved the hit counter into it (using a new and improved hit counter setup), to keep the counter out of the teaser (where it would log extra hits).
 
 ## Updates
 
