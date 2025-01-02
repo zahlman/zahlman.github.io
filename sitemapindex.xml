@@ -7,34 +7,30 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <sitemap>
   <loc>https://zahlman.github.io/categories/cat_meta.xml</loc>
-  <lastmod>2025-01-02T04:03:00Z</lastmod>
+  <lastmod>2025-01-02T05:00:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://zahlman.github.io/categories/cat_misc.xml</loc>
-  <lastmod>2025-01-02T04:03:00Z</lastmod>
+  <lastmod>2025-01-02T05:00:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://zahlman.github.io/categories/cat_python-packaging.xml</loc>
-  <lastmod>2025-01-02T04:03:00Z</lastmod>
+  <lastmod>2025-01-02T05:00:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://zahlman.github.io/categories/cat_python-standard-library.xml</loc>
-  <lastmod>2025-01-02T04:03:00Z</lastmod>
+  <lastmod>2025-01-02T05:00:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://zahlman.github.io/categories/cat_the-psf.xml</loc>
-  <lastmod>2025-01-02T04:03:00Z</lastmod>
- </sitemap>
- <sitemap>
-  <loc>https://zahlman.github.io/galleries/rss.xml</loc>
-  <lastmod>2025-01-02T04:03:00Z</lastmod>
+  <lastmod>2025-01-02T05:00:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://zahlman.github.io/rss.xml</loc>
-  <lastmod>2025-01-02T04:03:00Z</lastmod>
+  <lastmod>2025-01-02T05:00:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://zahlman.github.io/sitemap.xml</loc>
-  <lastmod>2025-01-02T04:03:00Z</lastmod>
+  <lastmod>2025-01-02T05:00:00Z</lastmod>
  </sitemap>
 </sitemapindex>
