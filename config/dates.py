@@ -7,7 +7,7 @@ TIMEZONE = "America/Toronto"
 # Used by babel.dates, CLDR style: 
 # http://cldr.unicode.org/translation/date-time-1/date-time
 # You can also use 'full', 'long', 'medium', or 'short'
-# DATE_FORMAT = 'yyyy-MM-dd HH:mm'
+DATE_FORMAT = 'MMMM d, yyyy'
 # LUXON_DATE_FORMAT = {
 #     DEFAULT_LANG: {'preset': False, 'format': 'yyyy-MM-dd HH:mm'},
 # }
