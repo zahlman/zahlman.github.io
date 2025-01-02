@@ -14,7 +14,7 @@ Today's post is about a folder on my desktop named `dev`. It's where I've kept (
 
 ## Meta
 
-{{% hitcounter year=2025 %}}
+{{% hitcounter %}}
 
 ### Changelog
 
