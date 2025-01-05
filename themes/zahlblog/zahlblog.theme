@@ -1,12 +1,11 @@
 [Theme]
 engine = mako
-parent = bootstrap4
-author = The Nikola Contributors
-author_url = https://getnikola.com/
+author = Karl Knechtel
+author_url = https://github.com/zahlman
 license = MIT
-based_on = Bootstrap 4 <http://getbootstrap.com/>, Bootstrap 4 blog example <http://getbootstrap.com/docs/4.0/examples/blog/>
+based_on = bootblog4 from Nikola <http://getnikola.com>, Bootstrap 4 <https://getbootstrap.com/>, Bootstrap 4 blog example <https://getbootstrap.com/docs/4.0/examples/blog/>
 tags = bootstrap
 
 [Family]
-family = bootblog4
-jinja_version = bootblog4-jinja
+family = zahlblog
+jinja_version = zahlblog-jinja
