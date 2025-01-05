@@ -28,7 +28,6 @@
         % for post in posts:
             <article class="h-entry post-${post.meta('type')}" itemscope="itemscope" itemtype="http://schema.org/Article">
             <header>
-                <h1 class="p-name entry-title"><a href="${post.permalink()}" class="u-url">${post.title()|h}</a></h1>
                 <div class="metadata">
                     <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                     % if author_pages_generated and multiple_authors_per_post:
@@ -41,19 +40,20 @@
                         ${post.author()|h}
                     % endif
                     </span></p>
-            <p class="dateline">
-            <a href="${post.permalink()}" rel="bookmark">
-            <time class="published dt-published" datetime="${post.formatted_date('webiso')}" itemprop="datePublished" title="${post.formatted_date(date_format)|h}">${post.formatted_date(date_format)|h}</time>
-            % if post.updated and post.updated != post.date:
-                <span class="updated"> (${messages("updated")}
-                    <time class="dt-updated" datetime="${post.formatted_updated('webiso')}" itemprop="dateUpdated" title="${post.formatted_updated(date_format)|h}">${post.formatted_updated(date_format)|h}</time>)</span>
-            % endif
-            </a>
-            </p>
+                    <p class="dateline">
+                        <time class="published dt-published" datetime="${post.formatted_date('webiso')}" itemprop="datePublished" title="${post.formatted_date(date_format)|h}">${post.formatted_date(date_format)|h}</time>
+                        % if post.updated and post.updated != post.date:
+                            <span class="updated">
+                                (${messages("updated")}
+                                <time class="dt-updated" datetime="${post.formatted_updated('webiso')}" itemprop="dateUpdated" title="${post.formatted_updated(date_format)|h}">${post.formatted_updated(date_format)|h}</time>)
+                            </span>
+                        % endif
+                    </p>
                     % if not post.meta('nocomments') and site_has_comments:
-                        <p class="commentline">${comments.comment_link(post.permalink(), post._base_path)}
+                        <p class="commentline">${comments.comment_link(post.permalink(), post._base_path)}</p>
                     % endif
                 </div>
+                <h1 class="p-name entry-title"><a href="${post.permalink()}" rel="bookmark" class="u-url">${post.title()|h}</a></h1>
             </header>
             %if index_teasers:
                 <div class="p-summary entry-summary">
@@ -65,6 +65,9 @@
                 </div>
             %endif
             </article>
+            %if not loop.last:
+                <hr>
+            %endif
         % endfor
     </div>
     ${helper.html_pager()}
