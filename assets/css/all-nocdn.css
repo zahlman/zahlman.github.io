@@ -936,8 +936,10 @@ html[dir="rtl"] body {
 /* stylelint-disable selector-list-comma-newline-after */
 
 .blog-header {
-  line-height: 1;
-  border-bottom: 1px solid #e5e5e5;
+  line-height: 0;
+  margin-top: 1em;
+  border-top: 4px solid #02b983;
+  border-bottom: 4px solid #00aefe;
 }
 
 .blog-header-logo {
@@ -989,6 +991,17 @@ h1, h2, h3, h4, h5, h6 {
   font-size: .875rem;
 }
 
+.sidebar-heading {
+  font-size: 1.5rem;
+}
+
+.sidebar-standalone {
+  text-align: center;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  font-size: 1.5rem;
+}
+
 .card-img-right {
   height: 100%;
   border-radius: 0 3px 3px 0;
@@ -1010,8 +1023,8 @@ h1, h2, h3, h4, h5, h6 {
   .h-md-250 { height: 250px; }
 }
 
-.border-top { border-top: 1px solid #e5e5e5; }
-.border-bottom { border-bottom: 1px solid #e5e5e5; }
+.border-top { border-top: 4px solid #02b983; }
+.border-bottom { border-bottom: 4px solid #00aefe; }
 
 .box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
 
@@ -1046,7 +1059,7 @@ h1, h2, h3, h4, h5, h6 {
  * Blog posts
  */
 article {
-  margin-bottom: 4rem;
+  margin-bottom: 1.25rem;
 }
 article:last-child {
   margin-bottom: 0;
@@ -1056,7 +1069,7 @@ article:last-child {
   font-size: 2.5rem;
 }
 article .metadata {
-  margin-bottom: 1.25rem;
+  margin-top: 1.25rem;
   color: #999;
 }
 
