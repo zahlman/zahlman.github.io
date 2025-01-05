@@ -157,10 +157,10 @@ FRONT_INDEX_HEADER = ''
 # FAVICONS contains (name, file, size) tuples.
 # Used to create favicon link like this:
 # <link rel="name" href="file" sizes="size"/>
-# FAVICONS = (
-#     ("icon", "/favicon.ico", "16x16"),
-#     ("icon", "/icon_128x128.png", "128x128"),
-# )
+FAVICONS = (
+    ("icon", "/icon_32x32.png", "32x32"), # greyscale
+    ("icon", "/icon_192x192.png", "192x192"), # green/blue on reddish
+)
 
 # Create index.html for page folders?
 # WARNING: if a page would conflict with the index file (usually
