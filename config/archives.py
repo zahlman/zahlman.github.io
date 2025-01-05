@@ -1,5 +1,5 @@
 # Archive frequency options
-# CREATE_SINGLE_ARCHIVE = False
+CREATE_SINGLE_ARCHIVE = False # the main page already serves
 # CREATE_MONTHLY_ARCHIVE = False
 # Create year, month, and day archives each with a (long) list of posts
 # (overrides both CREATE_MONTHLY_ARCHIVE and CREATE_SINGLE_ARCHIVE)
