@@ -3,19 +3,7 @@
 
 <%def name="html_headstart()">
 <!DOCTYPE html>
-<html
-\
-prefix='\
-og: http://ogp.me/ns# article: http://ogp.me/ns/article# \
-%if comment_system == 'facebook':
-fb: http://ogp.me/ns/fb# \
-%endif
-'\
-% if is_rtl:
-dir="rtl" \
-% endif
-\
-lang="${lang}">
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#" lang="en">
     <head>
     <meta charset="utf-8">
     %if description:
@@ -41,10 +29,6 @@ lang="${lang}">
             <link rel="${name}" href="${file}" sizes="${size}"/>
         %endfor
     %endif
-
-    % if comment_system == 'facebook':
-        <meta property="fb:app_id" content="${comment_system_id}">
-    % endif
 
     %if prevlink:
         <link rel="prev" href="${prevlink}" type="text/html">

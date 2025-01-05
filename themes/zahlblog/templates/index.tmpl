@@ -49,9 +49,7 @@
                             </span>
                         % endif
                     </p>
-                    % if not post.meta('nocomments') and site_has_comments:
-                        <p class="commentline">${comments.comment_link(post.permalink(), post._base_path)}</p>
-                    % endif
+                    ${comments.commentline(post)}
                 </div>
                 <h1 class="p-name entry-title"><a href="${post.permalink()}" rel="bookmark" class="u-url">${post.title()|h}</a></h1>
             </header>
@@ -71,7 +69,6 @@
         % endfor
     </div>
     ${helper.html_pager()}
-    ${comments.comment_link_script()}
     ${math.math_scripts_ifposts(posts)}
 </%block>
 

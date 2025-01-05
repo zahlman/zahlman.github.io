@@ -51,12 +51,10 @@
             % endif
             </a>
             </p>
-            % if not post.meta('nocomments') and site_has_comments:
-                <p class="commentline">${comments.comment_link(post.permalink(), post._base_path)}
-            % endif
+            ${comments.commentline(post)}
             ${html_sourcelink()}
             % if post.meta('link'):
-                    <p class="linkline"><a href="${post.meta('link')}">${messages("Original site")}</a></p>
+                <p class="linkline"><a href="${post.meta('link')}">${messages("Original site")}</a></p>
             % endif
         </div>
         ${html_translations(post)}

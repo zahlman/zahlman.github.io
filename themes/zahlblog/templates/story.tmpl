@@ -14,11 +14,8 @@
     <div class="e-content entry-content" itemprop="articleBody text">
     ${post.text()}
     </div>
-    %if site_has_comments and enable_comments and not post.meta('nocomments'):
-        <section class="comments">
-        <h2>${messages("Comments")}</h2>
-        ${comments.comment_form(post.permalink(absolute=True), post.title(), post.base_path)}
-        </section>
+    %if enable_comments:
+        ${comments.comment_form(post)}
     %endif
     ${math.math_scripts_ifpost(post)}
 </article>
