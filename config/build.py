@@ -188,8 +188,6 @@ PRETTY_URLS = True
 
 # Copy source files in the output
 COPY_SOURCES = False
-# If they're copied, the rendered HTML can include links to the source versions
-# SHOW_SOURCELINK = True
 
 # Number of posts per index page (default 10)
 INDEX_DISPLAY_POST_COUNT = 5

@@ -3,7 +3,6 @@
 <%namespace name="pheader" file="post_header.tmpl"/>
 <%namespace name="comments" file="comments_helper.tmpl"/>
 <%namespace name="math" file="math_helper.tmpl"/>
-<%namespace name="ui" file="ui_helper.tmpl"/>
 <%inherit file="base.tmpl"/>
 
 <%block name="extra_head">
@@ -45,7 +44,8 @@
 </%block>
 
 <%block name="sourcelink">
-% if show_sourcelink:
-    ${ui.show_sourcelink(post.source_link())}
-% endif
+    ## disabled: show source links (requires COPY_SOURCES to make sense)
+    ##<li class="nav-item">
+    ##    <a href="${post.source_link()}" id="sourcelink" class="nav-link">Source</a>
+    ##</li>
 </%block>
