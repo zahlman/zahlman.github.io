@@ -1,97 +1,52 @@
 ## -*- coding: utf-8 -*-
 <%namespace name="base" file="base_helper.tmpl" import="*" />
 ${set_locale(lang)}
-${base.html_headstart()}
-<%block name="extra_head">
-### Leave this block alone.
-</%block>
-${template_hooks['extra_head']()}
-</head>
-<body>
-<a href="#content" class="sr-only sr-only-focusable">${messages("Skip to main content")}</a>
 
-<!-- Header and menu bar -->
-<div class="container">
-    <header class="blog-header py-3">
-        <div class="row nbb-header align-items-center">
-            <div class="col-md-0 col-xs-2 col-sm-2" style="width: auto;">
-                ## Shows up on mobile (narrow screens).
-                ## Toggles the main navigation bar via JavaScript.
-                <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="zb-sidebar" aria-expanded="true" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </div>
-            <div class="col-md-12 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
-                <a class="navbar-brand blog-header-logo text-dark" href="${_link("root", None, lang)}">
-                %if logo_url:
-                    <img src="${logo_url}" alt="${blog_title|h}" id="logo" class="d-inline-block align-top">
-                %endif
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#" lang="en">
+    <head>
+        ${base.html_head()}
+        ## Supplied by a page-content sub-template.
+        ## Might e.g. set up prefetching.
+        <%block name="extra_head"></%block>
+    </head>
+    <body>
+        <a href="#content" class="sr-only sr-only-focusable">${messages("Skip to main content")}</a>
 
-                % if show_blog_title:
-                    <span id="blog-title">${blog_title|h}</span>
-                % endif
-                </a>
-            </div>
+        <div class="container">
+            <header class="blog-header py-3">
+                ${base.page_header()}
+            </header>
         </div>
-    </header>
-</div>
 
-<div class="container" id="content" role="main">
-    <div class="body-content">
-        <div class="row">
-            <aside id="zb-sidebar" class="col-md-4 blog-sidebar bs-nav-collapsible collapse show">
-                <p class="sidebar-heading">Search</p>
-                ${search_form}
-                <p class="sidebar-heading">Posts by year</big>
-                ## Can we avoid hard-coding all of this?
-                ## We could read from navigation_links, but it would be much
-                ## nicer to have acces to the pages folder listing.
-                <ul>
-                    <li><a href="/2025">2025</a></li>
-                    <li><a href="/2024">2024</a></li>
-                    <li><a href="/2023">2023</a></li>
-                    <li><a href="/2022">2022</a></li>
-                </ul>
-                <p class="sidebar-standalone"><a href="/categories">Tags</a> | <a href="/rss.xml">RSS feed</a><p>
-                <hr>
-                <p class="sidebar-heading">Info</p>
-                <ul>
-                    <li><a href="/pages/about">About Me</a></li>
-                    <li><a href="/pages/codidact">Codidact</a></li>
-                    <li><a href="/pages/dpo">My archived posts from discuss.python.org</a></li>
-                </ul>
-            </aside>
-            <div class="col-md-8 blog-main">
-                ${template_hooks['page_header']()}
-                <%block name="extra_header"></%block>
-                <%block name="content"></%block>
+        <div class="container" id="content" role="main">
+            <div class="body-content">
+                <div class="row">
+                    <aside id="zb-sidebar" class="col-md-4 blog-sidebar bs-nav-collapsible collapse show">
+                        ${base.sidebar()}
+                    </aside>
+                    <div class="col-md-8 blog-main">
+                        ## Supplied by a page-content sub-template.
+                        ## Represents the main page content.
+                        <%block name="content"></%block>
+                    </div>
+                </div>
+
+                <footer id="footer">
+                    ${content_footer}
+                    ${template_hooks['page_footer']()}
+                    <%block name="extra_footer"></%block>
+                </footer>
             </div>
         </div>
 
-        <footer id="footer">
-            ${content_footer}
-            ${template_hooks['page_footer']()}
-            <%block name="extra_footer"></%block>
-        </footer>
-    </div>
-</div>
-
-${base.late_load_js()}
-    %if date_fanciness != 0:
-        <!-- fancy dates -->
+        ${base.late_load_js()}
+        ## In case a page-content sub-template generates things that need JS.
+        <%block name="extra_js"></%block>
         <script>
-        luxon.Settings.defaultLocale = "${luxon_locales[lang]}";
-        fancydates(${date_fanciness}, ${luxon_date_format});
-        </script>
-        <!-- end fancy dates -->
-    %endif
-    <%block name="extra_js"></%block>
-    <script>
-    baguetteBox.run('div#content', {
-        ignoreClass: 'islink',
-        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
-    </script>
-${body_end}
-${template_hooks['body_end']()}
-</body>
+        baguetteBox.run('div#content', {
+            ignoreClass: 'islink',
+            captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+        </script>    
+    </body>
 </html>
