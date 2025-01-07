@@ -33,9 +33,11 @@ ${set_locale(lang)}
                 </div>
 
                 <footer id="footer">
-                    ${content_footer}
-                    ${template_hooks['page_footer']()}
-                    <%block name="extra_footer"></%block>
+                    <%
+                    import time
+                    current_year = time.gmtime().tm_year
+                    %>
+                    Contents &copy; 2022-${current_year} <a href="mailto:${blog_email}">${blog_author}</a> - Powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a>
                 </footer>
             </div>
         </div>
@@ -47,6 +49,6 @@ ${set_locale(lang)}
         baguetteBox.run('div#content', {
             ignoreClass: 'islink',
             captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
-        </script>    
+        </script>
     </body>
 </html>

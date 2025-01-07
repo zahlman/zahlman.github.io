@@ -1,4 +1,6 @@
-from .footer import CONTENT_FOOTER_FORMATS
+from .l10n import DEFAULT_LANG
+from .bio import BLOG_AUTHOR, BLOG_EMAIL
+import time
 
 # By default, Nikola generates RSS files for the website and for tags, and
 # links to it.  Set this to False to disable everything RSS-related.
@@ -66,8 +68,16 @@ FEED_READ_MORE_LINK = '<p><a href="{link}">{read_more}…</a> ({min_remaining_re
 # "utm_source={feedRelUri}&utm_medium=nikola_feed&utm_campaign={feedFormat}_feed"
 FEED_LINKS_APPEND_QUERY = False
 
-# A simple copyright tag for inclusion in RSS feeds that works just
-# like CONTENT_FOOTER and CONTENT_FOOTER_FORMATS
 RSS_COPYRIGHT = 'Contents © 2022-{date} <a href="mailto:{email}">{author}</a> {license}'
 RSS_COPYRIGHT_PLAIN = 'Contents © 2022-{date} {author} {license}'
-RSS_COPYRIGHT_FORMATS = CONTENT_FOOTER_FORMATS
+RSS_COPYRIGHT_FORMATS = {
+    DEFAULT_LANG: (
+        (),
+        {
+            "email": BLOG_EMAIL,
+            "author": BLOG_AUTHOR,
+            "date": time.gmtime().tm_year,
+            "license": ''
+        }
+    )
+}

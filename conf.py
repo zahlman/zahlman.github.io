@@ -8,7 +8,6 @@ from config.comments import *
 from config.dates import *
 from config.deploy import *
 from config.drafts import *
-from config.footer import *
 from config.galleries import *
 from config.l10n import *
 from config.math import *
