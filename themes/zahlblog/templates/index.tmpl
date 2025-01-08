@@ -1,7 +1,6 @@
 ## -*- coding: utf-8 -*-
 <%namespace name="helper" file="index_helper.tmpl"/>
 <%namespace name="pagination" file="pagination_helper.tmpl"/>
-<%namespace name="feeds_translations" file="feeds_translations_helper.tmpl" import="*"/>
 <%inherit file="base.tmpl"/>
 
 <%block name="extra_head">
@@ -13,9 +12,6 @@
 </%block>
 
 <%block name="content">
-    <%block name="content_header">
-        ${feeds_translations.translation_link(kind)}
-    </%block>
     % if 'main_index' in pagekind:
         ${front_index_header}
     % endif
