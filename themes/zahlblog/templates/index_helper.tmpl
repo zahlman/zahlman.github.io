@@ -1,4 +1,6 @@
 ## -*- coding: utf-8 -*-
+<%namespace name="comments" file="comments_helper.tmpl"/>
+
 <%def name="html_pager()">
     %if prevlink or nextlink:
         <ul class="pager postindexpager clearfix">
@@ -10,4 +12,44 @@
         %endif
         </ul>
     %endif
+</%def>
+
+<%def name="_author_line(author)">
+    <p class="byline author vcard">
+        <span class="byline-name fn" itemprop="author">
+            ${author|h}
+        </span>
+    </p>
+</%def>
+
+<%def name="_date_line(post, date_format)">
+    <p class="dateline">
+        <time class="published dt-published" datetime="${post.formatted_date('webiso')}" itemprop="datePublished" title="${post.formatted_date(date_format)|h}">${post.formatted_date(date_format)|h}</time>
+        % if post.updated and post.updated != post.date:
+            <span class="updated">
+                (${messages("updated")}
+                <time class="dt-updated" datetime="${post.formatted_updated('webiso')}" itemprop="dateUpdated" title="${post.formatted_updated(date_format)|h}">${post.formatted_updated(date_format)|h}</time>)
+            </span>
+        % endif
+    </p>
+</%def>
+
+<%def name="index_entry(post)">
+    <article class="h-entry post-${post.meta('type')}" itemscope="itemscope" itemtype="http://schema.org/Article">
+        <header>
+            <div class="metadata">
+                ${_author_line(post.author())}
+                ${_date_line(post, date_format)}
+                ${comments.commentline(post)}
+            </div>
+            <h1 class="p-name entry-title">
+                <a href="${post.permalink()}" rel="bookmark" class="u-url">
+                    ${post.title()|h}
+                </a>
+            </h1>
+        </header>
+        <div class="p-summary entry-summary">
+            ${post.text(teaser_only=True)}
+        </div>
+    </article>
 </%def>
