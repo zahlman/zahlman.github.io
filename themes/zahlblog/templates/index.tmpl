@@ -1,6 +1,5 @@
 ## -*- coding: utf-8 -*-
 <%namespace name="helper" file="index_helper.tmpl"/>
-<%namespace name="math" file="math_helper.tmpl"/>
 <%namespace name="comments" file="comments_helper.tmpl"/>
 <%namespace name="pagination" file="pagination_helper.tmpl"/>
 <%namespace name="feeds_translations" file="feeds_translations_helper.tmpl" import="*"/>
@@ -11,7 +10,6 @@
     % if posts and (permalink == '/' or permalink == '/' + index_file):
         <link rel="prefetch" href="${posts[0].permalink()}" type="text/html">
     % endif
-    ${math.math_styles_ifposts(posts)}
 </%block>
 
 <%block name="content">
@@ -69,7 +67,6 @@
         % endfor
     </div>
     ${helper.html_pager()}
-    ${math.math_scripts_ifposts(posts)}
 </%block>
 
 ## Removed "before_content" block, used to "feature" posts.

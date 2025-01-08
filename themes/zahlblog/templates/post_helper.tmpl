@@ -1,5 +1,4 @@
 ## -*- coding: utf-8 -*-
-<%namespace name="math" file="math_helper.tmpl"/>
 
 <%def name="meta_translations(post)">
     %if len(translations) > 1:
@@ -81,9 +80,4 @@
     <meta name="twitter:creator" content="${twitter_card['creator']}">
     %endif
 %endif
-</%def>
-
-### This function is deprecated; use math_helper directly.
-<%def name="mathjax_script(post)">
-    ${math.math_scripts_ifpost(post)}
 </%def>
