@@ -19,4 +19,5 @@ REDIRECTIONS = [
     ("meta/2024/12/20/todo-finish-todo-list.html", "/posts/2024/12/20/todo-finish-todo-list"),
     ("python-packaging/2024/12/24/python-packaging-1.html", "/posts/2024/12/24/python-packaging-1"),
     ("meta/2024/12/31/todo-list-2.html", "/posts/2024/12/31/todo-list-2"),
+    ("posts/2025/01/07/stupid-pipx-tricks/index.html", "/posts/2025/01/07/python-packaging-2"),
 ]

@@ -1,5 +1,6 @@
 <!--
 .. title: Python Packaging: Why we can't have nice things, Part 2
+.. category: python-packaging
 -->
 
 # Stupid Pipx Tricks
@@ -12,7 +13,7 @@ In this post I'll talk about Pipx's major use cases, its limitations, and how to
 
 ## Meta
 
-{{% hitcounter %}}
+{{% hitcounter custom_slug=stupid-pipx-tricks %}}
 
 When I originally conceived of this series, I figured I'd have a post far down the road about good practices to avoid problems with existing tools and ways to make the experience suck less. Unfortunately, while third-party tools work well for a lot of other people, I can't find a lot to recommend them based on my personal needs and preferences. Outside of "wait until my own projects, [Paper](https://github.com/zahlman/paper) and [bbbb](https://github.com/zahlman/bbbb/), are in good working order", I realized that most of the productive suggestions I can offer revolve around a) Pipx and b) some helper scripts I use with Pip. But now that I have Pipx, my workflow around Pip generally involves the copy of Pip that Pipx installs for itself and wraps.
 
