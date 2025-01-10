@@ -1,6 +1,6 @@
 ## -*- coding: utf-8 -*-
 <%inherit file="index.tmpl"/>
-<%namespace name="feeds_translations" file="feeds_translations_helper.tmpl" import="*"/>
+<%namespace name="feeds" file="feeds_helper.tmpl" import="*"/>
 
 <%block name="content_header">
     <header>
@@ -17,12 +17,12 @@
         </ul>
         %endif
         <div class="metadata">
-            ${feeds_translations.feed_link(tag, kind)}
+            ${feeds.feed_link(tag, kind)}
         </div>
     </header>
 </%block>
 
 <%block name="extra_head">
     ${parent.extra_head()}
-    ${feeds_translations.head(tag, kind, rss_override=False)}
+    ${feeds.head(tag, kind, rss_override=False)}
 </%block>

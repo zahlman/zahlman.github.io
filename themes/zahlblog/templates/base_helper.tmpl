@@ -1,5 +1,5 @@
 ## -*- coding: utf-8 -*-
-<%namespace name="feeds_translations" file="feeds_translations_helper.tmpl" import="*"/>
+<%namespace name="feeds" file="feeds_helper.tmpl" import="*"/>
 
 <%def name="html_head()">
     <meta charset="utf-8">
@@ -86,7 +86,7 @@
 </%def>
 
 <%def name="html_feedlinks()">
-    ${feeds_translations.head(classification=None, kind='index', other=False)}
+    ${feeds.head(classification=None, kind='index', other=False)}
 </%def>
 
 <%def name="page_header()">
