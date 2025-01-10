@@ -12,9 +12,10 @@
 </%block>
 
 <%block name="content">
-    % if 'main_index' in pagekind:
-        ${front_index_header}
-    % endif
+    <%block name="content_header">
+        ## Potentially overridden.
+        <h1>All Posts</h1>
+    </%block>
     % if page_links:
         ${pagination.page_navigation(current_page, page_links, prevlink, nextlink, prev_next_links_reversed)}
     % endif
