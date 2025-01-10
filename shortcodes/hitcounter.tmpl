@@ -1,7 +1,7 @@
 <%
     slug = custom_slug or post.meta['en']['slug']
     base = "https://hits.sh/zahlman.github.io"
-    old_text = " since January 1, 2025" if old else ''
+    old_text = " since January 1, 2025" if post.date.year < 2025 else ''
     label = f"Hits{old_text} (powered by hits.sh)"
 %>
 ## The default label colour is already #555, which is pretty close to
