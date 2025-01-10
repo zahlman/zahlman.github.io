@@ -16,9 +16,8 @@
         ## Potentially overridden.
         <h1>All Posts</h1>
     </%block>
-    % if page_links:
-        ${pagination.page_navigation(current_page, page_links, prevlink, nextlink, prev_next_links_reversed)}
-    % endif
+
+    ${pagination.page_navigation(current_page, page_links, prevlink, nextlink, prev_next_links_reversed)}
     <div class="postindex">
         % for post in posts:
             ${helper.index_entry(post)}
@@ -27,7 +26,8 @@
             %endif
         % endfor
     </div>
-    ${helper.html_pager()}
+    ${pagination.page_navigation(current_page, page_links, prevlink, nextlink, prev_next_links_reversed)}
+    <br>
 </%block>
 
 ## Removed "before_content" block, used to "feature" posts.

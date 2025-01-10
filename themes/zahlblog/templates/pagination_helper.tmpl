@@ -1,40 +1,58 @@
 ## -*- coding: utf-8 -*-
+
+<%def name="_next_prev_link(link, left, message)">
+    <li class="${'previous' if left else 'next'}">
+        <a href="${link or '#'}" class="page-link${'' if link else ' disabled'}" aria-label="${message}">
+            %if left:
+                <span aria-hidden="true">&laquo; ${message}</span>
+            %else:
+                <span aria-hidden="true">${message} &raquo;</span>
+            %endif
+        </a>
+    </li>
+</%def>
+
+<%def name="_numbered_link(link, distance, surrounding, at_end)">
+    % if distance == 0:
+        <li class="page-item">
+            <a href="${link}" class="page-link">
+                ${i + 1} <span class="sr-only">(current)</span>
+            </a>
+        </li>
+    % elif distance <= surrounding or at_end:
+        <li class="page-item">
+            <a href="${link}" class="page-link">${i + 1}</a>
+        </li>
+    % elif distance == surrounding + 1:
+        <li class="page-item disabled">
+            <a href="#" class="page-link" aria-label="…">
+                <span aria-hidden="true">…</span>
+            </a>
+        </li>
+    % endif
+</%def>
+
+<%def name="_numbered_links(page_links, current_page, surrounding)">
+    % if page_links:
+        % for i, link in enumerate(page_links):
+            ${_numbered_link(link, abs(i-current_page), surrounding, i==0 or loop.last)}
+        % endfor
+    % endif
+</%def>
+
 <%def name="page_navigation(current_page, page_links, prevlink, nextlink, prev_next_links_reversed, surrounding=5)">
-<nav aria-label="Page navigation">
-  <ul class="pagination">
-  % if prev_next_links_reversed:
-    % if nextlink:
-      <li class="page-item"><a href="${nextlink}" class="page-link" aria-label="${messages("Older posts")}"><span aria-hidden="true">&laquo;</span></a></li>
-    % else:
-      <li class="page-item disabled"><a href="#" class="page-link" aria-label="${messages("Older posts")}"><span aria-hidden="true">&laquo;</span></a></li>
-    % endif
-  % else:
-    % if prevlink:
-      <li class="page-item"><a href="${prevlink}" class="page-link" aria-label="${messages("Newer posts")}"><span aria-hidden="true">&laquo;</span></a></li>
-    % else:
-      <li class="page-item disabled"><a href="#" class="page-link" aria-label="${messages("Newer posts")}"><span aria-hidden="true">&laquo;</span></a></li>
-    % endif
-  % endif
-  % for i, link in enumerate(page_links):
-    % if abs(i - current_page) <= surrounding or i == 0 or i == len(page_links) - 1:
-      <li class="page-item ${'active' if i == current_page else ''}"><a href="${link}" class="page-link">${i + 1}${' <span class="sr-only">(current)</span>' if i == current_page else ''}</a></li>
-    % elif i == current_page - surrounding - 1 or i == current_page + surrounding + 1:
-      <li class="page-item disabled"><a href="#" class="page-link" aria-label="…"><span aria-hidden="true">…</span></a></li>
-    % endif
-  % endfor
-  % if prev_next_links_reversed:
-    % if prevlink:
-      <li class="page-item"><a href="${prevlink}" class="page-link" aria-label="${messages("Newer posts")}"><span aria-hidden="true">&raquo;</span></a></li>
-    % else:
-      <li class="page-item disabled"><a href="#" class="page-link" aria-label="${messages("Newer posts")}"><span aria-hidden="true">&raquo;</span></a></li>
-    % endif
-  % else:
-    % if nextlink:
-      <li class="page-item"><a href="${nextlink}" class="page-link" aria-label="${messages("Older posts")}"><span aria-hidden="true">&raquo;</span></a></li>
-    % else:
-      <li class="page-item disabled"><a href="#" class="page-link" aria-label="${messages("Older posts")}"><span aria-hidden="true">&raquo;</span></a></li>
-    % endif
-  % endif
-  </ul>
-</nav>
+    <nav aria-label="Page navigation">
+        ##<ul class="pagination">
+        <ul class="pager">
+            % if prev_next_links_reversed:
+                ${_next_prev_link(nextlink, True, messages("Older posts"))}
+                ${_numbered_links(page_links, current_page, surrounding)}
+                ${_next_prev_link(prevlink, False, messages("Newer posts"))}
+            % else:
+                ${_next_prev_link(prevlink, True, messages("Newer posts"))}
+                ${_numbered_links(page_links, current_page, surrounding)}
+                ${_next_prev_link(nextlink, False, messages("Older posts"))}
+            % endif
+        </ul>
+    </nav>
 </%def>
