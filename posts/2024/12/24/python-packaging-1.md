@@ -1,9 +1,5 @@
-# Python packaging: Why we can't have nice things, Part 1
-<!--
-.. category: python-packaging
--->
-
-# The old refrain
+# Python packaging: Why we can't have nice things @python-packaging
+# Part 1: The Old Refrain #python #pip #virtual-environments
 
 This post is a start of a series I've planned about how packaging currently works in Python, what's wrong with it, and how to cope with the problems. But before I get into the meat of it, I want to talk about common complaints that *don't* resonate with me.
 

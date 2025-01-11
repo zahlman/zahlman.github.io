@@ -1,9 +1,5 @@
-# An open letter to the PSF CoC WG, addendum 1/n
-<!--
-.. category: the-PSF
--->
-
-# The Suspension of Tim Peters
+# An open letter to the PSF CoC WG @python-discourse-ban #the-psf #psf-coc-wg
+# Addendum 1: The Suspension of Tim Peters #python-steering-council #psf-code-of-conduct
 
 Thanks to everyone who contacted me with praise, thanks etc. for [my previous post](/politics/the-psf/2024/07/31/an-open-letter-to-the-psf-coc-wg.html), or shared the link. I'm truly grateful for all such support.
 

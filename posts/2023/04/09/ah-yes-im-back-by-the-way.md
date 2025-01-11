@@ -1,8 +1,4 @@
-# Ah yes, I'm back, by the way
-
-<!--
-.. categories: meta
--->
+# Ah yes, I'm back, by the way #meta #personal
 
 Attentive readers of my previous post may have found the following bit odd:
 

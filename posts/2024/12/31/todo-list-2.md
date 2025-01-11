@@ -1,7 +1,4 @@
-# `fixup! added list`
-<!--
-.. category: meta
--->
+# `fixup! added list` #meta #personal #python
 
 # The rest of the TODOwl
 

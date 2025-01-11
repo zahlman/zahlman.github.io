@@ -1,9 +1,5 @@
-# Python Packaging: Why we can't have nice things, Part 2
-<!--
-.. category: python-packaging
--->
-
-# Stupid Pipx Tricks
+# Python Packaging: Why we can't have nice things @python-packaging
+# Part 2: Stupid Pipx Tricks #python #pip #pipx
 
 Pip has a lot of problems (that I'll be discussing in future posts in this series), but the good news is that you don't have to resort to heavyweight third-party tools to improve your experience with Python packaging. [Pipx](https://pipx.pypa.io/stable/) (now [under](https://packaging.python.org/en/latest/key_projects/#pipx) the [Python Packaging Authority (PyPA)](https://www.pypa.io/en/latest/) umbrella) is a focused wrapper around Pip that handles the major pain points without trying to take over your entire workflow.
 

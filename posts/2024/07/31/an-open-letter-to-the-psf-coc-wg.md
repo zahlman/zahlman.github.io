@@ -1,8 +1,4 @@
-# An open letter to the PSF CoC WG
-
-<!--
-.. category: the-PSF
--->
+# An open letter to the PSF CoC WG @python-discourse-ban #the-psf #psf-coc-wg #python-steering-council #psf-code-of-conduct
 
 On July 19th, I was banned ("indefinitely suspended") from the official Python Discourse forum, and several of my most recent posts were "temporarily" hidden by flagging "by the community" (per the stock phrasing of the Discourse software). I was already voluntarily about to leave, so I don't particularly mind losing access - but it was nevertheless unjust.
 

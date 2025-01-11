@@ -1,8 +1,5 @@
-# Timing
+# Timing #python #python-standard-library
 
-<!--
-.. category: python-standard-library
--->
 Two hundred and forty-one months ago, on March 5, 2023, a then-not-as-well-known man by the name of Guido van Rossum made the [first commit](https://github.com/python/cpython/commit/b3f09d4331e7d23eeb8166dda0504b56ec4e7edc) of the `timeit` module in Python's standard library.
 
 I had originally planned to write about this for the module's 19th anniversary - as my second post on this blog - before I got distracted from the project. (Long story short, I never actually abandoned the idea - it's just hard to get back into things sometimes.) I've now missed both that anniversary and the 20th. One might say my own sense of timing is not so great - but so it goes.
