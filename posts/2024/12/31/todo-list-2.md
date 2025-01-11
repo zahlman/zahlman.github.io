@@ -1,5 +1,4 @@
 # `fixup! added list` #meta #personal #python
-
 # The rest of the TODOwl
 
 Happy new year to all.
