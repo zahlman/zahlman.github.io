@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="description" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title> Timing | Zahlblog</title>
+<title>Timing | Zahlblog</title>
 <link href="../../../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
 <meta name="theme-color" content="#5670d4">
@@ -14,14 +14,17 @@
 <link rel="icon" href="../../../../../icon_32x32.png" sizes="32x32">
 <link rel="icon" href="../../../../../icon_192x192.png" sizes="192x192">
 <!--[if lt IE 9]><script src="../../../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Karl Knechtel">
-<link rel="prev" href="../../../../2022/03/02/welcome/" title=" Welcome to the ZahlBlog" type="text/html">
-<link rel="next" href="../../09/ah-yes-im-back-by-the-way/" title=" Ah yes, I'm back, by the way" type="text/html">
+<link rel="prev" href="../../../../2022/03/02/welcome/" title="Welcome to the ZahlBlog" type="text/html">
+<link rel="next" href="../../09/ah-yes-im-back-by-the-way/" title="Ah yes, I'm back, by the way" type="text/html">
 <meta property="og:site_name" content="Zahlblog">
-<meta property="og:title" content=" Timing">
+<meta property="og:title" content="Timing">
 <meta property="og:url" content="https://zahlman.github.io/posts/2023/04/06/timing/">
-<meta property="og:description" content="I had originally planned to write about this for the module's 19th anniversary - as my second post on this blog - before I got distracted from the project. (Long story short, I never actually abandone">
+<meta property="og:description" content="Two hundred and forty-one months ago, on March 5, 2023, a then-not-as-well-known man by the name of Guido van Rossum made the first commit of the timeit module in Python's standard library.
+I had orig">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2023-04-06T00:00:00-04:00">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="python-standard-library">
 </head>
 <body>
         <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -62,7 +65,7 @@
         <li><a href="../../../../../2023">2023</a></li>
         <li><a href="../../../../../2022">2022</a></li>
     </ul>
-<p class="sidebar-standalone"><a href="../../../../../categories">Tags</a> | <a href="../../../../../rss.xml">RSS feed</a></p>
+<p class="sidebar-standalone"><a href="../../../../../tags-and-series">Tags</a> | <a href="../../../../../rss.xml">RSS feed</a></p>
 <p>
     </p>
 <hr>
@@ -73,28 +76,60 @@
         <li><a href="../../../../../pages/dpo">My archived posts from discuss.python.org</a></li>
     </ul></aside><div class="col-md-8 blog-main">
                         
-<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url"> Timing</a></h1>
+    
+        <h1 class="p-name">
+            <a href="." rel="bookmark" class="u-url">
+                Timing
+            </a>
+        </h1>
+    
 
-        <div class="metadata">
-            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
-                    Karl Knechtel
-            </span></p>
-            <p class="dateline">
-            <a href="." rel="bookmark">
-            <time class="published dt-published" datetime="2023-04-06T00:00:00-04:00" itemprop="datePublished" title="April 6, 2023">April 6, 2023</time></a>
-            </p>
+    
+    <nav aria-label="Post navigation"><ul class="pager hidden-print">
+<li class="previous">
+        <a href="../../09/ah-yes-im-back-by-the-way/" class="page-link" aria-label="Next post (April 9, 2023)">
+                <span aria-hidden="true">« Next post (April 9, 2023)</span>
+        </a>
+    </li>
+
+
             
+        
+        
+    <li class="next">
+        <a href="../../../../2022/03/02/welcome/" class="page-link" aria-label="Previous post (March 2, 2022)">
+                <span aria-hidden="true">Previous post (March 2, 2022) »</span>
+        </a>
+    </li>
+
+
+        </ul></nav><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><div class="metadata">
+                
+    <p class="byline author vcard p-author h-card">
+        <span class="byline-name fn p-name" itemprop="author">
+            Karl Knechtel
+        </span>
+    </p>
+
+                
+    <p class="dateline">
+        <a href="." rel="bookmark">
+            
+    
+    <time class="published dt-published" datetime="2023-04-06T00:00:00-04:00" itemprop="datePublished" title="April 6, 2023">
+        April 6, 2023
+    </time></a>
+    </p>
+
+                
         <p class="commentline">
             <a href="#giscus-comments">Comments</a>
         </p>
 
-            
-
-        </div>
-        
-
-    </header><div class="e-content entry-content" itemprop="articleBody text">
-    <p>I had originally planned to write about this for the module's 19th anniversary - as my second post on this blog - before I got distracted from the project. (Long story short, I never actually abandoned the idea - it's just hard to get back into things sometimes.) I've now missed both that anniversary and the 20th. One might say my own sense of timing is not so great - but so it goes.</p>
+            </div>
+        </header><div class="p-summary entry-summary">
+            <p>Two hundred and forty-one months ago, on March 5, 2023, a then-not-as-well-known man by the name of Guido van Rossum made the <a href="https://github.com/python/cpython/commit/b3f09d4331e7d23eeb8166dda0504b56ec4e7edc">first commit</a> of the <code>timeit</code> module in Python's standard library.</p>
+<p>I had originally planned to write about this for the module's 19th anniversary - as my second post on this blog - before I got distracted from the project. (Long story short, I never actually abandoned the idea - it's just hard to get back into things sometimes.) I've now missed both that anniversary and the 20th. One might say my own sense of timing is not so great - but so it goes.</p>
 <!-- TEASER_END -->
 
 <h2>Meta</h2>
@@ -194,19 +229,31 @@ def add(i, j, indices):
 </ol>
 <p>I ended up with 383 sloc of main code across four files (including a utility for generators that I put outside the package), plus 360 sloc of tests (not counting common test infrastructure in the <code>peptides</code> project). It was a fun project that kept me occupied for a few days (spread across a week or so),  and it feels good to be writing about it now and sharing the experience.</p>
 <p>Even if it's past midnight now. Twenty years, one month and one day. Oh well.</p>
-    </div>
-    <aside class="postpromonav"><nav><ul class="pager hidden-print">
-<li class="previous">
-                <a href="../../../../2022/03/02/welcome/" rel="prev" title=" Welcome to the ZahlBlog">Previous post</a>
-            </li>
-            <li class="next">
-                <a href="../../09/ah-yes-im-back-by-the-way/" rel="next" title=" Ah yes, I'm back, by the way">Next post</a>
-            </li>
-        </ul></nav></aside><section class="comments hidden-print"><hr style="margin-top:1rem; margin-bottom:1rem">
+        </div>
+    </article><hr>
+<section class="comments hidden-print"><hr style="margin-top:1rem; margin-bottom:1rem">
 <h2>Comments</h2>
         <div class="giscus" id="giscus-comments"></div>
         </section><script src="https://giscus.app/client.js" data-repo="zahlman/zahlman.github.io" data-repo-id="R_kgDOG78NTA" data-category="Announcements" data-category-id="DIC_kwDOG78NTM4ClvWS" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="en" data-loading="lazy" crossorigin="anonymous" async>
-        </script></article>
+        </script><nav aria-label="Post navigation"><ul class="pager hidden-print">
+<li class="previous">
+        <a href="../../09/ah-yes-im-back-by-the-way/" class="page-link" aria-label="Next post (April 9, 2023)">
+                <span aria-hidden="true">« Next post (April 9, 2023)</span>
+        </a>
+    </li>
+
+
+            
+        
+        
+    <li class="next">
+        <a href="../../../../2022/03/02/welcome/" class="page-link" aria-label="Previous post (March 2, 2022)">
+                <span aria-hidden="true">Previous post (March 2, 2022) »</span>
+        </a>
+    </li>
+
+
+        </ul></nav><br>
 </div>
                 </div>
 

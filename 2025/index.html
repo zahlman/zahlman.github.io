@@ -54,7 +54,7 @@
         <li><a href="../2023">2023</a></li>
         <li><a href="../2022">2022</a></li>
     </ul>
-<p class="sidebar-standalone"><a href="../categories">Tags</a> | <a href="../rss.xml">RSS feed</a></p>
+<p class="sidebar-standalone"><a href="../tags-and-series">Tags</a> | <a href="../rss.xml">RSS feed</a></p>
 <p>
     </p>
 <hr>
@@ -73,16 +73,24 @@
             </p>
 
         </div>
-    </header><nav aria-label="Page navigation"><ul class="pager">
+    </header><nav aria-label="Page navigation"><ul class="pager hidden-print">
 <li class="previous">
         <a href="#" class="page-link disabled" aria-label="Newer posts">
                 <span aria-hidden="true">« Newer posts</span>
         </a>
     </li>
 
-                
+            
+            
+    
+        <li class="page-item">
+            <a href="." class="page-link">
+                1 <span class="sr-only">(current)</span>
+            </a>
+        </li>
 
-                
+
+            
     <li class="next">
         <a href="#" class="page-link disabled" aria-label="Older posts">
                 <span aria-hidden="true">Older posts »</span>
@@ -93,15 +101,60 @@
             
     <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><div class="metadata">
                 
-    <p class="byline author vcard">
-        <span class="byline-name fn" itemprop="author">
+    <p class="byline author vcard p-author h-card">
+        <span class="byline-name fn p-name" itemprop="author">
             Karl Knechtel
         </span>
     </p>
 
                 
     <p class="dateline">
-        <time class="published dt-published" datetime="2025-01-07T00:00:00-05:00" itemprop="datePublished" title="January 7, 2025">January 7, 2025</time></p>
+        <a href="../posts/2025/01/11/a-brief-annotation/" rel="bookmark">
+            
+    
+    <time class="published dt-published" datetime="2025-01-11T00:00:00-05:00" itemprop="datePublished" title="January 11, 2025">
+        January 11, 2025
+    </time></a>
+    </p>
+
+                
+        <p class="commentline">
+            <a href="../posts/2025/01/11/a-brief-annotation/#giscus-comments">Comments</a>
+        </p>
+
+            </div>
+                <h2 class="p-name entry-title">
+                    <a href="../posts/2025/01/11/a-brief-annotation/" rel="bookmark" class="u-url">
+                        A Brief Annotation
+                    </a>
+                </h2>
+        </header><div class="p-summary entry-summary">
+            <p>I've been quite busy working on both the next article in my <a href="../tags-and-series/series-python-packaging">packaging series</a> and on the overall appearance of the blog (I wasn't able to keep that confined to the weekend, apparently).</p>
+<p>So, today, just a quick note, on the occasion of the 4th anniversary of the creation of <a href="https://peps.python.org/pep-0649/">PEP 649</a> "Deferred Evaluation Of Annotations Using Descriptors".</p>
+<p>Yes, that's a mouthful, but in short: starting in Python 3.14, if you use annotations, you'll be able to defer the evaluation of the annotation code. (The feature <a href="https://discuss.python.org/t/_/21331/43">was supposed to be added for 3.13, but didn't make it in</a>.) That means you don't have to rely on strings for forward references in your type annotations, but you can still make full use of annotations at runtime (you'll have a proper object for the annotation itself, rather than just a string). Thank you to core Python developer Mr. Larry Hastings for putting a tremendous amount of effort into refining this proposal.</p>
+<p>Now, I don't personally use type annotations very much - I don't use a type checker at all; I only write annotations as a form of documentation. But as it happened, <a href="../tags-and-series/series-python-discourse-ban">when I was new to the Python Discourse forum</a>, I came across Mr. Hastings' post, puzzling over the best way to name what will soon become the <code>__annotate__</code> attribute of annotated objects.</p>
+<p>The name <code>__annotate__</code> <a href="https://discuss.python.org/t/_/25672/4">was my suggestion</a>.</p>
+<p>I was not credited in the PEP, and I <a href="https://discuss.python.org/t/_/25672/61">was ignored</a> when I tried to point this out. So it falls to me to draw attention to my contribution.</p>
+<p>This is all very niche stuff, of course - but I'm happy to have been able to leave this mark on the Python language itself, as opposed to just making useful things with it.</p>
+        </div>
+    </article><hr>
+<article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><div class="metadata">
+                
+    <p class="byline author vcard p-author h-card">
+        <span class="byline-name fn p-name" itemprop="author">
+            Karl Knechtel
+        </span>
+    </p>
+
+                
+    <p class="dateline">
+        <a href="../posts/2025/01/07/python-packaging-2/" rel="bookmark">
+            
+    
+    <time class="published dt-published" datetime="2025-01-07T00:00:00-05:00" itemprop="datePublished" title="January 7, 2025">
+        January 7, 2025
+    </time></a>
+    </p>
 
                 
         <p class="commentline">
@@ -109,14 +162,13 @@
         </p>
 
             </div>
-            <h1 class="p-name entry-title">
-                <a href="../posts/2025/01/07/python-packaging-2/" rel="bookmark" class="u-url">
-                    Python Packaging: Why we can't have nice things, Part 2
-                </a>
-            </h1>
+                <h2 class="p-name entry-title">
+                    <a href="../posts/2025/01/07/python-packaging-2/" rel="bookmark" class="u-url">
+                        Python Packaging: Why we can't have nice things<br><small>Part 2: Stupid Pipx Tricks</small>
+                    </a>
+                </h2>
         </header><div class="p-summary entry-summary">
             <div>
-<h1>Stupid Pipx Tricks</h1>
 <p>Pip has a lot of problems (that I'll be discussing in future posts in this series), but the good news is that you don't have to resort to heavyweight third-party tools to improve your experience with Python packaging. <a href="https://pipx.pypa.io/stable/">Pipx</a> (now <a href="https://packaging.python.org/en/latest/key_projects/#pipx">under</a> the <a href="https://www.pypa.io/en/latest/">Python Packaging Authority (PyPA)</a> umbrella) is a focused wrapper around Pip that handles the major pain points without trying to take over your entire workflow.</p>
 <p>In this post I'll talk about Pipx's major use cases, its limitations, and how to get more mileage out of it with a few simple tweaks.</p>
 <p class="more"><a href="../posts/2025/01/07/python-packaging-2/">Read more (10)…</a></p>
@@ -125,15 +177,21 @@
     </article><hr>
 <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><div class="metadata">
                 
-    <p class="byline author vcard">
-        <span class="byline-name fn" itemprop="author">
+    <p class="byline author vcard p-author h-card">
+        <span class="byline-name fn p-name" itemprop="author">
             Karl Knechtel
         </span>
     </p>
 
                 
     <p class="dateline">
-        <time class="published dt-published" datetime="2025-01-01T00:00:00-05:00" itemprop="datePublished" title="January 1, 2025">January 1, 2025</time></p>
+        <a href="../posts/2025/01/01/new-year-new-blog/" rel="bookmark">
+            
+    
+    <time class="published dt-published" datetime="2025-01-01T00:00:00-05:00" itemprop="datePublished" title="January 1, 2025">
+        January 1, 2025
+    </time></a>
+    </p>
 
                 
         <p class="commentline">
@@ -141,11 +199,11 @@
         </p>
 
             </div>
-            <h1 class="p-name entry-title">
-                <a href="../posts/2025/01/01/new-year-new-blog/" rel="bookmark" class="u-url">
-                    New year, new blog
-                </a>
-            </h1>
+                <h2 class="p-name entry-title">
+                    <a href="../posts/2025/01/01/new-year-new-blog/" rel="bookmark" class="u-url">
+                        New year, new blog
+                    </a>
+                </h2>
         </header><div class="p-summary entry-summary">
             <div>
 <p>You're not imagining things - the blog has a whole new look, in large part as a result of switching to the <a href="https://getnikola.com">Nikola</a> site generator.</p>
@@ -155,16 +213,24 @@
     </article>
 </div>
     
-    <nav aria-label="Page navigation"><ul class="pager">
+    <nav aria-label="Page navigation"><ul class="pager hidden-print">
 <li class="previous">
         <a href="#" class="page-link disabled" aria-label="Newer posts">
                 <span aria-hidden="true">« Newer posts</span>
         </a>
     </li>
 
-                
+            
+            
+    
+        <li class="page-item">
+            <a href="." class="page-link">
+                1 <span class="sr-only">(current)</span>
+            </a>
+        </li>
 
-                
+
+            
     <li class="next">
         <a href="#" class="page-link disabled" aria-label="Older posts">
                 <span aria-hidden="true">Older posts »</span>

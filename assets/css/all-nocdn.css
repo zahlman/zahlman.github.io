@@ -963,6 +963,10 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Playfair Display", Georgia, "Times New Roman", serif;
 }
 
+.small, small {
+  font-size: 0.75em;
+}
+
 .display-4 {
   font-size: 2.5rem;
 }
@@ -1074,7 +1078,7 @@ article:last-child {
 }
 .entry-title {
   margin-bottom: .25rem;
-  font-size: 2.5rem;
+  font-size: 2rem; /* changed from 2.5. These will be h2 entries */
 }
 article .metadata {
   margin-top: 1.25rem;

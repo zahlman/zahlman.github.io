@@ -6,31 +6,147 @@
     xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <sitemap>
-  <loc>https://zahlman.github.io/categories/cat_meta.xml</loc>
-  <lastmod>2025-01-10T11:19:00Z</lastmod>
- </sitemap>
- <sitemap>
-  <loc>https://zahlman.github.io/categories/cat_misc.xml</loc>
-  <lastmod>2025-01-10T11:20:00Z</lastmod>
+  <loc>https://zahlman.github.io/categories/cat_python-discourse-ban.xml</loc>
+  <lastmod>2025-01-11T14:04:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://zahlman.github.io/categories/cat_python-packaging.xml</loc>
-  <lastmod>2025-01-10T11:20:00Z</lastmod>
+  <lastmod>2025-01-11T21:05:00Z</lastmod>
  </sitemap>
  <sitemap>
-  <loc>https://zahlman.github.io/categories/cat_python-standard-library.xml</loc>
-  <lastmod>2025-01-10T11:19:00Z</lastmod>
+  <loc>https://zahlman.github.io/categories/cat_spam.xml</loc>
+  <lastmod>2025-01-11T11:37:00Z</lastmod>
  </sitemap>
  <sitemap>
-  <loc>https://zahlman.github.io/categories/cat_the-psf.xml</loc>
-  <lastmod>2025-01-10T11:20:00Z</lastmod>
+  <loc>https://zahlman.github.io/categories/jekyll.xml</loc>
+  <lastmod>2025-01-11T13:56:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/categories/meta.xml</loc>
+  <lastmod>2025-01-11T14:44:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/categories/nikola.xml</loc>
+  <lastmod>2025-01-11T13:56:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/categories/personal.xml</loc>
+  <lastmod>2025-01-11T14:44:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/categories/pip.xml</loc>
+  <lastmod>2025-01-11T21:05:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/categories/pipx.xml</loc>
+  <lastmod>2025-01-11T13:56:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/categories/psf-coc-wg.xml</loc>
+  <lastmod>2025-01-11T13:56:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/categories/psf-code-of-conduct.xml</loc>
+  <lastmod>2025-01-11T13:56:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/categories/python-standard-library.xml</loc>
+  <lastmod>2025-01-11T13:56:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/categories/python-steering-council.xml</loc>
+  <lastmod>2025-01-11T13:56:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/categories/python.xml</loc>
+  <lastmod>2025-01-11T21:05:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/categories/security.xml</loc>
+  <lastmod>2025-01-11T13:56:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/categories/setuptools.xml</loc>
+  <lastmod>2025-01-11T13:56:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/categories/test.xml</loc>
+  <lastmod>2025-01-11T11:36:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/categories/the-psf.xml</loc>
+  <lastmod>2025-01-11T13:56:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/categories/virtual-environments.xml</loc>
+  <lastmod>2025-01-11T13:56:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://zahlman.github.io/rss.xml</loc>
-  <lastmod>2025-01-10T11:20:00Z</lastmod>
+  <lastmod>2025-01-11T21:38:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://zahlman.github.io/sitemap.xml</loc>
-  <lastmod>2025-01-10T11:20:00Z</lastmod>
+  <lastmod>2025-01-11T21:38:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/tags-and-series/jekyll.xml</loc>
+  <lastmod>2025-01-11T21:16:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/tags-and-series/meta.xml</loc>
+  <lastmod>2025-01-11T21:16:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/tags-and-series/nikola.xml</loc>
+  <lastmod>2025-01-11T21:16:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/tags-and-series/personal.xml</loc>
+  <lastmod>2025-01-11T21:16:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/tags-and-series/pip.xml</loc>
+  <lastmod>2025-01-11T21:16:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/tags-and-series/pipx.xml</loc>
+  <lastmod>2025-01-11T21:16:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/tags-and-series/psf-coc-wg.xml</loc>
+  <lastmod>2025-01-11T21:16:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/tags-and-series/psf-code-of-conduct.xml</loc>
+  <lastmod>2025-01-11T21:16:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/tags-and-series/python-standard-library.xml</loc>
+  <lastmod>2025-01-11T21:16:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/tags-and-series/python-steering-council.xml</loc>
+  <lastmod>2025-01-11T21:16:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/tags-and-series/python.xml</loc>
+  <lastmod>2025-01-11T21:38:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/tags-and-series/series-python-discourse-ban.xml</loc>
+  <lastmod>2025-01-11T21:13:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/tags-and-series/series-python-packaging.xml</loc>
+  <lastmod>2025-01-11T21:13:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/tags-and-series/the-psf.xml</loc>
+  <lastmod>2025-01-11T21:16:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/tags-and-series/virtual-environments.xml</loc>
+  <lastmod>2025-01-11T21:16:00Z</lastmod>
  </sitemap>
 </sitemapindex>

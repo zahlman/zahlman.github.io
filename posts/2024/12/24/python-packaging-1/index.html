@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="description" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title> Python packaging: Why we can't have nice things, Part 1 | Zahlblog</title>
+<title>Python packaging: Why we can't have nice things - Part 1: The Old Refrain | Zahlblog</title>
 <link href="../../../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
 <meta name="theme-color" content="#5670d4">
@@ -14,15 +14,17 @@
 <link rel="icon" href="../../../../../icon_32x32.png" sizes="32x32">
 <link rel="icon" href="../../../../../icon_192x192.png" sizes="192x192">
 <!--[if lt IE 9]><script src="../../../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Karl Knechtel">
-<link rel="prev" href="../../20/todo-finish-todo-list/" title=" `# TODO: finish todo list`" type="text/html">
-<link rel="next" href="../../31/todo-list-2/" title=" `fixup! added list`" type="text/html">
+<link rel="prev" href="../../20/todo-finish-todo-list/" title="`# TODO: finish todo list`" type="text/html">
+<link rel="next" href="../../31/todo-list-2/" title="`fixup! added list` - The rest of the TODOwl" type="text/html">
 <meta property="og:site_name" content="Zahlblog">
-<meta property="og:title" content=" Python packaging: Why we can't have nice things, Part 1">
+<meta property="og:title" content="Python packaging: Why we can't have nice things - Part 1: The Old Refr">
 <meta property="og:url" content="https://zahlman.github.io/posts/2024/12/24/python-packaging-1/">
-<meta property="og:description" content="The old refrain
-This post is a start of a series I've planned about how packaging currently works in Python, what's wrong with it, and how to cope with the problems. But before I get into the meat of ">
+<meta property="og:description" content="This post is a start of a series I've planned about how packaging currently works in Python, what's wrong with it, and how to cope with the problems. But before I get into the meat of it, I want to ta">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2024-12-24T00:00:00-05:00">
+<meta property="article:tag" content="pip">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="virtual-environments">
 </head>
 <body>
         <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -63,7 +65,7 @@ This post is a start of a series I've planned about how packaging currently work
         <li><a href="../../../../../2023">2023</a></li>
         <li><a href="../../../../../2022">2022</a></li>
     </ul>
-<p class="sidebar-standalone"><a href="../../../../../categories">Tags</a> | <a href="../../../../../rss.xml">RSS feed</a></p>
+<p class="sidebar-standalone"><a href="../../../../../tags-and-series">Tags</a> | <a href="../../../../../rss.xml">RSS feed</a></p>
 <p>
     </p>
 <hr>
@@ -74,29 +76,59 @@ This post is a start of a series I've planned about how packaging currently work
         <li><a href="../../../../../pages/dpo">My archived posts from discuss.python.org</a></li>
     </ul></aside><div class="col-md-8 blog-main">
                         
-<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url"> Python packaging: Why we can't have nice things, Part 1</a></h1>
+    
+        <h1 class="p-name">
+            <a href="." rel="bookmark" class="u-url">
+                Python packaging: Why we can't have nice things<br><small>Part 1: The Old Refrain</small>
+            </a>
+        </h1>
+    
 
-        <div class="metadata">
-            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
-                    Karl Knechtel
-            </span></p>
-            <p class="dateline">
-            <a href="." rel="bookmark">
-            <time class="published dt-published" datetime="2024-12-24T00:00:00-05:00" itemprop="datePublished" title="December 24, 2024">December 24, 2024</time></a>
-            </p>
+    
+    <nav aria-label="Post navigation"><ul class="pager hidden-print">
+<li class="previous">
+        <a href="../../31/todo-list-2/" class="page-link" aria-label="Next post (December 31, 2024)">
+                <span aria-hidden="true">« Next post (December 31, 2024)</span>
+        </a>
+    </li>
+
+
             
+        
+        
+    <li class="next">
+        <a href="../../20/todo-finish-todo-list/" class="page-link" aria-label="Previous post (December 20, 2024)">
+                <span aria-hidden="true">Previous post (December 20, 2024) »</span>
+        </a>
+    </li>
+
+
+        </ul></nav><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><div class="metadata">
+                
+    <p class="byline author vcard p-author h-card">
+        <span class="byline-name fn p-name" itemprop="author">
+            Karl Knechtel
+        </span>
+    </p>
+
+                
+    <p class="dateline">
+        <a href="." rel="bookmark">
+            
+    
+    <time class="published dt-published" datetime="2024-12-24T00:00:00-05:00" itemprop="datePublished" title="December 24, 2024">
+        December 24, 2024
+    </time></a>
+    </p>
+
+                
         <p class="commentline">
             <a href="#giscus-comments">Comments</a>
         </p>
 
-            
-
-        </div>
-        
-
-    </header><div class="e-content entry-content" itemprop="articleBody text">
-    <h1>The old refrain</h1>
-<p>This post is a start of a series I've planned about how packaging currently works in Python, what's wrong with it, and how to cope with the problems. But before I get into the meat of it, I want to talk about common complaints that <em>don't</em> resonate with me.</p>
+            </div>
+        </header><div class="p-summary entry-summary">
+            <p>This post is a start of a series I've planned about how packaging currently works in Python, what's wrong with it, and how to cope with the problems. But before I get into the meat of it, I want to talk about common complaints that <em>don't</em> resonate with me.</p>
 <!-- TEASER_END -->
 
 <h2>Meta</h2>
@@ -215,19 +247,31 @@ This post is a start of a series I've planned about how packaging currently work
 <p>Finally: I'd like to make an appeal for <em>honesty</em> from anyone out there complaining about the system. Approach the problems from a place of understanding how they came to be, rather than a place of pure frustration. If you present a "history" of Python packaging, don't just use that as an excuse to rant - it should be abundantly clear that you don't <em>need</em> an excuse. Instead, take the opportunity to show <em>how</em> that history is relevant today (i.e.: people haven't updated their workflows, and tools and standards can't properly fix problems because of the burden of legacy support - a topic for a future post in this series). Don't misrepresent what resources are available to solve the problems - there's no grand conspiracy here, just perhaps some mismanagement.</p>
 <p>Please don't carelessly say that the reason such and such Python tool is so good is because it isn't written in Python. In almost every case, the <em>real</em> benefit is that the tool isn't <em>sharing the environment</em> of the project it's operating on. This line is especially often dropped when talking about <code>uv</code>, often accompanied by explicit Rust evangelism. Sure, Python code can be much slower than in other languages. But that doesn't matter a lot of the time (if you don't believe this, why are you developing in Python?), and a lot of <code>uv</code>'s performance advantages are algorithmic: its package resolution is (to my understanding) less... thorough and pedantic than Pip's, and it has much better strategies for reusing cached downloads.</p>
 <p>And most of all, please don't <a href="https://news.ycombinator.com/item?id=42419822#42420869">throw together a bunch of unrelated names from completely different categories</a> to try to emphasize the point about how complicated things are. There's more than enough <em>actual</em> complication to discuss. After all, no matter how good the system becomes, you'll still have to learn it.</p>
-    </div>
-    <aside class="postpromonav"><nav><ul class="pager hidden-print">
-<li class="previous">
-                <a href="../../20/todo-finish-todo-list/" rel="prev" title=" `# TODO: finish todo list`">Previous post</a>
-            </li>
-            <li class="next">
-                <a href="../../31/todo-list-2/" rel="next" title=" `fixup! added list`">Next post</a>
-            </li>
-        </ul></nav></aside><section class="comments hidden-print"><hr style="margin-top:1rem; margin-bottom:1rem">
+        </div>
+    </article><hr>
+<section class="comments hidden-print"><hr style="margin-top:1rem; margin-bottom:1rem">
 <h2>Comments</h2>
         <div class="giscus" id="giscus-comments"></div>
         </section><script src="https://giscus.app/client.js" data-repo="zahlman/zahlman.github.io" data-repo-id="R_kgDOG78NTA" data-category="Announcements" data-category-id="DIC_kwDOG78NTM4ClvWS" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="en" data-loading="lazy" crossorigin="anonymous" async>
-        </script></article>
+        </script><nav aria-label="Post navigation"><ul class="pager hidden-print">
+<li class="previous">
+        <a href="../../31/todo-list-2/" class="page-link" aria-label="Next post (December 31, 2024)">
+                <span aria-hidden="true">« Next post (December 31, 2024)</span>
+        </a>
+    </li>
+
+
+            
+        
+        
+    <li class="next">
+        <a href="../../20/todo-finish-todo-list/" class="page-link" aria-label="Previous post (December 20, 2024)">
+                <span aria-hidden="true">Previous post (December 20, 2024) »</span>
+        </a>
+    </li>
+
+
+        </ul></nav><br>
 </div>
                 </div>
 
