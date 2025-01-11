@@ -31,11 +31,11 @@
         </h1>
     </%block>
 
-    ${pagination.page_navigation(current_page, page_links, prevlink, nextlink, prev_next_links_reversed)}
+    ${pagination.post_navigation(post.prev_post, post.next_post)}
     ## TODO add post_helper.html_tags to this?
     ${contenthelper.post_content(post, False)}
     <hr>
     ${comments.comment_form(post)}
-    ${pagination.page_navigation(current_page, page_links, prevlink, nextlink, prev_next_links_reversed)}
+    ${pagination.post_navigation(post.prev_post, post.next_post)}
     <br>
 </%block>

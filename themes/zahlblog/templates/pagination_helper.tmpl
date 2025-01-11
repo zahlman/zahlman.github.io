@@ -40,19 +40,35 @@
     % endif
 </%def>
 
-<%def name="page_navigation(current_page, page_links, prevlink, nextlink, prev_next_links_reversed, surrounding=5)">
+<%def name="_post_link(post, left, label)">
+    %if post:
+        <%
+            date = post.formatted_date(date_format)
+            message = f"{label} ({post.formatted_date(date_format)})"
+        %>
+        ${_next_prev_link(post.permalink(), left, message)}
+    %else:
+        ${_next_prev_link(None, left, label)}
+    %endif
+</%def>
+
+<%def name="post_navigation(prev_post, next_post)">
     <nav aria-label="Page navigation">
         ##<ul class="pagination">
         <ul class="pager">
-            % if prev_next_links_reversed:
-                ${_next_prev_link(nextlink, True, messages("Older posts"))}
-                ${_numbered_links(page_links, current_page, surrounding)}
-                ${_next_prev_link(prevlink, False, messages("Newer posts"))}
-            % else:
-                ${_next_prev_link(prevlink, True, messages("Newer posts"))}
-                ${_numbered_links(page_links, current_page, surrounding)}
-                ${_next_prev_link(nextlink, False, messages("Older posts"))}
-            % endif
+            ${_post_link(next_post, True, messages("Next post"))}
+            ${_post_link(prev_post, False, messages("Previous post"))}
+        </ul>
+    </nav>
+</%def>
+
+<%def name="page_navigation(current_page, page_links, prevlink, nextlink)">
+    <nav aria-label="Page navigation">
+        ##<ul class="pagination">
+        <ul class="pager">
+            ${_next_prev_link(prevlink, True, messages("Newer posts"))}
+            ${_numbered_links(page_links, current_page, surrounding)}
+            ${_next_prev_link(nextlink, False, messages("Older posts"))}
         </ul>
     </nav>
 </%def>
