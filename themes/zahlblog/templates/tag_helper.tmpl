@@ -1,0 +1,38 @@
+## -*- coding: utf-8 -*-
+
+<%def name="_tcat_link(link, text)">
+    <a class="reference badge badge-secondary" href="${link}">
+        ${text|h}
+    </a>
+</%def>
+
+<%def name="category_list(cat_hierarchy)">
+    % for text, full_name, path, link, indent_levels, indent_change_before, indent_change_after in cat_hierarchy:
+        % for i in range(indent_change_before):
+            <ul class="list-inline">
+        % endfor
+        <li class="list-inline-item">
+            ${_tcat_link(link, text)}
+            % if indent_change_after <= 0:
+                </li>
+            % endif
+        % for i in range(-indent_change_after):
+            </ul>
+            % if i + 1 < len(indent_levels):
+                </li>
+            % endif
+        % endfor
+    % endfor
+</%def>
+
+<%def name="tag_list(tags)">
+    <ul class="list-inline">
+        % for text, link in tags:
+            % if text not in hidden_tags:
+                <li class="list-inline-item">
+                    ${_tcat_link(link, text)}
+                </li>
+            % endif
+        % endfor
+    </ul>
+</%def>
