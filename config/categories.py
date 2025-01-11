@@ -1,17 +1,16 @@
 from .l10n import DEFAULT_LANG
 
 # https://getnikola.com/handbook.html#configuring-tags-and-categories
-# CATEGORY_PATH = "categories" # (translatable)
-# CATEGORY_PREFIX = "cat_"
-# CATEGORIES_INDEX_PATH = "categories.html" # (translatable)
+CATEGORY_PATH = "tags-and-series" # (translatable)
+CATEGORY_PREFIX = "series-"
 
 # Enable hierarchical categories.
 # replace old `categories: [foo, bar]` with `category: foo/bar`.
 # Forward and backward slashes need to be backslash-escaped.
-CATEGORY_ALLOW_HIERARCHIES = True
+CATEGORY_ALLOW_HIERARCHIES = False
 # If True, the output written to output contains only the name of the leaf
 # category rather than the whole path.
-CATEGORY_OUTPUT_FLAT_HIERARCHY = False
+CATEGORY_OUTPUT_FLAT_HIERARCHY = True
 # Include post teasers in category pages.
 CATEGORY_PAGES_ARE_INDEXES = True
 

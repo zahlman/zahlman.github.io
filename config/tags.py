@@ -1,9 +1,7 @@
 from .l10n import DEFAULT_LANG
 
 # https://getnikola.com/handbook.html#configuring-tags-and-categories
-# TAG_PATH = "categories" # (translatable)
-# Use a custom path for the list of tags instead of TAG_PATH/index.html.
-# TAGS_INDEX_PATH = "tags.html" # (translatable)
+TAG_PATH = "tags-and-series" # (translatable)
 
 # If TAG_PAGES_ARE_INDEXES is set to True, each tag's page will contain
 # the posts themselves. If set to False, it will be just a list of links.
