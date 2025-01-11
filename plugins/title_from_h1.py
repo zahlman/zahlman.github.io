@@ -27,7 +27,7 @@ class _accumulated:
     def _add_title(self, t):
         self._ft = f'{self._ft}<br><small>{t}</small>' if self._ft else t
         plain = self.tag_re.sub('', t)
-        self._t = f'{self._t} &mdash; {plain}' if self._t else plain
+        self._t = f'{self._t} - {plain}' if self._t else plain
 
 
     def add(self, title, markings):
