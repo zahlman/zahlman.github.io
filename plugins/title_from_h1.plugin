@@ -1,0 +1,12 @@
+[Core]
+Name = title_from_h1 
+Module = title_from_h1
+
+[Nikola]
+PluginCategory = MetadataExtractor
+
+[Documentation]
+Author = Karl Knechtel
+Version = 0.1
+Website = https://github.com/zahlman
+Description = Write title metadata using Markdown h1 formatting.

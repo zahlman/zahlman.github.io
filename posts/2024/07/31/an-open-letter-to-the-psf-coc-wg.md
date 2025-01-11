@@ -1,5 +1,6 @@
+# An open letter to the PSF CoC WG
+
 <!--
-.. title:  An open letter to the PSF CoC WG
 .. category: the-PSF
 -->
 

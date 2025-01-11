@@ -1,8 +1,4 @@
-<!--
-.. title: Python packaging: Why we can't have nice things, Part 3
-.. category: python-packaging
--->
-
+# Python packaging: Why we can't have nice things, Part 3
 # Premature Compilation
 
 *\[This post assumes that you have a basic familiarity with Python's current packaging system: i.e, that you recognize the tools Pip and Setuptools, and understand the concepts of sdists, wheels, and [build](https://peps.python.org/pep-0517/) [systems](https://peps.python.org/pep-0518/)). You should ideally also be familiar with the [`pyproject.toml`](https://packaging.python.org/en/latest/specifications/pyproject-toml/#pyproject-toml-spec) file which is now [used for project metadata](https://peps.python.org/pep-0621/), and with the `setup.py` files used by Setuptools.\]*

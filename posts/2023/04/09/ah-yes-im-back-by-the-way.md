@@ -1,5 +1,6 @@
+# Ah yes, I'm back, by the way
+
 <!--
-.. title:  Ah yes, I'm back, by the way
 .. categories: meta
 -->
 

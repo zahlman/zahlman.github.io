@@ -1,5 +1,5 @@
+# Python packaging: Why we can't have nice things, Part 1
 <!--
-.. title:  Python packaging: Why we can't have nice things, Part 1
 .. category: python-packaging
 -->
 
