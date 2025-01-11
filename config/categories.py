@@ -17,8 +17,14 @@ CATEGORY_PAGES_ARE_INDEXES = True
 
 # As with tag descriptions and titles.
 # (translatable; organized by language first then by category)
-CATEGORY_DESCRIPTIONS = { DEFAULT_LANG: {} }
-CATEGORY_TITLES = CATEGORY_DESCRIPTIONS
+CATEGORY_TITLES = { DEFAULT_LANG: {
+    'python-discourse-ban': 'My ban from the Python Discourse forums',
+    'python-packaging': 'My thoughts on Python packaging',
+} }
+CATEGORY_DESCRIPTIONS = { DEFAULT_LANG: {
+    'python-discourse-ban': 'On July 19, 2024, amid considerable drama involving multiple people, I was banned from the <a href="https://discuss.python.org">official Python forum</a> which uses the <a href="https://www.discourse.org/">Discourse</a> forum software. I maintain that this treatment was entirely unjust (although I abide by it nevertheless) and that the people responsible made several untrue statements about me (and reasonably ought to know they are untrue).',
+    'python-packaging': 'In this series I discuss various issues with the Python "ecosystem", in particular the tools and standards involved in packaging and distributing Python projects.',
+} }
 
 # As with hidden tags.
 HIDDEN_CATEGORIES = []

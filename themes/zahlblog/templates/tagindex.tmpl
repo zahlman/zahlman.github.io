@@ -2,24 +2,29 @@
 <%inherit file="index.tmpl"/>
 <%namespace name="feeds" file="feeds_helper.tmpl" import="*"/>
 
+<%def name="_rss_div()">
+    ## TODO make a proper CSS class for this.
+    <div class="metadata" style="display:inline">${feeds.feed_link(tag, kind)}</div>
+</%def>
+
 <%block name="content_header">
     <header>
         <h1>${title|h}</h1>
         %if description:
-        <p>${description}</p>
+            ${description} | ${_rss_div()}
+        %else:
+            ${_rss_div()}
         %endif
         %if subcategories:
-        ${messages('Subcategories:')}
-        <ul>
-            %for name, link in subcategories:
-            <li><a href="${link}">${name|h}</a></li>
-            %endfor
-        </ul>
+            ${messages('Subcategories:')}
+            <ul>
+                %for name, link in subcategories:
+                    <li><a href="${link}">${name|h}</a></li>
+                %endfor
+            </ul>
         %endif
-        <div class="metadata">
-            ${feeds.feed_link(tag, kind)}
-        </div>
     </header>
+    <hr>
 </%block>
 
 <%block name="extra_head">

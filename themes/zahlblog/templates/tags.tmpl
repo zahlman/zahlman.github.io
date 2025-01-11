@@ -3,12 +3,12 @@
 <%namespace name="helper" file="tag_helper.tmpl"/>
 
 <%block name="content">
-<h1>${title|h}</h1>
+    <h1>Tags and Post Series</h1>
     % if cat_items and items:
-        <h2>${messages("Categories")}</h2>
-        ${helper.category_list(cat_hierarchy)}
-        <h2>${messages("Tags")}</h2>
+        <h2>Tags</h2>
         ${helper.tag_list(items)}
+        <h2>Series</h2>
+        ${helper.category_list(cat_hierarchy)}
     % elif cat_items:
         ${helper.category_list(cat_hierarchy)}
     % elif items:
