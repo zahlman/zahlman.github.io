@@ -12,16 +12,19 @@
     </li>
 </%def>
 
-<%def name="_numbered_link(link, distance, surrounding, at_end)">
+<%def name="_numbered_link(link, number, distance, at_end)">
+    <%
+        surrounding = 5
+    %>
     % if distance == 0:
         <li class="page-item">
             <a href="${link}" class="page-link">
-                ${i + 1} <span class="sr-only">(current)</span>
+                ${number} <span class="sr-only">(current)</span>
             </a>
         </li>
     % elif distance <= surrounding or at_end:
         <li class="page-item">
-            <a href="${link}" class="page-link">${i + 1}</a>
+            <a href="${link}" class="page-link">${number}</a>
         </li>
     % elif distance == surrounding + 1:
         <li class="page-item disabled">
@@ -32,10 +35,10 @@
     % endif
 </%def>
 
-<%def name="_numbered_links(page_links, current_page, surrounding)">
+<%def name="_numbered_links(page_links, current_page)">
     % if page_links:
         % for i, link in enumerate(page_links):
-            ${_numbered_link(link, abs(i-current_page), surrounding, i==0 or loop.last)}
+            ${_numbered_link(link, i+1, abs(i-current_page), i==0 or i == len(page_links) - 1)}
         % endfor
     % endif
 </%def>
@@ -65,7 +68,7 @@
     <nav aria-label="Page navigation">
         <ul class="pager hidden-print">
             ${_next_prev_link(prevlink, True, messages("Newer posts"))}
-            ${_numbered_links(page_links, current_page, surrounding)}
+            ${_numbered_links(page_links, current_page)}
             ${_next_prev_link(nextlink, False, messages("Older posts"))}
         </ul>
     </nav>
