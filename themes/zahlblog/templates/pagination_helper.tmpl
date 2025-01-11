@@ -53,9 +53,8 @@
 </%def>
 
 <%def name="post_navigation(prev_post, next_post)">
-    <nav aria-label="Page navigation">
-        ##<ul class="pagination">
-        <ul class="pager">
+    <nav aria-label="Post navigation">
+        <ul class="pager hidden-print">
             ${_post_link(next_post, True, messages("Next post"))}
             ${_post_link(prev_post, False, messages("Previous post"))}
         </ul>
@@ -64,8 +63,7 @@
 
 <%def name="page_navigation(current_page, page_links, prevlink, nextlink)">
     <nav aria-label="Page navigation">
-        ##<ul class="pagination">
-        <ul class="pager">
+        <ul class="pager hidden-print">
             ${_next_prev_link(prevlink, True, messages("Newer posts"))}
             ${_numbered_links(page_links, current_page, surrounding)}
             ${_next_prev_link(nextlink, False, messages("Older posts"))}
