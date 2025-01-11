@@ -1,13 +1,15 @@
 ## -*- coding: utf-8 -*-
+<%namespace name="contenthelper" file="index_helper.tmpl"/>
 <%namespace name="helper" file="post_helper.tmpl"/>
-<%namespace name="pheader" file="post_header.tmpl"/>
+<%namespace name="pagination" file="pagination_helper.tmpl"/>
 <%namespace name="comments" file="comments_helper.tmpl"/>
 <%inherit file="base.tmpl"/>
 
 <%block name="extra_head">
     ${parent.extra_head()}
+    ## Maybe reuse tags for this?
     % if post.meta('keywords'):
-    <meta name="keywords" content="${smartjoin(', ', post.meta('keywords'))|h}">
+        <meta name="keywords" content="${smartjoin(', ', post.meta('keywords'))|h}">
     % endif
     <meta name="author" content="${post.author()|h}">
     %if post.prev_post:
@@ -16,33 +18,24 @@
     %if post.next_post:
         <link rel="next" href="${post.next_post.permalink()}" title="${post.next_post.title()|h}" type="text/html">
     %endif
-    % if post.is_draft:
-        <meta name="robots" content="noindex">
-    % endif
     ${helper.open_graph_metadata(post)}
-    ${helper.twitter_card_information(post)}
-    ${helper.meta_translations(post)}
 </%block>
 
 <%block name="content">
-<article class="post-${post.meta('type')} h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article">
-    ${pheader.html_post_header()}
-    <div class="e-content entry-content" itemprop="articleBody text">
-    ${post.text()}
-    </div>
-    <aside class="postpromonav">
-    <nav>
-    ${helper.html_tags(post)}
-    ${helper.html_pager(post)}
-    </nav>
-    </aside>
-    ${comments.comment_form(post)}
-</article>
-</%block>
+    <%block name="content_header">
+        ## Avoid entry-title CSS here.
+        <h1 class="p-name">
+            <a href="${post.permalink()}" rel="bookmark" class="u-url">
+                ${post.title()|h}
+            </a>
+        </h1>
+    </%block>
 
-<%block name="sourcelink">
-    ## disabled: show source links (requires COPY_SOURCES to make sense)
-    ##<li class="nav-item">
-    ##    <a href="${post.source_link()}" id="sourcelink" class="nav-link">Source</a>
-    ##</li>
+    ${pagination.page_navigation(current_page, page_links, prevlink, nextlink, prev_next_links_reversed)}
+    ## TODO add post_helper.html_tags to this?
+    ${contenthelper.post_content(post, False)}
+    <hr>
+    ${comments.comment_form(post)}
+    ${pagination.page_navigation(current_page, page_links, prevlink, nextlink, prev_next_links_reversed)}
+    <br>
 </%block>

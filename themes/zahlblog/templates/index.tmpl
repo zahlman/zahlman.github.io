@@ -20,7 +20,7 @@
     ${pagination.page_navigation(current_page, page_links, prevlink, nextlink, prev_next_links_reversed)}
     <div class="postindex">
         % for post in posts:
-            ${helper.index_entry(post)}
+            ${helper.post_content(post, True)}
             %if not loop.last:
                 <hr>
             %endif

@@ -21,7 +21,7 @@
     </p>
 </%def>
 
-<%def name="index_entry(post)">
+<%def name="post_content(post, is_index)">
     <article class="h-entry post-${post.meta('type')}" itemscope="itemscope" itemtype="http://schema.org/Article">
         <header>
             <div class="metadata">
@@ -29,14 +29,17 @@
                 ${_date_line(post, date_format)}
                 ${comments.commentline(post)}
             </div>
-            <h1 class="p-name entry-title">
-                <a href="${post.permalink()}" rel="bookmark" class="u-url">
-                    ${post.title()|h}
-                </a>
-            </h1>
+            ## For non-index pages, the title will be in H1, above the article.
+            %if is_index:
+                <h2 class="p-name entry-title">
+                    <a href="${post.permalink()}" rel="bookmark" class="u-url">
+                        ${post.title()|h}
+                    </a>
+                </h2>
+            %endif
         </header>
         <div class="p-summary entry-summary">
-            ${post.text(teaser_only=True)}
+            ${post.text(teaser_only=is_index)}
         </div>
     </article>
 </%def>
