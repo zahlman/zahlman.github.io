@@ -52,7 +52,7 @@
             %if is_index:
                 <h2 class="p-name entry-title">
                     <a href="${post.permalink()}" rel="bookmark" class="u-url">
-                        ${post.title()|h}
+                        ${post.meta['en']['formatted_title']}
                     </a>
                 </h2>
             %endif

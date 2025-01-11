@@ -26,7 +26,7 @@
         ## Avoid entry-title CSS here.
         <h1 class="p-name">
             <a href="${post.permalink()}" rel="bookmark" class="u-url">
-                ${post.title()|h}
+                ${post.meta['en']['formatted_title']}
             </a>
         </h1>
     </%block>
