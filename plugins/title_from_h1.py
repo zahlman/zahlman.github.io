@@ -10,7 +10,7 @@ class _accumulated:
 
 
     def __init__(self):
-        self._t, self._ft = '', ''
+        self._title, self._formatted_title = '', ''
         self._category, self._tags = None, []
 
 
@@ -24,14 +24,18 @@ class _accumulated:
         self._category = category
 
 
-    def _add_title(self, t):
-        self._ft = f'{self._ft}<br><small>{t}</small>' if self._ft else t
-        plain = self.tag_re.sub('', t)
-        self._t = f'{self._t} - {plain}' if self._t else plain
+    def _formatted_line(self, line):
+        return f'<br><small>{line}</small>' if self._formatted_title else line
+
+
+    def _plain_line(self, line):
+        line = self.tag_re.sub('', line)
+        return f' - {line}' if self._title else line
 
 
     def add(self, title, markings):
-        self._add_title(title)
+        self._formatted_title += self._formatted_line(title)
+        self._title += self._plain_line(title)
         for marking in markings.split():
             action = {'@': self._set_category, '#': self._add_tag}[marking[0]]
             action(marking[1:])
@@ -39,7 +43,8 @@ class _accumulated:
 
     def result(self):
         result = {
-            'title': self._t, 'formatted_title': self._ft, 'tags': self._tags
+            'title': self._title, 'formatted_title': self._formatted_title,
+            'tags': self._tags
         }
         if self._category is not None:
             result['category'] = self._category
