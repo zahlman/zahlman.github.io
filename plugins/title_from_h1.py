@@ -58,7 +58,7 @@ class TitleFromH1(MetadataExtractor):
     name = 'title_from_h1'
     source = MetaSource.text
     priority = MetaPriority.specialized
-    supports_write = False
+    supports_write = True
     split_metadata_re = re.compile('\n\n')
     h1_re = re.compile(r'^# (.*?)((?:\s+[#@][a-zA-Z-]+)*)$')
 
@@ -71,3 +71,13 @@ class TitleFromH1(MetadataExtractor):
             if match:
                 a.add(*match.groups())
         return a.result()
+
+
+    def write_metadata(self, metadata, comment_wrap=False):
+        title = metadata.get('title', '')
+        category = metadata.get('category', '')
+        tags = metadata.get('tags', '')
+        tags = tags.split(',') if tags else ()
+        tagtext = ''.join(f' #{t.strip()}' for t in tags)
+        tagtext = (f' @{category}' if category else '') + tagtext
+        return f'# {title}{tagtext}\n\n'

@@ -63,7 +63,7 @@ MARKDOWN_EXTENSIONS = [
 # "TOML": TOML wrapped in "+++"
 # "Pelican": Native markdown metadata or reST docinfo fields.
 #            Nikola style for other formats.
-# METADATA_FORMAT = "Nikola"
+METADATA_FORMAT = "title_from_h1"
 
 # Nikola supports logo display.  If you have one, you can put the URL here.
 # Final output is <img src="LOGO_URL" id="logo" alt="BLOG_TITLE">.
