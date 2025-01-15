@@ -1,9 +1,31 @@
 # Python packaging: Why we can't have nice things @python-packaging
 # Part 3: Premature Compilation #python #pip #security #setuptools
 
-*\[This post assumes that you have a basic familiarity with Python's current packaging system: i.e, that you recognize the tools Pip and Setuptools, and understand the concepts of sdists, wheels, and [build](https://peps.python.org/pep-0517/) [systems](https://peps.python.org/pep-0518/)). You should ideally also be familiar with the [`pyproject.toml`](https://packaging.python.org/en/latest/specifications/pyproject-toml/#pyproject-toml-spec) file which is now [used for project metadata](https://peps.python.org/pep-0621/), and with the `setup.py` files used by Setuptools.\]*
+It's fairly well known that Python packages sometimes come as an "sdist" - a *s*ource *dist*ribution, of code that requires some sort of build step before it can be installed. Sometimes that could happen even when all the code is Python - even though no compilation is necessary, the package author, through either ignorance or neglect, hasn't created a proper, directly-installable "wheel" for the code. (If you write and share this kind of project, [please read this explanation]() of why you should make sure to provide a wheel, even though your code is already fully cross-platform. The author, Pradyun Gedam, is a Python core developer and Pip maintainer.) But much more often, an sdist is offered so that code in other languages (especially C) can be compiled on the end user's machine.
 
-*\[If you're missing these fundamentals, please [read part 0 first](), and check out the official [Python Packaging User Guide](https://packaging.python.org/en/latest/) for more info.\]*
+When you're the end user, there are a bunch of reasons why you might end up with an sdist:
+
+* The package maintainers haven't built it for your system
+
+* The package maintainers haven't built *a specific version* (in particular, the most recent one) for your system, and you want that version
+
+* You actively want to do the build yourself, because
+
+    * you think you can apply some optimizations this way
+
+    * you want to patch the code first
+
+    * you want to *inspect* the code first, e.g. for security reasons
+
+It's also pretty well known that, when you get an sdist with Pip, normally Pip will automatically start building the package for you, using some kind of build script included with the package. In other words, *it will run arbitrary code* ([without dropping privileges, by the way]()), and this is something you accept because a) you want installation to be automatic any time it's at all possible and b) the build process could involve arbitrary steps for any arbitrary programming language.
+
+What's *not* well known is that Pip will *also* run this arbitrary code in many other surprising circumstances. If you're worried about a possibly malicious package and you want to obtain the code to inspect it (and the build script) before building it, you might be taken off guard anyway.
+
+TL;DR: **If you want to examine the code before installing it, do not use Pip to obtain it** - instead, download it from the PyPI website, or via the PyPI [API]().
+
+This is not an advisory about some newly discovered security vulnerability. This is the Nth iteration of a problem that has plagued Pip *for almost its entire history*.
+
+The rest of this article is about why that is, and how things have come to be that way.
 
 <!-- END_TEASER -->
 
