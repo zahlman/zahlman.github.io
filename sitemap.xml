@@ -7,7 +7,7 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
   <loc>https://zahlman.github.io/</loc>
-  <lastmod>2025-01-11T21:24:00Z</lastmod>
+  <lastmod>2025-01-11T21:42:00Z</lastmod>
  </url>
  <url>
   <loc>https://zahlman.github.io/2022/</loc>
@@ -23,7 +23,7 @@
  </url>
  <url>
   <loc>https://zahlman.github.io/2024/index-1.html</loc>
-  <lastmod>2025-01-11T21:38:00Z</lastmod>
+  <lastmod>2025-01-12T23:35:00Z</lastmod>
  </url>
  <url>
   <loc>https://zahlman.github.io/2025/</loc>
@@ -31,119 +31,15 @@
  </url>
  <url>
   <loc>https://zahlman.github.io/archive.html</loc>
-  <lastmod>2025-01-11T21:13:00Z</lastmod>
- </url>
- <url>
-  <loc>https://zahlman.github.io/categories.html</loc>
-  <lastmod>2025-01-11T21:13:00Z</lastmod>
- </url>
- <url>
-  <loc>https://zahlman.github.io/categories/</loc>
-  <lastmod>2025-01-11T13:10:00Z</lastmod>
- </url>
- <url>
-  <loc>https://zahlman.github.io/categories/cat_python-discourse-ban/</loc>
-  <lastmod>2025-01-11T13:10:00Z</lastmod>
- </url>
- <url>
-  <loc>https://zahlman.github.io/categories/cat_python-packaging/</loc>
-  <lastmod>2025-01-11T12:50:00Z</lastmod>
- </url>
- <url>
-  <loc>https://zahlman.github.io/categories/cat_spam/</loc>
-  <lastmod>2025-01-11T11:37:00Z</lastmod>
- </url>
- <url>
-  <loc>https://zahlman.github.io/categories/cat_spam/index-1.html</loc>
-  <lastmod>2025-01-11T12:10:00Z</lastmod>
- </url>
- <url>
-  <loc>https://zahlman.github.io/categories/cat_spam/index-2.html</loc>
-  <lastmod>2025-01-11T12:10:00Z</lastmod>
- </url>
- <url>
-  <loc>https://zahlman.github.io/categories/jekyll/</loc>
-  <lastmod>2025-01-11T13:10:00Z</lastmod>
- </url>
- <url>
-  <loc>https://zahlman.github.io/categories/meta/</loc>
-  <lastmod>2025-01-11T13:10:00Z</lastmod>
- </url>
- <url>
-  <loc>https://zahlman.github.io/categories/nikola/</loc>
-  <lastmod>2025-01-11T13:10:00Z</lastmod>
- </url>
- <url>
-  <loc>https://zahlman.github.io/categories/personal/</loc>
-  <lastmod>2025-01-11T13:10:00Z</lastmod>
- </url>
- <url>
-  <loc>https://zahlman.github.io/categories/pip/</loc>
-  <lastmod>2025-01-11T12:50:00Z</lastmod>
- </url>
- <url>
-  <loc>https://zahlman.github.io/categories/pipx/</loc>
-  <lastmod>2025-01-11T13:10:00Z</lastmod>
- </url>
- <url>
-  <loc>https://zahlman.github.io/categories/psf-coc-wg/</loc>
-  <lastmod>2025-01-11T13:10:00Z</lastmod>
- </url>
- <url>
-  <loc>https://zahlman.github.io/categories/psf-code-of-conduct/</loc>
-  <lastmod>2025-01-11T13:10:00Z</lastmod>
- </url>
- <url>
-  <loc>https://zahlman.github.io/categories/python-standard-library/</loc>
-  <lastmod>2025-01-11T13:10:00Z</lastmod>
- </url>
- <url>
-  <loc>https://zahlman.github.io/categories/python-steering-council/</loc>
-  <lastmod>2025-01-11T13:10:00Z</lastmod>
- </url>
- <url>
-  <loc>https://zahlman.github.io/categories/python/</loc>
-  <lastmod>2025-01-11T13:10:00Z</lastmod>
- </url>
- <url>
-  <loc>https://zahlman.github.io/categories/python/index-1.html</loc>
-  <lastmod>2025-01-11T20:45:00Z</lastmod>
- </url>
- <url>
-  <loc>https://zahlman.github.io/categories/security/</loc>
-  <lastmod>2025-01-11T12:50:00Z</lastmod>
- </url>
- <url>
-  <loc>https://zahlman.github.io/categories/setuptools/</loc>
-  <lastmod>2025-01-11T12:50:00Z</lastmod>
- </url>
- <url>
-  <loc>https://zahlman.github.io/categories/test/</loc>
-  <lastmod>2025-01-11T11:36:00Z</lastmod>
- </url>
- <url>
-  <loc>https://zahlman.github.io/categories/test/index-1.html</loc>
-  <lastmod>2025-01-11T12:10:00Z</lastmod>
- </url>
- <url>
-  <loc>https://zahlman.github.io/categories/test/index-2.html</loc>
-  <lastmod>2025-01-11T12:10:00Z</lastmod>
- </url>
- <url>
-  <loc>https://zahlman.github.io/categories/the-psf/</loc>
-  <lastmod>2025-01-11T13:10:00Z</lastmod>
- </url>
- <url>
-  <loc>https://zahlman.github.io/categories/virtual-environments/</loc>
-  <lastmod>2025-01-11T13:10:00Z</lastmod>
+  <lastmod>2025-01-12T11:06:00Z</lastmod>
  </url>
  <url>
   <loc>https://zahlman.github.io/index-1.html</loc>
-  <lastmod>2025-01-11T21:38:00Z</lastmod>
+  <lastmod>2025-01-12T23:48:00Z</lastmod>
  </url>
  <url>
   <loc>https://zahlman.github.io/index-2.html</loc>
-  <lastmod>2025-01-11T21:38:00Z</lastmod>
+  <lastmod>2025-01-12T23:35:00Z</lastmod>
  </url>
  <url>
   <loc>https://zahlman.github.io/pages/about/</loc>
@@ -270,24 +166,44 @@
   <lastmod>2025-01-11T08:08:00Z</lastmod>
  </url>
  <url>
-  <loc>https://zahlman.github.io/posts/2025/01/10/python-packaging-3/</loc>
-  <lastmod>2025-01-11T08:08:00Z</lastmod>
- </url>
- <url>
   <loc>https://zahlman.github.io/posts/2025/01/11/a-brief-annotation/</loc>
   <lastmod>2025-01-11T21:13:00Z</lastmod>
  </url>
  <url>
+  <loc>https://zahlman.github.io/posts/2025/01/11/spam-test/</loc>
+  <lastmod>2025-01-12T11:06:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://zahlman.github.io/posts/2025/01/15/python-packaging-3/</loc>
+  <lastmod>2025-01-20T08:47:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://zahlman.github.io/posts/2025/01/24/leaning-in-to-my-ux/</loc>
+  <lastmod>2025-01-25T05:39:00Z</lastmod>
+ </url>
+ <url>
   <loc>https://zahlman.github.io/tags-and-series/</loc>
-  <lastmod>2025-01-11T21:16:00Z</lastmod>
+  <lastmod>2025-01-25T05:39:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://zahlman.github.io/tags-and-series/and/</loc>
+  <lastmod>2025-01-12T23:37:00Z</lastmod>
  </url>
  <url>
   <loc>https://zahlman.github.io/tags-and-series/jekyll/</loc>
   <lastmod>2025-01-11T21:16:00Z</lastmod>
  </url>
  <url>
+  <loc>https://zahlman.github.io/tags-and-series/linux/</loc>
+  <lastmod>2025-01-25T05:39:00Z</lastmod>
+ </url>
+ <url>
   <loc>https://zahlman.github.io/tags-and-series/meta/</loc>
   <lastmod>2025-01-11T21:16:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://zahlman.github.io/tags-and-series/multiple/</loc>
+  <lastmod>2025-01-12T23:37:00Z</lastmod>
  </url>
  <url>
   <loc>https://zahlman.github.io/tags-and-series/nikola/</loc>
@@ -327,7 +243,11 @@
  </url>
  <url>
   <loc>https://zahlman.github.io/tags-and-series/python/index-1.html</loc>
-  <lastmod>2025-01-11T21:38:00Z</lastmod>
+  <lastmod>2025-01-25T05:39:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://zahlman.github.io/tags-and-series/security/</loc>
+  <lastmod>2025-01-20T08:47:00Z</lastmod>
  </url>
  <url>
   <loc>https://zahlman.github.io/tags-and-series/series-python-discourse-ban/</loc>
@@ -336,6 +256,18 @@
  <url>
   <loc>https://zahlman.github.io/tags-and-series/series-python-packaging/</loc>
   <lastmod>2025-01-11T21:13:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://zahlman.github.io/tags-and-series/series-with-a-category/</loc>
+  <lastmod>2025-01-12T23:37:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://zahlman.github.io/tags-and-series/setuptools/</loc>
+  <lastmod>2025-01-20T08:47:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://zahlman.github.io/tags-and-series/tags/</loc>
+  <lastmod>2025-01-12T23:37:00Z</lastmod>
  </url>
  <url>
   <loc>https://zahlman.github.io/tags-and-series/the-psf/</loc>
