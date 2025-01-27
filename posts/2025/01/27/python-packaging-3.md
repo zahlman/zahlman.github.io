@@ -5,7 +5,7 @@ Pip 25.0 [is out](https://discuss.python.org/t/_/78392), as of [early morning (i
 
 As I very much expected (I suppose I could have verified this against a pre-release version...), it has a very serious bug.
 
-So first, a PSA: 
+So first, a PSA:
 
 1. **Never use Pip to download, test, "dry-run" etc. an untrusted source distribution (sdist).** [It will try to build the package](https://github.com/pypa/pip/issues/1884), **potentially running arbitrary code** (as building an sdist always entails). Instead, use the [PyPI website](https://pypi.org) directly, or the [API](https://docs.pypi.org/api/json/) it provides.
 
@@ -67,8 +67,6 @@ Whatever your situation, the safe way to get an sdist is from the PyPI website. 
 
 (Here, `"0.1"` is the version; the `urls` array in the JSON data includes any sdists or wheels for that release in arbitrary order. Automation is left as an exercise.)
 
-## It's Actually Sillier Than That
-
 ## It Can Happen to You
 
 But before I can do that, I need to tell a little story about a blog post, titled [Someone’s Been Messing With My Subnormals!](https://moyix.blogspot.com/2022/09/someones-been-messing-with-my-subnormals.html) and ostensibly about some finer details about what happens to floating-point math in your Python program when C extensions are compiled a certain way and then included in the project, however indirectly. The post was published a little over 2 years ago, and shown to me by a friend sometime in the interim, and it quickly became a focus of my attention.
@@ -105,11 +103,11 @@ So there's a cautionary tale for you. If someone like Brendan Dolan-Gavitt can m
 
 Wheels can be downloaded safely with `pip --download --no-deps --only-binary=:all:` - no `setup.py` code will run, because there's nothing to build (and the wheel doesn't contain that code). It's crucial to use `--only-binary=:all:` so that Pip's resolver won't choose a version that's only available as an sdist.
 
-No, there is no official, ready-made, secure automation for this. There's a JSON API, but you'll need to parse the result, determining the version number yourself. (For wheels you'd also have to determine the wheel tags; but again, Pip handles this case.) 
+No, there is no official, ready-made, secure automation for this. There's a JSON API, but you'll need to parse the result, determining the version number yourself. (For wheels you'd also have to determine the wheel tags; but again, Pip handles this case.)
 
 (This is also the best way to protect yourself against typo-squatters and other malware packages - on top of the PyPI maintenance team's own attempts to remove those projects. The website interface gives you your best possible shot at verifying that the package you're looking at is actually the one you want.)
 
-## Demo
+## It's Actually Sillier Than That
 
 Here's a simple Bash script you can use to demonstrate the main issue on any compatible system, as long as you have `pip` configured to refer to a usable copy of Pip. (It doesn't even need to correspond to the same Python that `python` or `python3` runs.) It will also run completely offline (I tested with my network adapter disabled) as long as version 40.8.0 (that's quite old, BTW - released in February 2019) or later of Setuptools is installed and available in the same environment as that copy of Pip (i.e., the output of `pip list` should include a line for `setuptools`).
 
@@ -186,8 +184,6 @@ hint: See above for details.
 
 Notice in particular the `Arbitrary code could have been executed here.` message. Of course this is not a warning that Pip or Setuptools generates; it comes from the `setup.py` that was included in the sdist that the script creates.
 
-## It just keeps getting worse
-
 There are a few points I need to highlight here:
 
 1. Yes, the download command in the script has a weird `--no-build-isolation` flag in it. This will be discussed in Part 2.
@@ -230,7 +226,7 @@ Which leads to many more points to highlight:
 
 1. Historically, a common justification for building the project (going back before wheels existed) was in order to figure out its dependencies, which could then be automatically downloaded. However, Pip later added a `--no-deps` flag for downloading, which is used here, for the cases where you specifically want only the main package. This has no effect here: Pip will *still* try to build the wheel.
 
-## It's been getting worse for over twelve Guido-forsaken years
+## Timeline
 
 As far as I can tell, The Bug has been present in Pip in one form or another **for almost the entire history** of Pip. Here's a timeline of events I've identified relevant to The Bug:
 
@@ -319,9 +315,9 @@ It is not really explained why such a hypothetical result should be a problem (o
 >>> Honestly, why not just get the PyPI URL and download it directly? You seem to be going to a lot of effort (and expecting others to as well) to basically download a file whose name you know.
 >>
 >> ...the reason not to just get the PyPI URL and download directly is that I want to get the same file that `pip install` would have chosen. And I don't know the filename ahead of time, the input is not necessarily a project name + version (pinned) but a general [requirement specifier](https://pip.pypa.io/en/stable/reference/pip_install/#requirement-specifiers).
->> 
+>>
 >> ...
->> 
+>>
 >> So I figure the only way to reliably download the correct release file (correct meaning "same one that pip would choose") is to use pip itself. Since there is no public API here, that means using the command line interface in a subprocess.
 >
 > *\[no response\]*
@@ -398,13 +394,13 @@ PEP 625 is accepted.
 
 Issue 3593, ["[FR] Implement PEP 625 - File Name of a Source Distribution"](https://github.com/pypa/setuptools/issues/3593) is opened on the *Setuptools* issue trtracker. It is closed as completed in June 2024.
 
-## So where does that leave us?
+## Parting Thoughts
 
 Readers are invited to draw their own conclusions about the Pip project's attention to detail and the pace at which issues are tackled.
 
 This is certainly not entirely the fault of the Pip development team. Pip is a hideously complex piece of software; there's no real opportunity to refactor it properly since it's so fundamental to Python (it gets shipped with Python and bootstrapped into virtual environments despite not being part of the standard library - more on that in a later post); and there are nowhere near enough people working on it with nowhere near enough free time, relative to the expectations put upon it (especially in terms of backwards compatibility - a theme I will *definitely* be hammering in future posts). Also, there's heavy overlap between the Pip and Setuptools teams, and Setuptools has basically all the same problems and challenges.
 
-But the net result is still quite alarming. Just to emphasize a couple aspects of this whole mess: 
+But the net result is still quite alarming. Just to emphasize a couple aspects of this whole mess:
 
 1. In January of 2016, the `pip download` command syntax was added, and the corresponding `pip install --download` syntax was deprecated. It took almost 4 years for someone to *update the title* of issue 1884, one of the most important in Pip's history.
 
