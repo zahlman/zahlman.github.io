@@ -33,14 +33,14 @@ Sure, the PyPI team strives to keep malware off the system, and there are plenty
 
 You might suppose that you could just inspect the Python code before you ever try running (or `import`ing) it, but that's only safe for a pure-Python wheel. If the project depends on a compiled C library, for example, then you won't be able to inspect it in a wheel (even if the wheel includes `.c` source code files, you can't verify that the compiled code actually corresponds to it). And if you install from an sdist, of course, Pip will try to build the package for you automatically, and you've heard (correctly) that this can run arbitrary code.
 
-Since you don't want to allow unaudited, arbitrary code execution (to "get owned", as the kids probably still say), you hatch the plan of *downloading* the sdist first, so that you can manually unpack it first (it's just an ordinary `.tar.gz` file, after all), inspect it, and only then try the installation (knowing that you can specify the `.tar.gz` filename instead of a PyPI package name when you `pip install`).
+Since you don't want to allow unaudited, arbitrary code execution (to "get pwnt", as the kids probably still say), you hatch the plan of *downloading* the sdist first, so that you can manually unpack it first (it's just an ordinary `.tar.gz` file, after all), inspect it, and only then try the installation (knowing that you can specify the `.tar.gz` filename instead of a PyPI package name when you `pip install`).
 
 You've just learned that Pip has a `download` command, so you try:
 
     :::bash
     $ pip download issue7325
 
-... and *promptly get owned anyway*. The next thing you know, you're getting a message (because this is white-hat hacking; no actual harm was done - this time) every time you start Python in that environment:
+... and *promptly get pwnt anyway*. The next thing you know, you're getting a message (because this is white-hat hacking; no actual harm was done - this time) every time you start Python in that environment:
 
     WARNING: use of "pip download --no-deps" allowed arbitrary code execution
              see https://github.com/pypa/pip/issues/7325
