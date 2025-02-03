@@ -1,11 +1,9 @@
 # Python packaging: Why we can't have nice things @python-packaging
 # Part 3: Premature Compilation #python #pip #security #setuptools
 
-Pip 25.0 [is out](https://discuss.python.org/t/_/78392), as of [early morning (in my time zone) yesterday](https://github.com/pypa/pip/releases/tag/25.0).
+Pip 25.0 [has been out](https://discuss.python.org/t/_/78392) for [a bit over a week now](https://github.com/pypa/pip/releases/tag/25.0); and we now also have an [official blog post](https://ichard26.github.io/blog/2025/01/whats-new-in-pip-25.0/) about the release.
 
-As I very much expected (I suppose I could have verified this against a pre-release version...), it has a very serious bug.
-
-So first, a PSA:
+As I very much expected (I suppose I could have verified this against a pre-release version...), it has a very serious bug. I believe that warnings are more important than baiting people to read the post, so here's the PSA up front:
 
 1. **Never use Pip to download, test, "dry-run" etc. an untrusted source distribution (sdist).** [It will try to build the package](https://github.com/pypa/pip/issues/1884), **potentially running arbitrary code** (as building an sdist always entails). Instead, use the [PyPI website](https://pypi.org) directly, or the [API](https://docs.pypi.org/api/json/) it provides.
 
@@ -13,13 +11,13 @@ So first, a PSA:
 
 3. If you expect wheels to be available for the packages you want to install with Pip, **strongly consider adding `--only-binary=:all:` to the Pip command** to ensure that only wheels are used. If you really need to use sdists, it's wise to inspect them first, which by definition isn't possible with a fully automated installation.
 
-4. If you release Python packages, [please try to provide wheels for them](), even if - no, *especially* if your package includes only Python code and doesn't require explicitly "compiling" anything. An sdist is *much* slower to install than a wheel even in trivial cases; and making a wheel available allows your users to demand wheels from Pip, raising the overall baseline for trust and safety in the Python ecosystem.
+4. If you release Python packages, [please try to provide wheels for them](https://pradyunsg.me/blog/2022/12/31/wheels-are-faster-pure-python/), even if - no, *especially* if your package includes only Python code and doesn't require explicitly "compiling" anything. An sdist is *much* slower to install than a wheel even in trivial cases; and making a wheel available allows your users to demand wheels from Pip, raising the overall baseline for trust and safety in the Python ecosystem.
 
-An important clarification: it's normal and expected that building an sdist involves running arbitrary code - because "building" them can mean arbitrary things. C isn't the only language used to extend Python (not by a long shot), and plenty of projects are dependent on specific compilers, custom settings, additional prep work done before and/or after building, etc. However, running arbitrary code *when you aren't expecting it and prepared for it* is obviously a much bigger problem.
+There are two things I should clarify up front. First: it's normal and expected that building an sdist involves running arbitrary code - because "building" them can mean arbitrary things. C isn't the only language used to extend Python (not by a long shot), and plenty of projects are dependent on specific compilers, custom settings, additional prep work done before and/or after building, etc. However, running arbitrary code *when you aren't expecting it and prepared for it* is obviously a much bigger problem.
 
-It's also important to note that this problem *isn't* some new discovery, nor is it specific to the new release - I'm just taking that opportunity to bring up the topic. This is the Nth iteration of a problem that has plagued Pip *for almost its entire history*.
+Second: this problem *isn't* some new discovery, nor is it specific to the new release - I'm just taking that opportunity to bring up the topic. This is the Nth iteration of a problem that has plagued Pip *for almost its entire history*.
 
-And today, I'll be taking a deep dive into that history.
+With that out of the way, let me get into the detailed examination.
 
 <!-- END_TEASER -->
 
