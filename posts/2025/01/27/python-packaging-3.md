@@ -67,13 +67,11 @@ Whatever your situation, the safe way to get an sdist is from the PyPI website. 
 
 ## It Can Happen to You
 
-But before I can do that, I need to tell a little story about a blog post, titled [Someone’s Been Messing With My Subnormals!](https://moyix.blogspot.com/2022/09/someones-been-messing-with-my-subnormals.html) and ostensibly about some finer details about what happens to floating-point math in your Python program when C extensions are compiled a certain way and then included in the project, however indirectly. The post was published a little over 2 years ago, and shown to me by a friend sometime in the interim, and it quickly became a focus of my attention.
+I first noticed this issue as a result of a friend showing me a blog post from 2022 titled [Someone’s Been Messing With My Subnormals!](https://moyix.blogspot.com/2022/09/someones-been-messing-with-my-subnormals.html). Ostensibly, it's not about Pip at all. It's rather about what can happen to floating-point math in your Python program when C extensions are compiled a certain way and then included in the project, however indirectly. Specifically: there's a compiler option `--ffast-math` supported by both GCC and clang, which indirectly causes the compiled code to mess with global process state, which changes the behaviour of ["subnormal"](https://en.wikipedia.org/wiki/Subnormal_number) floating-point values. I think I have a reasonably good understanding of the technical details involved in this -- but they don't normally concern me, so I don't spend a lot of time thinking about them.
 
-The basic premise of the post is pretty simple: there's a compiler option `-ffast-math` supported by both GCC and clang, which indirectly causes the compiled code to mess with global process state, which changes the behaviour of ["subnormal"](https://en.wikipedia.org/wiki/Subnormal_number) floating-point values. I think I have a reasonably good understanding of the technical details involved in this -- but they don't normally concern me, so I don't spend a lot of time thinking about them.
+So why am I bringing this up, you ask? Well, it turns out that this story has a buried lede. Because the floating-point math problem involves *global* process state, you can trigger it simply by having specific dependencies - even transitively - in your project. In order to verify how widespread the problem is, and figure out which packages most commonly cause downstream problems, the author determined that it would be necessary to examine *every* package on PyPI. And because of how poorly the ecosystem handles package metadata (more on that another time), the natural way to do a properly *thorough* job of that would be to *download* every package, and then try to scrape metadata out of them (which might be represented a few different ways - depending on whether a wheel is available, and whether the package includes `pyproject.toml` and/or `PKG-INFO` per modern standards).
 
-You're probably wondering what on Earth that has to do with Pip, and I don't at all blame you. But it turns out that this story has a buried lede. See, our author decided to do an impressively deep analysis of which Python packages most commonly cause that problem "in the wild", how widespread the problem is, etc. Which led to a rather severe exposure to The Bug.
-
-This part is best explained with a quote:
+And, well, that's where all hell broke loose:
 
 > I actually started down this path and set about running `pip install --dry-run --ignore-installed --report` on all 397,267 packages. This turned out to be a *terrible* idea. Unbeknownst to me, **even with \-\-dry-run pip will execute arbitrary code found in the package's setup.py**. In fact, **merely asking pip to** *download* **a package can execute arbitrary code** (see pip issues 7325 and 1884 for more details)! So when I tried to dry-run install almost 400K Python packages, [hilarity ensued](https://twitter.com/moyix/status/1566561433898426368). I spent a long time [cleaning up the mess](https://twitter.com/moyix/status/1566578412663209984), and discovered some [pretty poor setup.py practices](https://twitter.com/moyix/status/1566609622680608770) along the way. But hey, at least I got [two free pictures of anime catgirls](https://twitter.com/moyix/status/1566612152558944257), deposited directly into my home directory. Convenient!
 >
@@ -81,36 +79,52 @@ This part is best explained with a quote:
 
 (Editor's note: I've removed the links to the Pip issues because they'll come up again later in this post. And yes, that last link *does* include the pictures in question.)
 
-So, yes, that's The Bug: the arbitrary setup code included with an sdist can be run *even for innocuous sounding "download" commands*.
+So, to reiterate from the introduction: the arbitrary setup code included with an sdist can be run *even for innocuous sounding "download" commands*.
 
-To be clear, I don't fault Python for relying on arbitrary code at install time in general. The *requirements* to set up a Python project are pretty well arbitrarily complex, and nobody has really put forward a system that reliably handles even the common cases in any secure manner - at least, aside from pure Python projects where there's nothing to build. Aside from which, it's the same problem seen in other packaging systems for other languages, like NPM. ([Here's just one of many](https://medium.com/@v_pragma/12-strange-things-that-can-happen-after-installing-an-npm-package-45de7fbf39f0) articles on that topic I found with a [quick search](https://duckduckgo.com/?q=npm+arbitrary+code+on+installation).) And finally, of course, if you're going to *use* an installed library, it can run arbitrary code at `import` time, or when you call any of its functions. That's just how it is with third-party code: ultimately, trust has to come from somewhere.
+And, again: I don't fault Python for relying on arbitrary code at install time in general. The *requirements* to set up a Python project are pretty well arbitrarily complex, and nobody has really put forward a system that reliably handles even the common cases in any secure manner - at least, aside from pure Python projects where there's nothing to build. The same problem is also seen in other packaging systems for other languages, like NPM. ([Here's just one of many](https://medium.com/@v_pragma/12-strange-things-that-can-happen-after-installing-an-npm-package-45de7fbf39f0) articles on that topic I found with a [quick search](https://duckduckgo.com/?q=npm+arbitrary+code+on+installation).) And, of course, if you're going to *use* an installed library, it can run arbitrary code at `import` time, or when you call any of its functions. That's just how it is with third-party code: ultimately, trust has to come from somewhere.
 
-But the *entire point* of having a command like `pip download` is so that Pip's resolver can figure out which package is appropriate for your system and then *just download it for you*, which you'd typically do *specifically so that you can inspect it* before doing anything with it. (After all, there's nothing to guarantee that the contents correspond to any particular GitHub repository, generally speaking.) Or maybe you want to store it somewhere, perhaps as part of [setting up your own index](https://stackoverflow.com/questions/18052217). But regardless, you *aren't* trying to install it *yet*.
+But the *entire point* of having a command like `pip download` is so that Pip's resolver can figure out which package is appropriate for your system and then *just download it for you*, which you'd typically do *specifically so that you can inspect it* before doing anything with it. (After all, you can't just rely on reading the code on GitHub etc. in general - there's no guarantee that code actually matches what you downloaded. [There's a new system to make that possible](https://docs.pypi.org/trusted-publishers/), but publishers have to opt in to it.) Or maybe you want to store it somewhere, perhaps as part of [setting up your own index](https://stackoverflow.com/questions/18052217). But regardless, you *aren't* trying to install it *yet*.
 
-The above quote uses the only red text in the entire article, and is also, as far as I know, the main reason it got as much attention as it did. True, not all of those packages were actually downloaded; and of course a large fraction of those would have been "pre-built" distributions that can be installed without any customization. So no, our author did not exactly run 397,267 pieces of untrusted code unintentionally. But still, I can't pass on the opportunity to make the reference:
+The above quote uses the only red text in the entire article, and is also, as far as I know, the main reason it got as much attention as it did. True, not all of those packages were actually downloaded; and of course a lot of them would have been available as wheels. So no, our author did not exactly run 397,267 pieces of untrusted code unintentionally.
+
+But still, I can't pass on the opportunity to make the reference:
 
 <iframe style="width:50%;aspect-ratio:16/9;margin:0 auto;display:block" src="https://www.youtube.com/embed/Az49aNuYeJs" title="YouTube video player" frameborder="0" allow="fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 <!-- It looks like I have to do the whole thing with raw HTML... -->
 <div style="text-align:center"><em>That is not a small number!</em></div><br />
 
-But the situation is *even worse* than it already sounds. See, the author of that post, [Brendan Dolan-Gavitt](https://x.com/moyix) (@moyix) is not just some random C expert who read the Pip documentation (but not thoroughly enough). Brendan Dolan-Gavitt is a **security researcher** with an impressive publication history [going back to at least 2006](https://moyix.blogspot.com/2006/12/malware-with-twist.html).
+Now here's the big reveal. The author of that post, [Brendan Dolan-Gavitt](https://x.com/moyix) (@moyix) is not just some random C expert who read the Pip documentation (but not thoroughly enough). No, Brendan Dolan-Gavitt is a **security researcher** with an impressive publication history [going back to at least 2006](https://moyix.blogspot.com/2006/12/malware-with-twist.html).
 
-So there's a cautionary tale for you. If someone like Brendan Dolan-Gavitt can mess this up, so can you. It might seem logical to use `pip download` to obtain packages for inspection, without doing any installation or setup work. But it doesn't work like you'd expect.
+Yeah.
 
-<big>**To download sdist packages from PyPI safely without installation, do not use Pip. Instead, go to the [actual PyPI website](https://www.pypi.org), find the page for the package you want, optionally choose a version from the "Release history" (manually determining what version you want), choose the "Download files" option.**</big>
+Again: **do not use Pip to download sdists for examination. Instead, go to the [actual PyPI website](https://www.pypi.org), find the page for the package you want, optionally choose a version from the "Release history" (manually determining what version you want), and choose the "Download files" option; or use the JSON API.**
 
-Wheels can be downloaded safely with `pip --download --no-deps --only-binary=:all:` - no `setup.py` code will run, because there's nothing to build (and the wheel doesn't contain that code). It's crucial to use `--only-binary=:all:` so that Pip's resolver won't choose a version that's only available as an sdist.
+I don't know of any official, ready-made, secure automation for using the JSON API for this task. If you decide to implement a solution, please share and promote it.
 
-No, there is no official, ready-made, secure automation for this. There's a JSON API, but you'll need to parse the result, determining the version number yourself. (For wheels you'd also have to determine the wheel tags; but again, Pip handles this case.)
+Using the website interface is also, arguably, the best way to protect yourself against typo-squatters and other malware packages - on top of the PyPI maintenance team's own attempts to remove those projects.
 
-(This is also the best way to protect yourself against typo-squatters and other malware packages - on top of the PyPI maintenance team's own attempts to remove those projects. The website interface gives you your best possible shot at verifying that the package you're looking at is actually the one you want.)
+## Let's Make it Silly
 
-## It's Actually Sillier Than That
+I prepared a bash script to demonstrate the problem more directly (on a Linux system), while also highlighting additional absurdities.
 
-Here's a simple Bash script you can use to demonstrate the main issue on any compatible system, as long as you have `pip` configured to refer to a usable copy of Pip. (It doesn't even need to correspond to the same Python that `python` or `python3` runs.) It will also run completely offline (I tested with my network adapter disabled) as long as version 40.8.0 (that's quite old, BTW - released in February 2019) or later of Setuptools is installed and available in the same environment as that copy of Pip (i.e., the output of `pip list` should include a line for `setuptools`).
+To run it, first set up the global reusable Pip copy and `pipe` function as described [in my previous article](/posts/2025/01/07/python-packaging-2/), then set up and activate a venv with Setuptools installed:
 
 ```
-#!/bin/bash
+$ python -m venv --without-pip sdist_test && source sdist_test/bin/activate && pipe install setuptools
+Collecting setuptools
+  Using cached setuptools-75.8.0-py3-none-any.whl.metadata (6.7 kB)
+Using cached setuptools-75.8.0-py3-none-any.whl (1.2 MB)
+Installing collected packages: setuptools
+Successfully installed setuptools-75.8.0
+```
+
+Now the actual test script will run completely offline - feel free to disable your Internet connection temporarily to verify.
+
+Here we go:
+
+```
+#!/bin/bash -i
+
 mkdir demo-0.1.0
 
 echo 'Creating PKG-INFO metadata conforming to the latest spec...'
@@ -130,37 +144,36 @@ cat << done_toml > demo-0.1.0/pyproject.toml
 [project]
 name = "demo"
 version = "0.1.0"
+dependencies = []
 [build-system]
-requires = [ "setuptools>=40.8.0" ]
+requires = [ "setuptools" ]
 build-backend = "setuptools.build_meta"
 done_toml
 
 echo 'Creating an sdist conforming to the latest spec, with a standards-compliant filename (by making a properly-named tar.gz archive from the above)...'
 tar czf demo-0.1.0.tar.gz demo-0.1.0/
 
-echo "Pip version: $(pip -V | cut -f-2 -d' ')"
-echo "Setuptools version: $(pip show setuptools 2>/dev/null | head -n2 | tail -n1 | cut -f2 -d' ')"
+echo "Pip version: $(pipe -V | cut -f-2 -d' ')"
+echo "Setuptools version: $(pipe show setuptools 2>/dev/null | head -n2 | tail -n1 | cut -f2 -d' ')"
 echo '"Downloading" the sdist that was just created...'
-pip download --no-deps --no-build-isolation ./demo-0.1.0.tar.gz
+pipe download --no-deps --no-build-isolation ./demo-0.1.0.tar.gz
 
 # Clean up
 rm -r demo-0.1.0/ demo-0.1.0.tar.gz
 ```
 
-In my case, I installed Pipx with the system package manager, and `pip` refers to its vendored copy of Pip, in its own virtual environment, which I've kept up to date.
-
-When I try this, I get the expected result (demonstrating a serious problem) as follows:
+When you try this, you should get a result like:
 
 ```
 Creating PKG-INFO metadata conforming to the latest spec...
 Creating setup.py...
 Creating a fully standards-compliant pyproject.toml which matches PKG-INFO...
 Creating an sdist conforming to the latest spec, with a standards-compliant filename (by making a properly-named tar.gz archive from the above)...
-Pip version: pip 24.3.1
-Setuptools version: 75.2.0
+Pip version: pip 25.0
+Setuptools version: 75.8.0
 "Downloading" the sdist that was just created...
 Processing ./demo-0.1.0.tar.gz
-  File was already downloaded /home/zahlman/Desktop/demo-0.1.0.tar.gz
+  File was already downloaded /home/user_files/zahlman/Desktop/demo-0.1.0.tar.gz
   Preparing metadata (pyproject.toml) ... error
   error: subprocess-exited-with-error
   
@@ -180,29 +193,39 @@ note: This is an issue with the package mentioned above, not pip.
 hint: See above for details.
 ```
 
-Notice in particular the `Arbitrary code could have been executed here.` message. Of course this is not a warning that Pip or Setuptools generates; it comes from the `setup.py` that was included in the sdist that the script creates.
+Some highlights:
 
-There are a few points I need to highlight here:
+1. We need the `-i` option on the shebang line so that the script can use the `pipe` function defined last time. If you want to set things up differently, the problem is still very much reproducible. Adjusting the script to match your setup is left as an exercise.
 
-1. Yes, the download command in the script has a weird `--no-build-isolation` flag in it. This will be discussed in Part 2.
+1. The `echo` output speaks the truth. Newer standards are supposed to make it possible to solve the problem, but Pip still hasn't solved the problem.
 
-1. Yes, you can ask Pip to "download" a file that you already have, even one that's already in the PWD where it's supposed to get saved. That's amusing, but ultimately a minor quirk and not a bug. (In fact, it's helpful here, since it allows me to produce this test script without having to host a test package on PyPI.)
+1. It's actually pretty easy to create a fully standards-compliant (up to the most recent standards), minimal sdist from scratch. It's just a zipped (or should I say [Zzzzzzzzzzzzzzzipped](https://en.wikipedia.org/wiki/Election_Night_Special)?) tar archive, containing "source" metadata in the form of `pyproject.toml` and "built" metadata in the form of `PKG-INFO` (which would normally end up copied verbatim into a wheel, as the `METADATA` file). Even with the most recent metadata version, we only *need to* specify the metadata version itself, plus the name and version of the package. And there doesn't actually need to be any implementation code (there doesn't need to be a `setup.py` either, but the point is to demonstrate that Setuptools will be invoked and run that).
 
-1. Yes, in this demo, Pip attempts to *run code from the package* even though it has explicitly only been asked to *download* it -- and even though it has already identified that the file is already there and doesn't need downloading.
+1. The problem doesn't actually have anything to do with Setuptools. It can equally well be reproduced with a different build backend, including an in-tree backend.
 
-## The Big Reveal
+1. Yes, there's a command-line option for the "download" command that says "no build isolation". This is what allows for testing the code offline - since Pip is no longer required to create a temporary venv for the build and install Setuptools into *that* venv.
 
-You'd probably never guess *why* Pip thinks it should have to build a wheel at this point (which in turn involves asking Setuptools to run arbitrary code from `setup.py`), without me telling you.
+1. Yes, we have asked Pip to "download" a file into the current directory *that is already right there in the current directory*. This is also part of why we can test the code offline, of course. And Pip *notices* that the file is already there (`File was already downloaded`).
+
+1. We haven't declared any dependencies for the `demo` package; but if we did, `pip download` would want to download them unless we specify `--no-deps`.
+
+1. And most importantly: yes, Pip is indeed *running the code* from the package's `setup.py` even though it has explicitly only been asked to *download* the package (which, again, was already there, with Pip being fully aware of that). The `Arbitrary code could have been executed here.` message in the output is coming from that `setup.py` - it's not any kind of security warning from Pip.
+
+Now comes the *really* fun part. *Why*, exactly, would you guess that Pip is building the sdist?
+
+I've made some vague allusions to it already, but you might still never guess.
 
 It's so that Pip can **make sure that the name and version metadata that you'd get from building the project, match what you requested**.
 
-Which leads to many more points to highlight:
+Which leads us to additional highlights:
+
+1. This still happens with the latest version of Pip. (I also demonstrate this with the latest Setuptools version - not that it should be Setuptools' responsibility to detect or do anything about this state of affairs; it's just trying to build a wheel, like Pip explicitly asked it to.)
+
+1. This still happens even though we explicitly say not to obtain any dependencies. I traced through the code, and it preserves the information (through a *very* deep call stack) that dependency information isn't needed. (Although the process it's trying to use to obtain the name and version, would trivially tell it the dependencies as well.)
 
 1. Yes, the command says "download" and does *not* say anything like "verify" anywhere. This argument has historically not been very persuasive.
 
 1. This verification is absurd when downloading from PyPI, because Pip has already asked PyPI for a specific version of a project with a specific name. With the local file, it's absurd because the user didn't ask for such verification and has already very deliberately specified the file. The time for such verification, if ever, is when the file is made available -- not when it's received.
-
-1. This still happens even though Pip is on the latest version in my test. (I also demonstrate this with the latest Setuptools version - not that it should be Setuptools' responsibility to detect or do anything about this state of affairs; it's just trying to build a wheel, like Pip explicitly asked it to.)
 
 1. This still happens in projects following up-to-date standards: using `pyproject.toml` and following PEP 621 to describe project metadata.
 
@@ -218,7 +241,7 @@ Which leads to many more points to highlight:
 
 1. Yes, the correct name and version can already be seen in `pyproject.toml`. But it's the official stance of the Pip development team that "tools should not read metadata from `pyproject.toml`" - since build backends aren't yet required to implement [PEP 621](https://peps.python.org/pep-0621/) (notably, Poetry [didn't until just last month](https://github.com/python-poetry/roadmap/issues/3)), there's no guarantee that the `PKG-INFO` corresponds to `pyproject.toml` . Also, Pip still supports legacy `setup.py`-based builds, therefore sdists aren't required to contain a `pyproject.toml` at all.
 
-1. Yes, the correct name and version can already be seen in `PKG-INFO`. This is, in a sense, the "built" version of `pyproject.toml` containing metadata that tools *are* supposed to read. But this, too, isn't required to be present. And as of Pip 24.3.1, Pip apparently doesn't even *check*.
+1. Yes, the correct name and version can already be seen in `PKG-INFO`. This is, in a sense, the "built" version of `pyproject.toml` containing metadata that tools *are* supposed to read. But this, too, isn't required to be present. And as of version 25.0, Pip apparently doesn't even *check*.
 
 1. The `PKG-INFO` provided declares version 2.4 of the specification - the latest at time of writing. From version 2.2 onward, it is *required* that the name and version are specified here, and that building the sdist would produce a wheel with metadata (in the `WHEEL` file) with a matching name and version. In fact, the *specific purpose* of the 2.2 update to the specification was to ensure that this part of the metadata would be reliable. But Pip will *still* try to build the wheel, so that it can error out if the resulting wheel doesn't match. (Yes, "error out" *even though it already downloaded* the file it was asked to download.)
 
@@ -400,6 +423,6 @@ This is certainly not entirely the fault of the Pip development team. Pip is a h
 
 But the net result is still quite alarming. Just to emphasize a couple aspects of this whole mess:
 
-1. In January of 2016, the `pip download` command syntax was added, and the corresponding `pip install --download` syntax was deprecated. It took almost 4 years for someone to *update the title* of issue 1884, one of the most important in Pip's history.
+1. In January of 2016, the `pip download` command syntax was added, and the corresponding `pip install --download` syntax was deprecated. It took almost 4 years until anyone even *updated the title* of issue 1884, one of the most important in Pip's history.
 
 1. In July of 2020, it was proposed to standardize sdist filenames in a way that would allow Pip to make some basic assumptions about what it just downloaded. It took two years to accept that proposal, another two years to make sure Setuptools always conforms to that standard, and now *Pip still doesn't make those assumptions*. We're talking here about standardizing a *file naming convention* -- to follow a pattern that almost everyone was already following outside of abandoned legacy Python 2.x projects -- just so that Pip can actually *trust that PyPI gave it the correct file*.
