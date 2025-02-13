@@ -103,77 +103,62 @@ I don't know of any official, ready-made, secure automation for using the JSON A
 
 Using the website interface is also, arguably, the best way to protect yourself against typo-squatters and other malware packages - on top of the PyPI maintenance team's own attempts to remove those projects.
 
-## Let's Make it Silly
+## Let's Make Things Silly
 
-I prepared a bash script to demonstrate the problem more directly (on a Linux system), while also highlighting additional absurdities.
+While I'm thankful to [Wim Jeantine-Glenn](https://pypi.org/user/wim.glenn/) for creating an example (for Pip issue 7325) that demonstrates the problem in a reasonably realistic (but minimal) way, in my opinion it really doesn't show off how absurd the overall problem is.
 
-To run it, first set up the global reusable Pip copy and `pipe` function as described [in my previous article](/posts/2025/01/07/python-packaging-2/), then set up and activate a venv with Setuptools installed:
-
-```
-$ python -m venv --without-pip sdist_test && source sdist_test/bin/activate && pipe install setuptools
-Collecting setuptools
-  Using cached setuptools-75.8.0-py3-none-any.whl.metadata (6.7 kB)
-Using cached setuptools-75.8.0-py3-none-any.whl (1.2 MB)
-Installing collected packages: setuptools
-Successfully installed setuptools-75.8.0
-```
-
-Now the actual test script will run completely offline - feel free to disable your Internet connection temporarily to verify.
-
-Here we go:
+With that in mind, I prepared the following Bash script you can use to reproduce the problem on Linux - quickly (less than a second on my 10-year-old machine), directly and *without an Internet connection*. All you need is for `pip` to refer to a working copy of Pip. It's also written to highlight many things that might otherwise not be obvious about the nature of the problem.
 
 ```
-#!/bin/bash -i
-
-mkdir demo-0.1.0
-
-echo 'Creating PKG-INFO metadata conforming to the latest spec...'
-cat << done_info > demo-0.1.0/PKG-INFO
-Metadata-Version: 2.4
-Name: demo
-Version: 0.1.0
-done_info
-
-echo 'Creating setup.py...'
-cat << done_setup > demo-0.1.0/setup.py
-__import__('sys').exit("Arbitrary code could have been executed here.")
-done_setup
-
-echo 'Creating a fully standards-compliant pyproject.toml which matches PKG-INFO...'
-cat << done_toml > demo-0.1.0/pyproject.toml
+#!/bin/bash
+# Copyright (c) 2025 Karl Knechtel.
+# Permission is granted to reproduce this code locally for testing purposes,
+# but please don't republish or redistribute it - instead, please direct
+# interested readers to this blog post at
+# https://zahlman.github.io/posts/2025/02/13/python-packaging-3/ .
+mkdir demo-0.1.0 # [1]
+cat << done_toml > demo-0.1.0/pyproject.toml # [2]
 [project]
 name = "demo"
 version = "0.1.0"
 dependencies = []
 [build-system]
-requires = [ "setuptools" ]
-build-backend = "setuptools.build_meta"
+requires = [ ]
+build-backend = "build"
+backend-path = "."
 done_toml
-
-echo 'Creating an sdist conforming to the latest spec, with a standards-compliant filename (by making a properly-named tar.gz archive from the above)...'
-tar czf demo-0.1.0.tar.gz demo-0.1.0/
-
-echo "Pip version: $(pipe -V | cut -f-2 -d' ')"
-echo "Setuptools version: $(pipe show setuptools 2>/dev/null | head -n2 | tail -n1 | cut -f2 -d' ')"
-echo '"Downloading" the sdist that was just created...'
-pipe download --no-deps --no-build-isolation ./demo-0.1.0.tar.gz
-
-# Clean up
+cat << done_info > demo-0.1.0/PKG-INFO # [3]
+Metadata-Version: 2.4
+Name: demo
+Version: 0.1.0
+done_info
+cat << done_setup > demo-0.1.0/build.py # [4]
+__import__('sys').exit("Arbitrary code could have been executed here.")
+done_setup
+tar czf demo-0.1.0.tar.gz demo-0.1.0/ # [5]
+pip download --no-deps --no-build-isolation ./demo-0.1.0.tar.gz # [6]
 rm -r demo-0.1.0/ demo-0.1.0.tar.gz
 ```
+
+Footnotes from the code:
+
+1. The general approach is to create a [valid sdist - fully compliant with all up-to-date standards](https://packaging.python.org/en/latest/specifications/source-distribution-format/) - locally, and then ask Pip to "download" the file. Yes, this is a perfectly valid (if pointless) use of `pip download`, as the output will make clear. It's actually pretty easy to create such an sdist - it's just a zipped (or should I say [Zzzzzzzzzzzzzzzipped](https://en.wikipedia.org/wiki/Election_Night_Special)?) tar archive, containing "source" metadata in the form of `pyproject.toml` and "built" metadata in the form of `PKG-INFO`. Note in particular that the folder name includes the name and version for the project - that's part of the expected structure for the sdist.
+
+1. Here we create a `pyproject.toml` file [following the appropriate standards](https://packaging.python.org/en/latest/specifications/pyproject-toml/#pyproject-toml-spec). We have a `[project]` table (originally defined by [PEP 621](https://peps.python.org/pep-0621/)) defining name, version and dependency information. Only the name and version are mandatory - and the version could be marked as "dynamic" instead - but that doesn't make sense for our use case. The dependencies would default to an empty list, but it's more amusing IMO to be explicit about this. We also have a `[build-system]` table (originally defined by [PEP 518](https://peps.python.org/pep-0518/)) explaining what tools to use to create a wheel from the sdist. (Normally, the same tool would be used to create the sdist from a source tree - but in this example, the "build system" we specify is a fake.)
+
+1. Here we create the corresponding ["core metadata"](https://packaging.python.org/en/latest/specifications/core-metadata/#core-metadata) `PKG-INFO` file. Normally this would end up copied verbatim into any corresponding wheel (named `METADATA` inside wheels), unless the project uses dynamic metadata. In order to conform to modern standards, we need to implement at least version 2.2 of the metadata spec - but it turns out that we can trivially implement version 2.4, the most recent. Updates to the spec generally *allow* us to add information, but don't *require* it - for example, version 2.4 allows for [using license files](https://peps.python.org/pep-0639/) in an up-to-date way - but our example project, being ephemeral, doesn't have its own license. As with `pyproject.toml`, only the name and version (and the metadata version) need to be specified.
+
+1. Here we define a fake "build system" for the sdist, which just immediately errors out. The name `build.py` corresponds to what was defined in `pyproject.toml`. The main thing I want to highlight here is that **Setuptools has nothing to do with the problem**. For projects that use Setuptools (the default if you don't include a `[build-system]` table), Pip would tell Setuptools to build the project, and Setuptools would (among other things) potentially run a top-level `setup.py` script in order to do so. But this is purely an implementation detail. Setuptools is, in these cases, only doing what it's told. It's entirely Pip's fault that Pip tells Setuptools to do this.
+
+1. Finally we can create the sdist. Notice in particular that the only actual Python code included is the "build system". As described [in part 1](https://zahlman.github.io/posts/2024/12/24/python-packaging-1/), it's perfectly valid for the sdist - as well as any resulting wheel - to define no installable code packages at all. The name `demo` applies to the *distribution* - not to anything that will be `import`ed by users. Anyway, we name the file with the distribution name and version, according to rules [defined in PEP 625](https://peps.python.org/pep-0625/) - there's no wiggle room here.
+
+1. Now that we have an sdist, we can tell Pip to "download" it, and then we'll clean up by deleting the sdist archive and the corresponding folder. Pip won't actually modify any `site-packages` contents, but it will try to build the sdist into a wheel. Note in particular the `--no-deps` and `--no-build-isolation` flags here, for later.
 
 When you try this, you should get a result like:
 
 ```
-Creating PKG-INFO metadata conforming to the latest spec...
-Creating setup.py...
-Creating a fully standards-compliant pyproject.toml which matches PKG-INFO...
-Creating an sdist conforming to the latest spec, with a standards-compliant filename (by making a properly-named tar.gz archive from the above)...
-Pip version: pip 25.0
-Setuptools version: 75.8.0
-"Downloading" the sdist that was just created...
 Processing ./demo-0.1.0.tar.gz
-  File was already downloaded /home/user_files/zahlman/Desktop/demo-0.1.0.tar.gz
+  File was already downloaded /<absolute path omitted>/demo-0.1.0.tar.gz
   Preparing metadata (pyproject.toml) ... error
   error: subprocess-exited-with-error
   
@@ -193,27 +178,23 @@ note: This is an issue with the package mentioned above, not pip.
 hint: See above for details.
 ```
 
-Some highlights:
+The `Arbitrary code could have been executed here.` message, of course, comes from `build.py` - it's not a warning from Pip.
 
-1. We need the `-i` option on the shebang line so that the script can use the `pipe` function defined last time. If you want to set things up differently, the problem is still very much reproducible. Adjusting the script to match your setup is left as an exercise.
+Perhaps the funniest part here is that there are two disclaimers of responsiblity from Pip. These are standard messages, and normally make sense - when Pip tells the build system to build a wheel, it can't do anything about bugs in the build system itself, nor about errors in the project's build configuration. But, of course, it *is* a problem with Pip in this case *that a build is attempted at all*.
 
-1. The `echo` output speaks the truth. Newer standards are supposed to make it possible to solve the problem, but Pip still hasn't solved the problem.
+It does this even though the file is *already right there in the current directory*, and Pip *knows* that it's right there (`File was already downloaded`) and simply uses the existing file directly.
 
-1. It's actually pretty easy to create a fully standards-compliant (up to the most recent standards), minimal sdist from scratch. It's just a zipped (or should I say [Zzzzzzzzzzzzzzzipped](https://en.wikipedia.org/wiki/Election_Night_Special)?) tar archive, containing "source" metadata in the form of `pyproject.toml` and "built" metadata in the form of `PKG-INFO` (which would normally end up copied verbatim into a wheel, as the `METADATA` file). Even with the most recent metadata version, we only *need to* specify the metadata version itself, plus the name and version of the package. And there doesn't actually need to be any implementation code (there doesn't need to be a `setup.py` either, but the point is to demonstrate that Setuptools will be invoked and run that).
+It does this even though we explicitly told it that we only want to "download" the code, not to build nor install it.
 
-1. The problem doesn't actually have anything to do with Setuptools. It can equally well be reproduced with a different build backend, including an in-tree backend.
+It does this even though we explicitly told it that we don't want to obtain any project dependencies (`--no-deps`). (The `--no-build-isolation` flag is more just for entertainment. It's perfectly valid to include this flag for `pip download` and that it does something meaningful - although not *relevant* to the demo. Normally, when Pip starts a build process, it would create a temporary venv for it, and install *the build system's* dependencies there - along with the build system itself, if not included. Since we include our fake "build system" and it has no dependencies of its own, we save some time by asking Pip to just build in the current environment. This build system isolation, by the way, often results in needing an Internet connection to build projects even though you already have everything necessary installed - a topic for another day.)
 
-1. Yes, there's a command-line option for the "download" command that says "no build isolation". This is what allows for testing the code offline - since Pip is no longer required to create a temporary venv for the build and install Setuptools into *that* venv.
+It does this with every version of Pip that's compatible with currently supported versions of Python, and would do it with much older versions as well - going back for almost the entire history of Pip, adjusting for UI tweaks and changes to standards made along the way.
 
-1. Yes, we have asked Pip to "download" a file into the current directory *that is already right there in the current directory*. This is also part of why we can test the code offline, of course. And Pip *notices* that the file is already there (`File was already downloaded`).
+It does this even though we follow every modern packaging standard to the letter. Including some updates that were *specifically* intended to facilitate Pip in avoiding unnecessary builds of this sort.
 
-1. We haven't declared any dependencies for the `demo` package; but if we did, `pip download` would want to download them unless we specify `--no-deps`.
+## The Big Reveal
 
-1. And most importantly: yes, Pip is indeed *running the code* from the package's `setup.py` even though it has explicitly only been asked to *download* the package (which, again, was already there, with Pip being fully aware of that). The `Arbitrary code could have been executed here.` message in the output is coming from that `setup.py` - it's not any kind of security warning from Pip.
-
-Now comes the *really* fun part. *Why*, exactly, would you guess that Pip is building the sdist?
-
-I've made some vague allusions to it already, but you might still never guess.
+Dear reader, can you guess *why*, exactly, Pip is starting this build process, and running arbitrary code without oversight? I've made some vague allusions to it already, but you might still never guess.
 
 It's so that Pip can **make sure that the name and version metadata that you'd get from building the project, match what you requested**.
 
