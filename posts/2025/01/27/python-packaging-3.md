@@ -226,6 +226,8 @@ And Pip is, in a meaningful sense, *supposed to* leverage PEP 625 - since it was
 >
 > Currently, tools that consume sdists should, if they are to be fully correct, treat the name and version parsed from the filename as provisional, and verify them by downloading the file and generating the actual metadata (or reading it, if the sdist conforms to [PEP 643](https://peps.python.org/pep-0643/). Tools supporting this specification can treat the name and version from the filename as definitive. In theory, this could risk mistakes if a legacy filename is assumed to conform to this PEP, but in practice the chance of this appears to be vanishingly small.
 
+(Just to emphasize: PEP 625 standardizes a *file naming convention*. It took *over two years* to approve, and *almost four years in total* to see its final implementation in Setuptools - never mind any other build backends. And Pip *still* isn't able to take advantage of it, half a year after that.)
+
 Besides, if you're "downloading" a local file, then surely you shouldn't need to check the name and version like this. If you're asking to get a file from PyPI (or another index), meanwhile, you're already requesting it by name and version - and it should be the index's responsibility to ensure that it gives you the right file. Even if you don't trust the index (why are you using it, then?), nothing in the Pip command we're using actually *asks* to verify that the download correctly represents the name and version requested.
 
 Oh, and the kicker: suppose we make all these redundant copies of the name and version info *not* match, and set things up so that the wheel build is successful anyway (using a real build system). What do you suppose will happen?
@@ -278,7 +280,7 @@ Pip switches to [Calendar versioning](https://calver.org/) with the [release of 
 
 ### November 2019
 
-The title of issue 1884 is edited for the first time, to reflect the change from `pip install --download` to `pip download`.
+The title of issue 1884 is edited for the first time, to reflect the command syntax change from `pip install --download` to `pip download`. (This is almost four years after the new command was actually implemented.)
 
 Issue 7325, [Disallow execution of setup.py when "pip download \-\-no-deps someproject"](https://github.com/pypa/pip/issues/7325) is opened on the Pip bug tracker. (This is one of many duplicates, mentioned here primarily because it's one that Brendan Dolan-Gavitt cited.)
 
@@ -407,15 +409,3 @@ Setuptools issue 3593 is closed and then promptly reopened due to confusion over
 ### June 2024
 
 Setuptools issue 3593 [is properly closed again, fixed by PR 4434](https://github.com/pypa/setuptools/pull/4434) - although there is additional discussion in the meantime of other backwards compatibility issues which may not have been addressed.
-
-## Parting Thoughts
-
-Readers are invited to draw their own conclusions about the Pip project's attention to detail and the pace at which issues are tackled.
-
-This is certainly not entirely the fault of the Pip development team. Pip is a hideously complex piece of software; there's no real opportunity to refactor it properly since it's so fundamental to Python (it gets shipped with Python and bootstrapped into virtual environments despite not being part of the standard library - more on that in a later post); and there are nowhere near enough people working on it with nowhere near enough free time, relative to the expectations put upon it (especially in terms of backwards compatibility - a theme I will *definitely* be hammering in future posts). Also, there's heavy overlap between the Pip and Setuptools teams, and Setuptools has basically all the same problems and challenges.
-
-But the net result is still quite alarming. Just to emphasize a couple aspects of this whole mess:
-
-1. In January of 2016, the `pip download` command syntax was added, and the corresponding `pip install --download` syntax was deprecated. It took almost 4 years until anyone even *updated the title* of issue 1884, one of the most important in Pip's history.
-
-1. In July of 2020, it was proposed to standardize sdist filenames in a way that would allow Pip to make some basic assumptions about what it just downloaded. It took two years to accept that proposal, another two years to make sure Setuptools always conforms to that standard, and now *Pip still doesn't make those assumptions*. We're talking here about standardizing a *file naming convention* -- to follow a pattern that almost everyone was already following outside of abandoned legacy Python 2.x projects -- just so that Pip can actually *trust that PyPI gave it the correct file*.
