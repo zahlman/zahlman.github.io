@@ -260,14 +260,27 @@ It's [pointed out](https://github.com/pypa/pip/issues/425) that Pip runs arbitra
 
 [Pip v1.1 is released](https://pip.pypa.io/en/stable/news/#v1-1), fixing the issue reported in July 2011.
 
+### September 2012
+
+[Issue 661](https://github.com/pypa/pip/issues/661) is the first report I can find of the problem. The issue was deemed a problem with the `setup.py` of the to-be-downloaded package, added to that package's issue tracker almost two years later, and finally closed in 2017 after no further commentary. A salient comment:
+
+> The root problem here is that Python packaging does not yet have static metadata, and thus requires running `setup.py` to even acquire metadata about a package; to make sure it is actually the right project name and version, to find out what dependencies it has, etc. And projects like psycopg2 or scipy that have build dependencies are not careful to make it possible to get that metadata out of `setup.py` if you don't have all the build dependencies present on your system, because they primarily think of setup.py as intended for actual installation.
+
+(This issue with build dependencies causing `setup.py` to fail was a major part of the motivation for introducing `pyproject.toml`.)
 
 ### June 2014
 
-Issue 1884, "[Avoid generating metadata in `pip download --no-deps ...`](https://github.com/pypa/pip/issues/1884) (as it's currently titled) is opened on the Pip bug tracker. This is the earliest report I could find of the issue, and seems to have become the canonical version of the bug report (others are closed as duplicates of it). At the time, the most recent version of Pip would have been 1.5.6; the original bug report didn't specify a version number. The first reply offers a choice quote:
+Issue 1884, "[Avoid generating metadata in `pip download --no-deps ...`](https://github.com/pypa/pip/issues/1884) (as it's currently titled) is opened on the Pip bug tracker. This seems to have become the canonical version of the bug report (others are closed as duplicates of it). The first reply offers a choice quote:
 
 > It's an unfortunate fact of the Python packaging ecosystem that anything related to packaging always involves arbitrary code execution (referring to `setup.py`).
 
 (This is before wheels existed, of course, so that would have been even more true.)
+
+There are probably also quite a few duplicates of this issue that *weren't* marked as such - for example, I found [issue 2103](https://github.com/pypa/pip/issues/2103).
+
+### April 2015
+
+[The original proposal](https://github.com/pypa/pip/issues/2643) is made for the `pip download` command that will be added in Pip 8.0.0.
 
 ### January 2016
 
