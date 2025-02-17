@@ -236,15 +236,34 @@ In my testing: **no error**. The file we already had and asked to download will 
 
 ## Appendix: a Timeline
 
-As far as I can tell, The Bug has been present in Pip in one form or another **for almost the entire history** of Pip. Here's a timeline of events I've identified relevant to The Bug:
+It's hard for me to be sure exactly when Pip first supported downloading Python packages without either installing them or tracking down their dependencies; and the command syntax for doing so has changed over time. But as far as I can tell, using this feature has resulted in Pip still attempting to build the package - therefore running arbitrary code - for the entire time that it has been available.
+
+PyPI doesn't have the original 0.1.x releases, but [the 0.2 release](https://pypi.org/project/pip/0.2/) -- the first to bear the name "pip" -- is from October 2008.
+
+I had a look through Pip 0.2 source code, and, as far as I can tell, it describes a `--no-install` (yes, really) flag for `pip install` which is documented to "Download and unpack all packages, but don't actually install them". I find it quite unpleasant tracing through this code (which is almost certainly unusuable in a modern environment) but from what I can tell, it would indeed attempt to build packages (and run code from `setup.py` - explicitly looked up by name, since back then Distutils/Setuptools was your only option) in this circumstance. But I'm really not set up to test this properly.
+
+For reference, I've assembled the following timeline of relevant events:
+
+### October 2009
+
+[Version 0.5 adds](https://pip.pypa.io/en/stable/news/#v0-5) the `--no-deps` and `--download` flags for `pip install`. The `--download` flag actually specifies a directory where downloads should be put (the canonical name is `--download-dir` per the changelog), but it implies `--no-install` when set. (Given the wording in future bug reports, one would be forgiven for assuming that the feature of downloading without full installation was added here, but it wasn't.)
+
+### July 2011
+
+It's [reported](https://github.com/pypa/pip/issues/315) that `pip install --download` won't download dependencies, even *without* specifying `--no-deps`. (The `--download` flag for `pip install` was available since at least 0.6, and `--no-deps` since 0.5; but the earliest versions are not dated in the changelog, and there's no clear indication of exactly when the download feature was added. PyPI doesn't )
+
+### January 2012
+
+It's [pointed out](https://github.com/pypa/pip/issues/425) that Pip runs arbitrary code from `setup.py` in a separate context - the risk of the connection to PyPI being spoofed. (In those days, SSL and HTTPS were not nearly so plug-and-play as they are now.)
 
 ### February 2012
 
-[Pip v1.1 is released](https://pip.pypa.io/en/stable/news/#v1-1). From the changelog: "`--download` now downloads dependencies as well. Thanks Qiangning Hong. (#315)" (The `--download` flag for `pip install` was available since at least 0.6, but the earliest versions are not dated in the changelog, and there's no clear indication of exactly when the feature was added. PyPI doesn't have the original 0.1.x releases, but [the 0.2 release](https://pypi.org/project/pip/0.2/) -- the first to bear the name "pip" -- is from October 2008.)
+[Pip v1.1 is released](https://pip.pypa.io/en/stable/news/#v1-1), fixing the issue reported in July 2011.
+
 
 ### June 2014
 
-Issue 1884, "[Avoid generating metadata in `pip download --no-deps ...`](https://github.com/pypa/pip/issues/1884) (as it's currently titled) is opened on the Pip bug tracker. This appears to be the first report of The Bug. The first reply offers a choice quote:
+Issue 1884, "[Avoid generating metadata in `pip download --no-deps ...`](https://github.com/pypa/pip/issues/1884) (as it's currently titled) is opened on the Pip bug tracker. This is the earliest report I could find of the issue, and seems to have become the canonical version of the bug report (others are closed as duplicates of it). At the time, the most recent version of Pip would have been 1.5.6; the original bug report didn't specify a version number. The first reply offers a choice quote:
 
 > It's an unfortunate fact of the Python packaging ecosystem that anything related to packaging always involves arbitrary code execution (referring to `setup.py`).
 
