@@ -198,37 +198,41 @@ Dear reader, can you guess *why*, exactly, Pip is starting this build process, a
 
 It's so that Pip can **make sure that the name and version metadata that you'd get from building the project, match what you requested**.
 
-Which leads us to additional highlights:
+Yes, really.
 
-1. This still happens with the latest version of Pip. (I also demonstrate this with the latest Setuptools version - not that it should be Setuptools' responsibility to detect or do anything about this state of affairs; it's just trying to build a wheel, like Pip explicitly asked it to.)
+The name and version already present in the filename per PEP 625.
 
-1. This still happens even though we explicitly say not to obtain any dependencies. I traced through the code, and it preserves the information (through a *very* deep call stack) that dependency information isn't needed. (Although the process it's trying to use to obtain the name and version, would trivially tell it the dependencies as well.)
+The name and version already present, and matching, in the top-level folder name of the archive, per the sdist standard.
 
-1. Yes, the command says "download" and does *not* say anything like "verify" anywhere. This argument has historically not been very persuasive.
+The name and version already present, and matching, in the `pyproject.toml` file, per PEP 621.
 
-1. This verification is absurd when downloading from PyPI, because Pip has already asked PyPI for a specific version of a project with a specific name. With the local file, it's absurd because the user didn't ask for such verification and has already very deliberately specified the file. The time for such verification, if ever, is when the file is made available -- not when it's received.
+The name and version already present, and matching, in the `PKG-INFO` file, per the core metadata specification.
 
-1. This still happens in projects following up-to-date standards: using `pyproject.toml` and following PEP 621 to describe project metadata.
+That name and version.
 
-1. Yes, the correct name and version can already be seen in the filename. Pip doesn't care, because it doesn't think this information is reliable. [PEP 625](https://peps.python.org/pep-0625/) is supposed to make it reliable:
+It's not about dependencies - we explicitly specify `--no-deps` in this test, and I've traced the code and verified that it passes information all the way along the chain to the effect of "we don't need to find out what the dependencies are when we build this project and get the metadata". (If we add a dependency specification, Pip won't try to download it, unless we remove the `--no-deps` flag.)
 
-    > The filename contains the distribution name and version, to aid tools identifying a distribution without needing to download, unarchive the file, and perform costly metadata generation for introspection, if all the information they need is available in the filename.
-    >
-    > ...
-    >
-    > Currently, tools that consume sdists should, if they are to be fully correct, treat the name and version parsed from the filename as provisional, and verify them by downloading the file and generating the actual metadata (or reading it, if the sdist conforms to [PEP 643](https://peps.python.org/pep-0643/). Tools supporting this specification can treat the name and version from the filename as definitive. In theory, this could risk mistakes if a legacy filename is assumed to conform to this PEP, but in practice the chance of this appears to be vanishingly small.
+Now, it could be argued that, once upon a time, most of that information wasn't reliable. After all, it wasn't until fairly recently that we actually had PEP 625 fully implemented in Setuptools, even though it pretty much matches what Setuptools was already doing - well, aside from the handling of hyphens and underscores, I guess. (And Pip won't complain if you try to install a local file with a non-conforming filename, either. After all, there theoretically are a few old, pre-standard projects already up on PyPI that don't conform, even though Setuptools would have usually generated conforming names back then, and even though Setuptools used to be the only game in town.) And it's not like an installer really needs to care about the name of that top-level folder; it can just extract the archive.
 
-    However, Pip still doesn't appear to support the specification, despite the fact that the PEP was written by a Pip developer, explicitly so that Pip could avoid this headache (among others).
+And there's no guarantee that build systems actually implement PEP 621 (when creating the sdist), either. It's the official stance of the Pip development team, accordingly, that "tools should not read metadata from `pyproject.toml`" - which makes sense as long as the core metadata specification is still a thing. Notably, Poetry [didn't implement PEP 621 until last September](https://github.com/python-poetry/roadmap/issues/3)). Besides, Pip still supports legacy `setup.py`-based builds, therefore sdists aren't actually required to contain a `pyproject.toml` at all - even though this file is part of the official specification of the "source distribution format".
 
-1. Yes, the correct name and version can already be seen in `pyproject.toml`. But it's the official stance of the Pip development team that "tools should not read metadata from `pyproject.toml`" - since build backends aren't yet required to implement [PEP 621](https://peps.python.org/pep-0621/) (notably, Poetry [didn't until just last month](https://github.com/python-poetry/roadmap/issues/3)), there's no guarantee that the `PKG-INFO` corresponds to `pyproject.toml` . Also, Pip still supports legacy `setup.py`-based builds, therefore sdists aren't required to contain a `pyproject.toml` at all.
+But a `PKG-INFO` file is - and, as far as I can tell, always has been - supposed to be canonical metadata. If the build system adds it to the sdist, anything that's actually in there is supposed to be authoritative, and not subject to change when creating a wheel (or an egg, to consider legacy processes). The *specific purpose* of the version 2.2 update to the core metadata format was to make sure that this file provides reliable name and version info. Those values must now be listed explicitly and cannot be marked as "dynamic" (i.e., to be calculated when creating a wheel) - they must be determined at sdist creation time (i.e., tools that compute a version number from source control history, need to do that when making an sdist from the repository). But as it stands, Pip doesn't even *check if the file is present*.
 
-1. Yes, the correct name and version can already be seen in `PKG-INFO`. This is, in a sense, the "built" version of `pyproject.toml` containing metadata that tools *are* supposed to read. But this, too, isn't required to be present. And as of version 25.0, Pip apparently doesn't even *check*.
+And Pip is, in a meaningful sense, *supposed to* leverage PEP 625 - since it was written by a Pip developer specifically to avoid this headache, with the expectation that it won't cause a real problem:
 
-1. The `PKG-INFO` provided declares version 2.4 of the specification - the latest at time of writing. From version 2.2 onward, it is *required* that the name and version are specified here, and that building the sdist would produce a wheel with metadata (in the `WHEEL` file) with a matching name and version. In fact, the *specific purpose* of the 2.2 update to the specification was to ensure that this part of the metadata would be reliable. But Pip will *still* try to build the wheel, so that it can error out if the resulting wheel doesn't match. (Yes, "error out" *even though it already downloaded* the file it was asked to download.)
+> The filename contains the distribution name and version, to aid tools identifying a distribution without needing to download, unarchive the file, and perform costly metadata generation for introspection, if all the information they need is available in the filename.
+>
+> ...
+>
+> Currently, tools that consume sdists should, if they are to be fully correct, treat the name and version parsed from the filename as provisional, and verify them by downloading the file and generating the actual metadata (or reading it, if the sdist conforms to [PEP 643](https://peps.python.org/pep-0643/). Tools supporting this specification can treat the name and version from the filename as definitive. In theory, this could risk mistakes if a legacy filename is assumed to conform to this PEP, but in practice the chance of this appears to be vanishingly small.
 
-1. Historically, a common justification for building the project (going back before wheels existed) was in order to figure out its dependencies, which could then be automatically downloaded. However, Pip later added a `--no-deps` flag for downloading, which is used here, for the cases where you specifically want only the main package. This has no effect here: Pip will *still* try to build the wheel.
+Besides, if you're "downloading" a local file, then surely you shouldn't need to check the name and version like this. If you're asking to get a file from PyPI (or another index), meanwhile, you're already requesting it by name and version - and it should be the index's responsibility to ensure that it gives you the right file. Even if you don't trust the index (why are you using it, then?), nothing in the Pip command we're using actually *asks* to verify that the download correctly represents the name and version requested.
 
-## Timeline
+Oh, and the kicker: suppose we make all these redundant copies of the name and version info *not* match, and set things up so that the wheel build is successful anyway (using a real build system). What do you suppose will happen?
+
+In my testing: **no error**. The file we already had and asked to download will be "Successfully downloaded", and the built wheel will be discarded (maybe it's cached somewhere, but I don't see any evidence in `pip cache list`). Running the arbitrary code, to verify the redundant information that was required by standard to match up and which we didn't really care about anyway, didn't even matter after all. But really, producing an error at this point would be just as ridiculous.
+
+## Appendix: a Timeline
 
 As far as I can tell, The Bug has been present in Pip in one form or another **for almost the entire history** of Pip. Here's a timeline of events I've identified relevant to The Bug:
 
