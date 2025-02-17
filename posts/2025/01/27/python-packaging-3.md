@@ -268,6 +268,10 @@ It's [pointed out](https://github.com/pypa/pip/issues/425) that Pip runs arbitra
 
 (This issue with build dependencies causing `setup.py` to fail was a major part of the motivation for introducing `pyproject.toml`.)
 
+### December 2013
+
+[Issue 1374](https://github.com/pypa/pip/issues/1374) is another similar report. A distinction is drawn between building the package vs. running `setup.py egg_info` (not meaningful with modern `pyproject.toml`-based builds), which in principle is only supposed to figure out the metadata but in practical terms might invoke compilers for C code etc. anyway. The explanation is offered that "This is necessary to extract dependency information in order to download any dependencies."; everyone apparently overlooks that `--no-deps` has no effect on this behaviour.
+
 ### June 2014
 
 Issue 1884, "[Avoid generating metadata in `pip download --no-deps ...`](https://github.com/pypa/pip/issues/1884) (as it's currently titled) is opened on the Pip bug tracker. This seems to have become the canonical version of the bug report (others are closed as duplicates of it). The first reply offers a choice quote:
