@@ -398,7 +398,15 @@ Issue 1884 is locked, with the comment:
 
 PEP 625 is accepted.
 
-Issue 3593, ["[FR] Implement PEP 625 - File Name of a Source Distribution"](https://github.com/pypa/setuptools/issues/3593) is opened on the *Setuptools* issue trtracker. It is closed as completed in June 2024.
+Setuptools issue 3593, ["[FR] Implement PEP 625 - File Name of a Source Distribution"](https://github.com/pypa/setuptools/issues/3593) is opened on the *Setuptools* issue trtracker. It is closed as completed in June 2024.
+
+### April 2024
+
+Setuptools issue 3593 is closed and then promptly reopened due to confusion over "trailing zeros" in version numbers (e.g. a version number like `1.0.0` being normalized to `1`).
+
+### June 2024
+
+Setuptools issue 3593 [is properly closed again, fixed by PR 4434](https://github.com/pypa/setuptools/pull/4434) - although there is additional discussion in the meantime of other backwards compatibility issues which may not have been addressed.
 
 ## Parting Thoughts
 
