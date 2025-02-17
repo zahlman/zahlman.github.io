@@ -280,7 +280,7 @@ Issue 1884, "[Avoid generating metadata in `pip download --no-deps ...`](https:/
 
 (This is before wheels existed, of course, so that would have been even more true.)
 
-There are probably also quite a few duplicates of this issue that *weren't* marked as such - for example, I found [issue 2103](https://github.com/pypa/pip/issues/2103).
+There are probably also quite a few later duplicates of this issue that *weren't* marked as such - for example, I found [issue 2103](https://github.com/pypa/pip/issues/2103).
 
 ### April 2015
 
@@ -288,11 +288,11 @@ There are probably also quite a few duplicates of this issue that *weren't* mark
 
 ### January 2016
 
-[Pip v8.0.0 is released](https://pip.pypa.io/en/stable/news/#v8-0-0), deprecating `pip install --download` in favour of the newly added `pip download`. (This doesn't really change anything about The Bug, except for the UI.)
+[Pip v8.0.0 is released](https://pip.pypa.io/en/stable/news/#v8-0-0), deprecating `pip install --download` in favour of the newly added `pip download`.
 
 ### November 2016
 
-[Pip v9.0.0 is released](https://pip.pypa.io/en/stable/news/#v9-0-0), adding a `--platform` flag for `pip download`. This actually partially fixes The Bug temporarily, in that specifying a platform only works with wheels and errors out unless wheels are demanded.
+[Pip v9.0.0 is released](https://pip.pypa.io/en/stable/news/#v9-0-0), adding a `--platform` flag for `pip download`. This has a bug whereby specifying a platform only works with wheels and errors out unless wheels are demanded. But in a way, this accidentally, partially, temporarily fixes the main issue.
 
 ### February 2017
 
@@ -304,15 +304,11 @@ Some comments on issue 4289 propose that it shouldn't be necessary to run `setup
 
 ### June 2017
 
-A proposal is made to close issue 1884 because the `pip install --download` command syntax no longer exists (although it does - it's only been deprecated); but it's pointed out that the problem still exists with `pip download`.
+A proposal is made to close issue 1884 because the `pip install --download` command syntax no longer exists. In fact, this syntax has only been deprecated, and it's pointed out that the problem still exists with `pip download`, so the issue isn't closed.
 
 ### March 2018
 
-[Pip v10.0.0.b1 is released](https://pip.pypa.io/en/stable/news/#b1-2018-03-31), fixing issue 4289 but once again making it possible to encounter The Bug even when specifying a platform explicitly. (Also, the completely nonsensical ability to specify `--editable` for `pip download` was removed, as was the deprecated `pip install --download`.)
-
-### July 2018
-
-Pip switches to [Calendar versioning](https://calver.org/) with the [release of version 18.0](https://pip.pypa.io/en/stable/news/#v18-0). (This isn't particularly relevant to The Bug, but is a useful reference point for understanding the overall history.)
+[Pip v10.0.0.b1 is released](https://pip.pypa.io/en/stable/news/#b1-2018-03-31), fixing issue 4289 (and thereby revealing the main problem again for some users). The deprecated `pip install --download` is also removed, along with the completely nonsensical ability to specify `pip download --editable`.
 
 ### November 2019
 
