@@ -230,9 +230,77 @@ And Pip is, in a meaningful sense, *supposed to* leverage PEP 625 - since it was
 
 Besides, if you're "downloading" a local file, then surely you shouldn't need to check the name and version like this. If you're asking to get a file from PyPI (or another index), meanwhile, you're already requesting it by name and version - and it should be the index's responsibility to ensure that it gives you the right file. Even if you don't trust the index (why are you using it, then?), nothing in the Pip command we're using actually *asks* to verify that the download correctly represents the name and version requested.
 
-Oh, and the kicker: suppose we make all these redundant copies of the name and version info *not* match, and set things up so that the wheel build is successful anyway (using a real build system). What do you suppose will happen?
+## In the End
 
-In my testing: **no error**. The file we already had and asked to download will be "Successfully downloaded", and the built wheel will be discarded (maybe it's cached somewhere, but I don't see any evidence in `pip cache list`). Running the arbitrary code, to verify the redundant information that was required by standard to match up and which we didn't really care about anyway, didn't even matter after all. But really, producing an error at this point would be just as ridiculous.
+Let's try this another way. Like I said, all of this name and version info is supposed to match up. But what if it doesn't? Of course, it's not very interesting if we intentionally break the build process like before, so to demonstrate, we'll need a setup that can actually create a valid wheel.
+
+To do this, I'll specify [Flit](https://flit.pypa.io/)'s build backend, `flit-core`, as the one to use. (It's available separately; you don't need the Flit tool suite installed to use it.)
+
+Here's the modified script:
+
+```
+#!/bin/bash
+# Copyright (c) 2025 Karl Knechtel.
+# Permission is granted to reproduce this code locally for testing purposes,
+# but please don't republish or redistribute it - instead, please direct
+# interested readers to this blog post at
+# https://zahlman.github.io/posts/2025/02/13/python-packaging-3/ .
+mkdir demo_a-0.1.0 # [1]
+cat << done_toml > demo_a-0.1.0/pyproject.toml # [2]
+[project]
+name = "demo-b"
+version = "0.2.0"
+dependencies = [ ]
+description = ""
+[build-system]
+requires = [ "flit-core" ]
+build-backend = "flit_core.buildapi"
+done_toml
+cat << done_info > demo_a-0.1.0/PKG-INFO # [3]
+Metadata-Version: 2.4
+Name: demo-c
+Version: 0.3.0
+done_info
+touch demo_a-0.1.0/demo_b.py # [4]
+tar czf demo_d-0.4.0.tar.gz demo_a-0.1.0/ # [5]
+pip download ./demo_d-0.4.0.tar.gz # [6]
+rm -r demo_a-0.1.0/ demo_d-0.4.0.tar.gz
+```
+
+Notes:
+
+1. We'll still make the same `pyproject.toml` as before, and we'll describe a name of `demo-a` and version `0.1.0` for the top-level folder. But our `pyproject.toml` dictates a name of `demo-b` and version `0.2.0`.
+
+2. Aside from specifying the build system, the new `pyproject.toml` also provides an empty `project.description` (because Flit will insist on having one, even though the standards don't technically require it).
+
+3. We make a `PKG-INFO` "built metadata" file as before, and here we'll specify a third conflicting name of `demo-c` and version `0.3.0`.
+
+4. Although the standard (as far as I can tell) allows you to distribute wheels with no Python modules or packages in them, Flit insists on a top-level name (because it only does automatic discovery of whether or not you use [src layout](https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/), and thus doesn't offer explicit configuration options for what packages are present). So we create an empty `demo_b.py` to avoid an error from Flit. (Note that the Python filename uses an underscore so that it would hypothetically work with `import`; but *distribution* names are allowed to contain hyphens - which are then normalized to underscores in filenames, so that it's clear where the name ends and the version begins.)
+
+5. We set up the final conflicting name, `demo-d`, and version, `0.4.0`, in the filename for the sdist.
+
+6. We "download" the sdist as before, and then clean up as before.
+
+See how much you can guess about what will happen before proceeding.
+
+On my system, the results look like:
+
+```
+Processing ./demo_d-0.4.0.tar.gz
+  File was already downloaded /<absolute path omitted>/demo_d-0.4.0.tar.gz
+  Installing build dependencies ... done
+  Getting requirements to build wheel ... done
+  Preparing metadata (pyproject.toml) ... done
+Successfully downloaded demo-b
+```
+
+Now, to some extent it's Flit's choice that we end up with `demo-b` as the reported "successfully downloaded" package. Normally, the sdist provided to `flit-core` would also have been created by `flit-core`, so the mismatch between the `pyproject.toml` and `PKG-INFO` couldn't happen. Flit's choice, apparently, is to ignore the `PKG-INFO` file completely and re-create `METADATA` based on the `pyproject.toml` contents.
+
+Notably, though, the file names aren't used: `flit-core` can't see the name of the original tarball, nor the name of the top-level folder in that tarball - following the standard, the build system is given already-unpacked source, and runs within that directory. Although the information in these filenames is supposed to be reliable following PEP 625, not only does Pip not use it, but the build backend *can't* use it (because the build *front*end doesn't *provide* it).
+
+But the real reason I'm showing you this, of course, is because **Pip doesn't report any error**. Pip receives an sdist with all sorts of contradictory information, goes out of its way to invoke `flit-core` to build a wheel, gets a wheel for a `demo-b` package that doesn't match the original filename... *and then it doesn't care*. This result is, apparently, a "successful download". Oh, and that wheel is ultimately discarded - it doesn't show up in `pip cache list` afterward. Ultimately, the result of all that work was just to make the output say `Successfully downloaded demo-b` rather than `Successfully downloaded demo_d`. (Of course, `demo-d` and `demo_d` are both valid distribution names, so the filename doesn't unambiguously represent the distribution name.)
+
+(But considering that *we already had the file*, would it be any less ridiculous for Pip to say the download was *un*successful?)
 
 ## History
 
