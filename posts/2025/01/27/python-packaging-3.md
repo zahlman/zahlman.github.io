@@ -234,15 +234,19 @@ Oh, and the kicker: suppose we make all these redundant copies of the name and v
 
 In my testing: **no error**. The file we already had and asked to download will be "Successfully downloaded", and the built wheel will be discarded (maybe it's cached somewhere, but I don't see any evidence in `pip cache list`). Running the arbitrary code, to verify the redundant information that was required by standard to match up and which we didn't really care about anyway, didn't even matter after all. But really, producing an error at this point would be just as ridiculous.
 
-## Appendix: a Timeline
+## History
 
-It's hard for me to be sure exactly when Pip first supported downloading Python packages without either installing them or tracking down their dependencies; and the command syntax for doing so has changed over time. But as far as I can tell, using this feature has resulted in Pip still attempting to build the package - therefore running arbitrary code - for the entire time that it has been available.
+When I started writing this post, I knew that this issue had existed for a long time, but I wasn't completely sure when it had been introduced. I did know that PyPI hosts versions of Pip going all the way back to [0.2](), which is the first to bear the name "pip" (having been [originally named](https://en.wikipedia.org/wiki/Pip_%28package_manage%29#History) "pyinstall"). Since I was lagging behind on editing, I decided I might as well do a bit more research. With some difficulty (and perhaps a story for another time), I managed to set up Pip 0.2 in a separate environment for testing.
 
-PyPI doesn't have the original 0.1.x releases, but [the 0.2 release](https://pypi.org/project/pip/0.2/) -- the first to bear the name "pip" -- is from October 2008.
+Of course, it requires Python 2.x, and the command syntax has changed over the years, and so have the packaging standards. And in those days, Pip explicitly had Setuptools as a dependency.
 
-I had a look through Pip 0.2 source code, and, as far as I can tell, it describes a `--no-install` (yes, really) flag for `pip install` which is documented to "Download and unpack all packages, but don't actually install them". I find it quite unpleasant tracing through this code (which is almost certainly unusuable in a modern environment) but from what I can tell, it would indeed attempt to build packages (and run code from `setup.py` - explicitly looked up by name, since back then Distutils/Setuptools was your only option) in this circumstance. But I'm really not set up to test this properly.
+But I did eventually manage to create a compatible test project (with actually a surprisingly recent version of Setuptools), and try out a "download" using `pip install --no-install` (yes, that really was the syntax, to "Download and unpack all packages, but don't actually install them".
 
-For reference, I've assembled the following timeline of relevant events:
+And just as I expected, the "download" and "unpack" process would still "build" the project separately, and therefore run arbitrary code from `setup.py`.
+
+So there you have it - the problem has existed for Pip's entire history, over 16 years.
+
+Just to round things off, I've assembled a timeline of relevant events, thus:
 
 ### October 2009
 
