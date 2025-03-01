@@ -1,9 +1,11 @@
 # Python packaging: Why we can't have nice things @python-packaging
 # Part 3: Premature Compilation #python #pip #security #setuptools
 
-Pip 25.0 [has been out](https://discuss.python.org/t/_/78392) for [a bit over a week now](https://github.com/pypa/pip/releases/tag/25.0); and we now also have an [official blog post](https://ichard26.github.io/blog/2025/01/whats-new-in-pip-25.0/) about the release.
+Pip 25.0 [has been out](https://discuss.python.org/t/_/78392) for [a bit over a month now](https://github.com/pypa/pip/releases/tag/25.0); and we now also have an [official blog post](https://ichard26.github.io/blog/2025/01/whats-new-in-pip-25.0/) about the release, as well as a 25.0.1 patch for a regression.
 
-As I very much expected (I suppose I could have verified this against a pre-release version...), it has a very serious bug. I believe that warnings are more important than baiting people to read the post, so here's the PSA up front:
+Pip 25.0 has what I consider a very serious security vulnerability. In the Python ecosystem, it's normal and expected that third-party packages provide their own, arbitrary "setup" code for installation (for example, to run C compilers in project-specific ways, when the code uses a C extension). But Pip will run such code *in many more situations than you might naively expect*. I think it's obvious that running arbitrary code *when you aren't expecting it and prepared for it* is a much bigger problem. The user should have a chance to decide whether to trust the code, first.
+
+I believe that warnings are more important than baiting people to read the post, so here's the PSA up front:
 
 1. **Never use Pip to download, test, "dry-run" etc. an untrusted source distribution (sdist).** [It will try to build the package](https://github.com/pypa/pip/issues/1884), **potentially running arbitrary code** (as building an sdist always entails). Instead, use the [PyPI website](https://pypi.org) directly, or the [API](https://docs.pypi.org/api/json/) it provides.
 
@@ -11,13 +13,11 @@ As I very much expected (I suppose I could have verified this against a pre-rele
 
 3. If you expect wheels to be available for the packages you want to install with Pip, **strongly consider adding `--only-binary=:all:` to the Pip command** to ensure that only wheels are used. If you really need to use sdists, it's wise to inspect them first, which by definition isn't possible with a fully automated installation.
 
-4. If you release Python packages, [please try to provide wheels for them](https://pradyunsg.me/blog/2022/12/31/wheels-are-faster-pure-python/), even if - no, *especially* if your package includes only Python code and doesn't require explicitly "compiling" anything. An sdist is *much* slower to install than a wheel even in trivial cases; and making a wheel available allows your users to demand wheels from Pip, raising the overall baseline for trust and safety in the Python ecosystem.
+4. If you release Python packages, [please try to provide wheels for them](https://pradyunsg.me/blog/2022/12/31/wheels-are-faster-pure-python/), even if - no, *especially* if your package includes only Python code and doesn't require explicitly "compiling" anything. An sdist is *much* slower to install than a wheel even in these cases, and making a wheel available allows your users to demand wheels from Pip - raising the overall baseline for trust and safety in the Python ecosystem.
 
-There are two things I should clarify up front. First: it's normal and expected that building an sdist involves running arbitrary code - because "building" them can mean arbitrary things. C isn't the only language used to extend Python (not by a long shot), and plenty of projects are dependent on specific compilers, custom settings, additional prep work done before and/or after building, etc. However, running arbitrary code *when you aren't expecting it and prepared for it* is obviously a much bigger problem.
+Okay, I did clickbait a bit. This security issue *isn't* some new discovery. In fact, it has plagued Pip *for its entire history*.
 
-Second: this problem *isn't* some new discovery, nor is it specific to the new release - I'm just taking that opportunity to bring up the topic. This is the Nth iteration of a problem that has plagued Pip *for almost its entire history*.
-
-With that out of the way, let me get into the detailed examination.
+Please enjoy my detailed analysis below.
 
 <!-- END_TEASER -->
 
