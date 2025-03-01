@@ -304,7 +304,7 @@ But the real reason I'm showing you this, of course, is because **Pip doesn't re
 
 ## History
 
-When I started writing this post, I knew that this issue had existed for a long time, but I wasn't completely sure when it had been introduced. I did know that PyPI hosts versions of Pip going all the way back to [0.2](), which is the first to bear the name "pip" (having been [originally named](https://en.wikipedia.org/wiki/Pip_%28package_manage%29#History) "pyinstall"). Since I was lagging behind on editing, I decided I might as well do a bit more research. With some difficulty (and perhaps a story for another time), I managed to set up Pip 0.2 in a separate environment for testing.
+When I started writing this post, I knew that this issue had existed for a long time, but I wasn't completely sure when it had been introduced. I did know that PyPI hosts versions of Pip going all the way back to [0.2](https://pypi.org/project/pip/0.2/), which is the first to bear the name "Pip" (having been [originally named](https://en.wikipedia.org/wiki/Pip_%28package_manage%29#History) "pyinstall"). Since I was lagging behind on editing, I decided I might as well do a bit more research. With some difficulty (and perhaps a story for another time), I managed to set up Pip 0.2 in a separate environment for testing.
 
 Of course, it requires Python 2.x, and the command syntax has changed over the years, and so have the packaging standards. And in those days, Pip explicitly had Setuptools as a dependency.
 
@@ -322,11 +322,11 @@ Just to round things off, I've assembled a timeline of relevant events, thus:
 
 ### July 2011
 
-It's [reported](https://github.com/pypa/pip/issues/315) that `pip install --download` won't download dependencies, even *without* specifying `--no-deps`. (The `--download` flag for `pip install` was available since at least 0.6, and `--no-deps` since 0.5; but the earliest versions are not dated in the changelog, and there's no clear indication of exactly when the download feature was added. PyPI doesn't )
+It's reported in [Pip issue 315](https://github.com/pypa/pip/issues/315) that `pip install --download` won't download dependencies, even *without* specifying `--no-deps`. (The `--download` flag for `pip install` was available since at least 0.6, and `--no-deps` since 0.5; but the earliest versions are not dated in the changelog, and there's no clear indication of exactly when the download feature was added. PyPI doesn't )
 
 ### January 2012
 
-It's [pointed out](https://github.com/pypa/pip/issues/425) that Pip runs arbitrary code from `setup.py` in a separate context - the risk of the connection to PyPI being spoofed. (In those days, SSL and HTTPS were not nearly so plug-and-play as they are now.)
+It's pointed out in [Pip issue 425](https://github.com/pypa/pip/issues/425) that Pip runs arbitrary code from `setup.py` in a separate context - the risk of the connection to PyPI being spoofed. (In those days, SSL and HTTPS were not nearly so plug-and-play as they are now.)
 
 ### February 2012
 
@@ -334,7 +334,7 @@ It's [pointed out](https://github.com/pypa/pip/issues/425) that Pip runs arbitra
 
 ### September 2012
 
-[Issue 661](https://github.com/pypa/pip/issues/661) is the first report I can find of the problem. The issue was deemed a problem with the `setup.py` of the to-be-downloaded package, added to that package's issue tracker almost two years later, and finally closed in 2017 after no further commentary. A salient comment:
+[Pip issue 661](https://github.com/pypa/pip/issues/661) is the first I can find that directly describes the problem. The issue was deemed a problem with the `setup.py` of the to-be-downloaded package, added to that package's issue tracker almost two years later, and finally closed in 2017 after no further commentary. A salient comment:
 
 > The root problem here is that Python packaging does not yet have static metadata, and thus requires running `setup.py` to even acquire metadata about a package; to make sure it is actually the right project name and version, to find out what dependencies it has, etc. And projects like psycopg2 or scipy that have build dependencies are not careful to make it possible to get that metadata out of `setup.py` if you don't have all the build dependencies present on your system, because they primarily think of setup.py as intended for actual installation.
 
@@ -342,21 +342,21 @@ It's [pointed out](https://github.com/pypa/pip/issues/425) that Pip runs arbitra
 
 ### December 2013
 
-[Issue 1374](https://github.com/pypa/pip/issues/1374) is another similar report. A distinction is drawn between building the package vs. running `setup.py egg_info` (not meaningful with modern `pyproject.toml`-based builds), which in principle is only supposed to figure out the metadata but in practical terms might invoke compilers for C code etc. anyway. The explanation is offered that "This is necessary to extract dependency information in order to download any dependencies."; everyone apparently overlooks that `--no-deps` has no effect on this behaviour.
+[Pip issue 1374](https://github.com/pypa/pip/issues/1374) is another similar report. A distinction is drawn between building the package vs. running `setup.py egg_info` (not meaningful with modern `pyproject.toml`-based builds), which in principle is only supposed to figure out the metadata but in practical terms might invoke compilers for C code etc. anyway. The explanation is offered that "This is necessary to extract dependency information in order to download any dependencies."; everyone apparently overlooks that `--no-deps` has no effect on this behaviour.
 
 ### June 2014
 
-Issue 1884, "[Avoid generating metadata in `pip download --no-deps ...`](https://github.com/pypa/pip/issues/1884) (as it's currently titled) is opened on the Pip bug tracker. This seems to have become the canonical version of the bug report (others are closed as duplicates of it). The first reply offers a choice quote:
+[Pip issue 1884](https://github.com/pypa/pip/issues/1884), "Avoid generating metadata in `pip download --no-deps ...`" (as it's currently titled), is opened. This seems to have become the canonical version of the bug report (others are closed as duplicates of it). The first reply offers a choice quote:
 
 > It's an unfortunate fact of the Python packaging ecosystem that anything related to packaging always involves arbitrary code execution (referring to `setup.py`).
 
-(This is before wheels existed, of course, so that would have been even more true.)
+(This was before wheels existed, of course, so that would have been even more true.)
 
-There are probably also quite a few later duplicates of this issue that *weren't* marked as such - for example, I found [issue 2103](https://github.com/pypa/pip/issues/2103).
+There are several later duplicates of the issue - not all of them recognized and marked as such. For example, [issue 2103](https://github.com/pypa/pip/issues/2103) wasn't marked as a duplicate.
 
 ### April 2015
 
-[The original proposal](https://github.com/pypa/pip/issues/2643) is made for the `pip download` command that will be added in Pip 8.0.0.
+[The original proposal](https://github.com/pypa/pip/issues/2643) is made for the `pip download` command that will be added in Pip 8.0.0, as issue 2643.
 
 ### January 2016
 
@@ -368,7 +368,7 @@ There are probably also quite a few later duplicates of this issue that *weren't
 
 ### February 2017
 
-Issue 4289, "[Issue with "pip download \-\-platform" semantics](https://github.com/pypa/pip/issues/4289)" is opened on the Pip bug tracker, reporting the (undocumented) restriction mentioned above.
+[Pip issue 4289](https://github.com/pypa/pip/issues/4289), 'Issue with "pip download \-\-platform" semantics', is opened, reporting the (undocumented) restriction mentioned above.
 
 ### May 2017
 
@@ -386,13 +386,11 @@ A proposal is made to close issue 1884 because the `pip install --download` comm
 
 The title of issue 1884 is edited for the first time, to reflect the command syntax change from `pip install --download` to `pip download`. (This is almost four years after the new command was actually implemented.)
 
-Issue 7325, [Disallow execution of setup.py when "pip download \-\-no-deps someproject"](https://github.com/pypa/pip/issues/7325) is opened on the Pip bug tracker. (This is one of many duplicates, mentioned here primarily because it's one that Brendan Dolan-Gavitt cited.)
+[Pip issue 7325](https://github.com/pypa/pip/issues/7325), 'Disallow execution of setup.py when "pip download \-\-no-deps someproject"', is opened.
 
 ### April 2020
 
-Issue 7995, "[`pip download --no-deps --no-binary` does some unwanted build steps](https://github.com/pypa/pip/issues/7995)" is opened on the Pip bug tracker.
-
-A choice quote:
+[Pip issue 7995](https://github.com/pypa/pip/issues/7995), "`pip download --no-deps --no-binary` does some unwanted build steps" is opened. A choice quote:
 
 > > Is there any case where it is useful to collect dependencies when `--no-deps` is specified?
 >
@@ -402,7 +400,7 @@ Meanwhile, a workaround is offered on issue 1884, but it turns out not to work i
 
 ### June 2020
 
-Issue 8387, "[Using pip download to fetch package sources seems to trigger building wheels for some packages.](https://github.com/pypa/pip/issues/8387)" is opened on the Pip bug tracker. This is another duplicate, but it notably reveals the fact that `setup.py egg_info` is run when `--no-use-pep517` is passed to `pip download`.
+[Pip issue 8387](https://github.com/pypa/pip/issues/8387), "Using pip download to fetch package sources seems to trigger building wheels for some packages.", is opened on the Pip bug tracker. This is another duplicate, but it notably reveals the fact that `setup.py egg_info` is run when `--no-use-pep517` is passed to `pip download`. (Again, one may wonder why a download command is accepting options that control the build process; the obvious answer is that the UI *explicitly provides for* the expectation that the project will be built even though only a download is requested.)
 
 ### July 2020
 
@@ -436,7 +434,7 @@ It is not really explained why such a hypothetical result should be a problem (o
 
 ### September 2020
 
-Issue 8850, "[`pip download --no-deps` runs `setup.py egg_info` unnecessarily and fails](https://github.com/pypa/pip/issues/8850)" is opened on the Pip bug tracker. Notably, the name of the [`egg_info` subcommand](https://setuptools.pypa.io/en/latest/deprecated/commands.html#egg-info-create-egg-metadata-and-set-build-tags) refers to the long-outdated "egg" format for packages; Pip still supports this (but at least it's *deprecated*... since 23.2... on Python 3.11 and up... and there may still be binary distribution formats that use the corresponding `.egg-info` metadata format). This report was dismissed as a bug in the package (which was trying to use undocumented internals of Pip in its `setup.py` logic).
+[Pip issue 8850](https://github.com/pypa/pip/issues/8850), "`pip download --no-deps` runs `setup.py egg_info` unnecessarily and fails", is opened. Notably, the name of the [`egg_info` subcommand](https://setuptools.pypa.io/en/latest/deprecated/commands.html#egg-info-create-egg-metadata-and-set-build-tags) refers to the long-outdated "egg" format for packages; Pip still supports this (but at least it's *deprecated*... since 23.2... on Python 3.11 and up... and there may still be binary distribution formats that use the corresponding `.egg-info` metadata format). This report was dismissed as a bug in the package (which was trying to use undocumented internals of Pip in its `setup.py` logic).
 
 ### October 2020
 
@@ -448,7 +446,7 @@ It is [discovered and reported on issue 1884](https://github.com/pypa/pip/issues
 
 ### March 2021
 
-Issue 9701, "[pip download \-\-no-deps tries to use PEP517 so badly it is not usable to download stuff](https://github.com/pypa/pip/issues/9701)" is opened on the Pip bug tracker. We get this choice quote:
+[Pip issue 9701](https://github.com/pypa/pip/issues/9701), "pip download \-\-no-deps tries to use PEP517 so badly it is not usable to download stuff", is opened. We get this choice quote:
 
 > The problem is that the only way to be sure that a sdist actually provides the version you specify is to build it. Yes, we could rely on the sdist filename, but it's not technically reliable, and we'd need to special-case stuff to make it work.
 >
@@ -456,7 +454,7 @@ Issue 9701, "[pip download \-\-no-deps tries to use PEP517 so badly it is not us
 >
 > To be honest, though, if you want to just download a sdist from PyPI, pip probably isn't the tool you want. It's not that hard to query the PyPI JSON interface for the sdist url, and wget it. If I were doing this often enough that manually downloading via the web interface was insufficient, that's what I'd do.
 
-(Editor's note: the link to PEP 643, "Metadata for Package Source Distributions", is not present in the original.)
+(Editor's note: the link to PEP 643, "Metadata for Package Source Distributions", is not present in the original. To be fair, at this point the PEP had only been accepted a few months ago. Before that point, to my understanding, sdists were still expected to include a `PKG-INFO` file, but it's unclear what if anything one could actually *do with* that information.)
 
 Meanwhile, back on issue 1884, in response to someone ruminating about forking Pip or starting work on a replacement:
 
@@ -478,7 +476,7 @@ There's also a reference back to issue 7995, and an objection that validation ca
 
 > The biggest roadblock (aside from coming up with a rule that makes sense) is implementation; validation should only be skipped on very specific subcommand-option combinations, and it’s not trivial to pass all the needed context all the way down to where the validation is done.
 
-This "pass all the needed context" language appears to refer to the December 2020 discovery. There's also a reference to issue 6607, ["Build Logic Refactor"](https://github.com/pypa/pip/issues/6607) from June 2019, which proposes some cleanups for that context chain.
+This "pass all the needed context" language appears to refer to the December 2020 discovery. There's also a reference to [issue 6607](https://github.com/pypa/pip/issues/6607), "Build Logic Refactor", from June 2019, which proposes some cleanups for that context chain.
 
 (Again, the complaints made on issue 1884 in August 2020 are not addressed.)
 
@@ -486,7 +484,7 @@ Finally the issue was (understandably) duped to 7995.
 
 ### July 2021
 
-Issues 7995 (originally specifically about `pyproject.toml` based builds) and 1884 (originally specifically about `setup.py` based builds) are consolidated.
+Pip issues 7995 (originally specifically about `pyproject.toml` based builds) and 1884 (originally specifically about `setup.py` based builds) are consolidated.
 
 ### October 2021
 
@@ -504,7 +502,7 @@ Issue 1884 is locked, with the comment:
 
 PEP 625 is accepted.
 
-Setuptools issue 3593, ["[FR] Implement PEP 625 - File Name of a Source Distribution"](https://github.com/pypa/setuptools/issues/3593) is opened on the *Setuptools* issue trtracker. It is closed as completed in June 2024.
+[Setuptools issue 3593](https://github.com/pypa/setuptools/issues/3593), "[FR] Implement PEP 625 - File Name of a Source Distribution", is opened.
 
 ### April 2024
 
