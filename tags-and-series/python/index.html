@@ -120,6 +120,60 @@
 
                 
     <p class="dateline">
+        <a href="../../posts/2025/02/28/python-packaging-3/" rel="bookmark">
+            
+    
+    <time class="published dt-published" datetime="2025-02-28T00:00:00-05:00" itemprop="datePublished" title="February 28, 2025">
+        February 28, 2025
+    </time></a>
+    </p>
+
+                
+        <p class="commentline">
+            <a href="../../posts/2025/02/28/python-packaging-3/#giscus-comments">Comments</a>
+        </p>
+
+            </div>
+                <h2 class="p-name entry-title">
+                    <a href="../../posts/2025/02/28/python-packaging-3/" rel="bookmark" class="u-url">
+                        Python packaging: Why we can't have nice things<br><small>Part 3: Premature Compilation</small>
+                    </a>
+                </h2>
+        </header><div class="p-summary entry-summary">
+            <div>
+<p>Pip 25.0 <a href="https://discuss.python.org/t/_/78392">has been out</a> for <a href="https://github.com/pypa/pip/releases/tag/25.0">a bit over a month now</a>; and we now also have an <a href="https://ichard26.github.io/blog/2025/01/whats-new-in-pip-25.0/">official blog post</a> about the release, as well as a 25.0.1 patch for a regression.</p>
+<p>Pip 25.0 has what I consider a very serious security vulnerability. In the Python ecosystem, it's normal and expected that third-party packages provide their own, arbitrary "setup" code for installation (for example, to run C compilers in project-specific ways, when the code uses a C extension). But Pip will run such code <em>in many more situations than you might naively expect</em>. I think it's obvious that running arbitrary code <em>when you aren't expecting it and prepared for it</em> is a much bigger problem. The user should have a chance to decide whether to trust the code, first.</p>
+<p>I believe that warnings are more important than baiting people to read the post, so here's the PSA up front:</p>
+<ol>
+<li>
+<p><strong>Never use Pip to download, test, "dry-run" etc. an untrusted source distribution (sdist).</strong> <a href="https://github.com/pypa/pip/issues/1884">It will try to build the package</a>, <strong>potentially running arbitrary code</strong> (as building an sdist always entails). Instead, use the <a href="https://pypi.org">PyPI website</a> directly, or the <a href="https://docs.pypi.org/api/json/">API</a> it provides.</p>
+</li>
+<li>
+<p><strong>Never use <code>sudo</code> to run Pip</strong> (nor run it with administrative privileges on Windows). Aside from the potential problems caused by conflicting with the system package manager, Pip <a href="https://github.com/pypa/pip/issues/11034"><strong>will not drop privileges</strong></a> when it runs as root and attempts to build an sdist - which again, <strong>potentially runs arbitrary code</strong>.</p>
+</li>
+<li>
+<p>If you expect wheels to be available for the packages you want to install with Pip, <strong>strongly consider adding <code>--only-binary=:all:</code> to the Pip command</strong> to ensure that only wheels are used. If you really need to use sdists, it's wise to inspect them first, which by definition isn't possible with a fully automated installation.</p>
+</li>
+<li>
+<p>If you release Python packages, <a href="https://pradyunsg.me/blog/2022/12/31/wheels-are-faster-pure-python/">please try to provide wheels for them</a>, even if - no, <em>especially</em> if your package includes only Python code and doesn't require explicitly "compiling" anything. An sdist is <em>much</em> slower to install than a wheel even in these cases, and making a wheel available allows your users to demand wheels from Pip - raising the overall baseline for trust and safety in the Python ecosystem.</p>
+</li>
+</ol>
+<p>Okay, I did clickbait a bit. This security issue <em>isn't</em> some new discovery. In fact, it has plagued Pip <em>for its entire history</em>.</p>
+<p>Please enjoy my detailed analysis below.</p>
+<p class="more"><a href="../../posts/2025/02/28/python-packaging-3/">Read more (35)…</a></p>
+</div>
+        </div>
+    </article><hr>
+<article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><div class="metadata">
+                
+    <p class="byline author vcard p-author h-card">
+        <span class="byline-name fn p-name" itemprop="author">
+            Karl Knechtel
+        </span>
+    </p>
+
+                
+    <p class="dateline">
         <a href="../../posts/2025/01/11/a-brief-annotation/" rel="bookmark">
             
     
@@ -256,42 +310,6 @@
 <p>Happy new year to all.</p>
 <p>Today's post is about a folder on my desktop named <code>dev</code>. It's where I've kept (for many years, well into my Windows-using days, even into the era when I used SVN rather than Git) all my working copies for my own projects (and forks of others'), mostly Python code of course. (I'm not sure how I organized things at the time, but there are projects in there dating back to 2006.)</p>
 <p class="more"><a href="../../posts/2024/12/31/todo-list-2/">Read more (21)…</a></p>
-</div>
-        </div>
-    </article><hr>
-<article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><div class="metadata">
-                
-    <p class="byline author vcard p-author h-card">
-        <span class="byline-name fn p-name" itemprop="author">
-            Karl Knechtel
-        </span>
-    </p>
-
-                
-    <p class="dateline">
-        <a href="../../posts/2024/12/24/python-packaging-1/" rel="bookmark">
-            
-    
-    <time class="published dt-published" datetime="2024-12-24T00:00:00-05:00" itemprop="datePublished" title="December 24, 2024">
-        December 24, 2024
-    </time></a>
-    </p>
-
-                
-        <p class="commentline">
-            <a href="../../posts/2024/12/24/python-packaging-1/#giscus-comments">Comments</a>
-        </p>
-
-            </div>
-                <h2 class="p-name entry-title">
-                    <a href="../../posts/2024/12/24/python-packaging-1/" rel="bookmark" class="u-url">
-                        Python packaging: Why we can't have nice things<br><small>Part 1: The Old Refrain</small>
-                    </a>
-                </h2>
-        </header><div class="p-summary entry-summary">
-            <div>
-<p>This post is a start of a series I've planned about how packaging currently works in Python, what's wrong with it, and how to cope with the problems. But before I get into the meat of it, I want to talk about common complaints that <em>don't</em> resonate with me.</p>
-<p class="more"><a href="../../posts/2024/12/24/python-packaging-1/">Read more (22)…</a></p>
 </div>
         </div>
     </article>

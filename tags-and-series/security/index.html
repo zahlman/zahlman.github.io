@@ -2,18 +2,18 @@
 <html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#" lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="description" content='In this series I discuss various issues with the Python "ecosystem", in particular the tools and standards involved in packaging and distributing Python projects.'>
+<meta name="description" content="None">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>My thoughts on Python packaging | Zahlblog</title>
+<title>Posts about security | Zahlblog</title>
 <link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
 <meta name="theme-color" content="#5670d4">
 <meta name="generator" content="Nikola (getnikola.com)">
 <link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
-<link rel="canonical" href="https://zahlman.github.io/tags-and-series/series-python-packaging/">
+<link rel="canonical" href="https://zahlman.github.io/tags-and-series/security/">
 <link rel="icon" href="../../icon_32x32.png" sizes="32x32">
 <link rel="icon" href="../../icon_192x192.png" sizes="192x192">
-<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><link rel="alternate" type="application/rss+xml" title="RSS for category python-packaging" hreflang="en" href="../series-python-packaging.xml">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><link rel="alternate" type="application/rss+xml" title="RSS for tag security" hreflang="en" href="../security.xml">
 </head>
 <body>
         <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -66,12 +66,12 @@
     </ul></aside><div class="col-md-8 blog-main">
                         
     
-    <header><h1>My thoughts on Python packaging</h1>
-            In this series I discuss various issues with the Python "ecosystem", in particular the tools and standards involved in packaging and distributing Python projects. | 
+    <header><h1>Posts about security</h1>
+            
     <div class="metadata" style="display:inline">
             <p class="feedlink">
                     
-        <a href="../series-python-packaging.xml" hreflang="en" type="application/rss+xml">RSS feed</a>
+        <a href="../security.xml" hreflang="en" type="application/rss+xml">RSS feed</a>
 
             </p>
 </div>
@@ -154,79 +154,6 @@
 <p>Okay, I did clickbait a bit. This security issue <em>isn't</em> some new discovery. In fact, it has plagued Pip <em>for its entire history</em>.</p>
 <p>Please enjoy my detailed analysis below.</p>
 <p class="more"><a href="../../posts/2025/02/28/python-packaging-3/">Read more (35)…</a></p>
-</div>
-        </div>
-    </article><hr>
-<article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><div class="metadata">
-                
-    <p class="byline author vcard p-author h-card">
-        <span class="byline-name fn p-name" itemprop="author">
-            Karl Knechtel
-        </span>
-    </p>
-
-                
-    <p class="dateline">
-        <a href="../../posts/2025/01/07/python-packaging-2/" rel="bookmark">
-            
-    
-    <time class="published dt-published" datetime="2025-01-07T00:00:00-05:00" itemprop="datePublished" title="January 7, 2025">
-        January 7, 2025
-    </time></a>
-    </p>
-
-                
-        <p class="commentline">
-            <a href="../../posts/2025/01/07/python-packaging-2/#giscus-comments">Comments</a>
-        </p>
-
-            </div>
-                <h2 class="p-name entry-title">
-                    <a href="../../posts/2025/01/07/python-packaging-2/" rel="bookmark" class="u-url">
-                        Python Packaging: Why we can't have nice things<br><small>Part 2: Stupid Pipx Tricks</small>
-                    </a>
-                </h2>
-        </header><div class="p-summary entry-summary">
-            <div>
-<p>Pip has a lot of problems (that I'll be discussing in future posts in this series), but the good news is that you don't have to resort to heavyweight third-party tools to improve your experience with Python packaging. <a href="https://pipx.pypa.io/stable/">Pipx</a> (now <a href="https://packaging.python.org/en/latest/key_projects/#pipx">under</a> the <a href="https://www.pypa.io/en/latest/">Python Packaging Authority (PyPA)</a> umbrella) is a focused wrapper around Pip that handles the major pain points without trying to take over your entire workflow.</p>
-<p>In this post I'll talk about Pipx's major use cases, its limitations, and how to get more mileage out of it with a few simple tweaks.</p>
-<p class="more"><a href="../../posts/2025/01/07/python-packaging-2/">Read more (10)…</a></p>
-</div>
-        </div>
-    </article><hr>
-<article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><div class="metadata">
-                
-    <p class="byline author vcard p-author h-card">
-        <span class="byline-name fn p-name" itemprop="author">
-            Karl Knechtel
-        </span>
-    </p>
-
-                
-    <p class="dateline">
-        <a href="../../posts/2024/12/24/python-packaging-1/" rel="bookmark">
-            
-    
-    <time class="published dt-published" datetime="2024-12-24T00:00:00-05:00" itemprop="datePublished" title="December 24, 2024">
-        December 24, 2024
-    </time></a>
-    </p>
-
-                
-        <p class="commentline">
-            <a href="../../posts/2024/12/24/python-packaging-1/#giscus-comments">Comments</a>
-        </p>
-
-            </div>
-                <h2 class="p-name entry-title">
-                    <a href="../../posts/2024/12/24/python-packaging-1/" rel="bookmark" class="u-url">
-                        Python packaging: Why we can't have nice things<br><small>Part 1: The Old Refrain</small>
-                    </a>
-                </h2>
-        </header><div class="p-summary entry-summary">
-            <div>
-<p>This post is a start of a series I've planned about how packaging currently works in Python, what's wrong with it, and how to cope with the problems. But before I get into the meat of it, I want to talk about common complaints that <em>don't</em> resonate with me.</p>
-<p class="more"><a href="../../posts/2024/12/24/python-packaging-1/">Read more (22)…</a></p>
 </div>
         </div>
     </article>
