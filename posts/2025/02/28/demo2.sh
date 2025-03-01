@@ -3,7 +3,7 @@
 # Permission is granted to reproduce this code locally for testing purposes,
 # but please don't republish or redistribute it - instead, please direct
 # interested readers to this blog post at
-# https://zahlman.github.io/posts/2025/02/13/python-packaging-3/ .
+# https://zahlman.github.io/posts/2025/02/28/python-packaging-3/ .
 mkdir demo_a-0.1.0 # [1]
 cat << done_toml > demo_a-0.1.0/pyproject.toml # [2]
 [project]
