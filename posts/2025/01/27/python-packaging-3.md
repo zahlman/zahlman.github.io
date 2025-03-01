@@ -40,21 +40,23 @@ You've just learned that Pip has a `download` command, so you try:
     :::bash
     $ pip download issue7325
 
-... and *promptly get pwnt anyway*. The next thing you know, you're getting a message (because this is white-hat hacking; no actual harm was done - this time) every time you start Python in that environment:
+... and *promptly get pwnt anyway*. The next thing you know, you're getting a message (because this is white-hat hacking; no actual harm was done - *this time*...) every time you start Python in that environment:
 
     WARNING: use of "pip download --no-deps" allowed arbitrary code execution
              see https://github.com/pypa/pip/issues/7325
 
 There's also a `--dry-run` option for `pip install` which has the same problem. The only thing "dry" about a Pip dry-run install is the actual copying of files into the Python environment. It will still attempt to build a wheel by the normal process.
 
-That's strange. Why did Pip build the package, when it was explicitly asked only to download it? *Well, that's the bug*. Apologies to the impatient, but there's quite a bit more I need to say before the big reveal.
+And therein lies the bug: Pip built the package, even though it was explicitly asked only to download that package.
+
+(Apologies to the impatient, but there's much more I need to say before I can disclose *why* Pip does this.)
 
 Of course, you can avoid this risk by demanding wheels:
 
     :::bash
     $ pip download --only-binary=:all: issue7325
 
-... which would fail in this case, because a wheel was deliberately not provided for demonstration purposes. Again: if you release Python code, please provide wheels if you can. If your code is pure Python, you have no excuse. If you use [PyPA's standard build front-end]() (which I highly recommend), it will already make the wheel by default - all you have to do is include it when you upload to PyPI. If you don't have a dedicated build front-end, well first off you [shouldn't be running setup.py directly]() (and if you don't use Setuptools for building then you almost certainly do have a build front-end), but [`pip wheel`] works in a pinch.
+... which would fail in this case, because a wheel was deliberately not provided for demonstration purposes. Again: if you release Python code, please provide wheels if you can. If your code is pure Python, you have no excuse. If you use [PyPA's standard build front-end](https://build.pypa.io/en/stable/) (which I highly recommend), it will already make the wheel by default - all you have to do is include it when you upload to PyPI. If you don't have a dedicated build front-end, well first off you [shouldn't be running setup.py directly](https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html) (and if you don't use Setuptools for building then you almost certainly do have a build front-end), but [`pip wheel`](https://pip.pypa.io/en/stable/cli/pip_wheel/) works in a pinch.
 
 And, of course, there are other reasons why you might want to download an sdist. Maybe you know that there's some C code that needs a special patch for your system, or you want to edit some compiler options because you think you can optimize something. Or maybe you really need that package and the wheel just isn't available for your system. Or maybe the *latest version* isn't available as a wheel for your system yet, and you need that.
 
@@ -73,11 +75,11 @@ So why am I bringing this up, you ask? Well, it turns out that this story has a 
 
 And, well, that's where all hell broke loose:
 
-> I actually started down this path and set about running `pip install --dry-run --ignore-installed --report` on all 397,267 packages. This turned out to be a *terrible* idea. Unbeknownst to me, **even with \-\-dry-run pip will execute arbitrary code found in the package's setup.py**. In fact, **merely asking pip to** *download* **a package can execute arbitrary code** (see pip issues 7325 and 1884 for more details)! So when I tried to dry-run install almost 400K Python packages, [hilarity ensued](https://twitter.com/moyix/status/1566561433898426368). I spent a long time [cleaning up the mess](https://twitter.com/moyix/status/1566578412663209984), and discovered some [pretty poor setup.py practices](https://twitter.com/moyix/status/1566609622680608770) along the way. But hey, at least I got [two free pictures of anime catgirls](https://twitter.com/moyix/status/1566612152558944257), deposited directly into my home directory. Convenient!
+> I actually started down this path and set about running `pip install --dry-run --ignore-installed --report` on all 397,267 packages. This turned out to be a *terrible* idea. Unbeknownst to me, <span style="color: red">**even with \-\-dry-run pip will execute arbitrary code found in the package's setup.py**</span>. In fact, <span style="color: red">**merely asking pip to** *download* **a package can execute arbitrary code**</span> (see pip issues [7325](https://github.com/pypa/pip/issues/7325) and [1884](https://github.com/pypa/pip/issues/1884) for more details)! So when I tried to dry-run install almost 400K Python packages, [hilarity ensued](https://twitter.com/moyix/status/1566561433898426368). I spent a long time [cleaning up the mess](https://twitter.com/moyix/status/1566578412663209984), and discovered some [pretty poor setup.py practices](https://twitter.com/moyix/status/1566609622680608770) along the way. But hey, at least I got [two free pictures of anime catgirls](https://twitter.com/moyix/status/1566612152558944257), deposited directly into my home directory. Convenient!
 >
 > Once I had managed to clean up the mess (or hopefully, anyway—I never did find out what package tried to execute sudo), I decided I needed a different approach.
 
-(Editor's note: I've removed the links to the Pip issues because they'll come up again later in this post. And yes, that last link *does* include the pictures in question.)
+(Editor's note: Yes, that last link *does* include the catgirl pictures in question.)
 
 So, to reiterate from the introduction: the arbitrary setup code included with an sdist can be run *even for innocuous sounding "download" commands*.
 
@@ -93,7 +95,7 @@ But still, I can't pass on the opportunity to make the reference:
 <!-- It looks like I have to do the whole thing with raw HTML... -->
 <div style="text-align:center"><em>That is not a small number!</em></div><br />
 
-Now here's the big reveal. The author of that post, [Brendan Dolan-Gavitt](https://x.com/moyix) (@moyix) is not just some random C expert who read the Pip documentation (but not thoroughly enough). No, Brendan Dolan-Gavitt is a **security researcher** with an impressive publication history [going back to at least 2006](https://moyix.blogspot.com/2006/12/malware-with-twist.html).
+There's something else I need to point out here. The author of that post, [Brendan Dolan-Gavitt](https://x.com/moyix) (@moyix) is not just some random C expert who read the Pip documentation (but not thoroughly enough). No, Brendan Dolan-Gavitt is a **security researcher** with an impressive publication history [going back to at least 2006](https://moyix.blogspot.com/2006/12/malware-with-twist.html).
 
 Yeah.
 
@@ -105,7 +107,7 @@ Using the website interface is also, arguably, the best way to protect yourself 
 
 ## Let's Make Things Silly
 
-While I'm thankful to [Wim Jeantine-Glenn](https://pypi.org/user/wim.glenn/) for creating an example (for Pip issue 7325) that demonstrates the problem in a reasonably realistic (but minimal) way, in my opinion it really doesn't show off how absurd the overall problem is.
+While I'm thankful to [Wim Jeantine-Glenn](https://pypi.org/user/wim.glenn/) for creating an example (for Pip issue 7325) that demonstrates the problem in a reasonably realistic (but minimal) way, in my opinion it really doesn't show off how absurd this all is.
 
 With that in mind, I prepared the following Bash script you can use to reproduce the problem on Linux - quickly (less than a second on my 10-year-old machine), directly and *without an Internet connection*. All you need is for `pip` to refer to a working copy of Pip. It's also written to highlight many things that might otherwise not be obvious about the nature of the problem.
 
@@ -180,7 +182,7 @@ hint: See above for details.
 
 The `Arbitrary code could have been executed here.` message, of course, comes from `build.py` - it's not a warning from Pip.
 
-Perhaps the funniest part here is that there are two disclaimers of responsiblity from Pip. These are standard messages, and normally make sense - when Pip tells the build system to build a wheel, it can't do anything about bugs in the build system itself, nor about errors in the project's build configuration. But, of course, it *is* a problem with Pip in this case *that a build is attempted at all*.
+Perhaps the funniest part here is that there are two disclaimers of responsibility from Pip. These are standard messages, and normally make sense - when Pip tells the build system to build a wheel, it can't do anything about bugs in the build system itself, nor about errors in the project's build configuration. But, of course, it *is* a problem with Pip in this case *that a build is attempted at all*.
 
 It does this even though the file is *already right there in the current directory*, and Pip *knows* that it's right there (`File was already downloaded`) and simply uses the existing file directly.
 
@@ -218,19 +220,19 @@ And there's no guarantee that build systems actually implement PEP 621 (when cre
 
 But a `PKG-INFO` file is - and, as far as I can tell, always has been - supposed to be canonical metadata. If the build system adds it to the sdist, anything that's actually in there is supposed to be authoritative, and not subject to change when creating a wheel (or an egg, to consider legacy processes). The *specific purpose* of the version 2.2 update to the core metadata format was to make sure that this file provides reliable name and version info. Those values must now be listed explicitly and cannot be marked as "dynamic" (i.e., to be calculated when creating a wheel) - they must be determined at sdist creation time (i.e., tools that compute a version number from source control history, need to do that when making an sdist from the repository). But as it stands, Pip doesn't even *check if the file is present*.
 
-And Pip is, in a meaningful sense, *supposed to* leverage PEP 625 - since it was written by a Pip developer specifically to avoid this headache, with the expectation that it won't cause a real problem:
+And Pip is, in a meaningful sense, *supposed to* leverage PEP 625 - since it was written by a Pip developer specifically to avoid this headache, with the expectation that it won't cause a real problem. Quoting from the PEP:
 
 > The filename contains the distribution name and version, to aid tools identifying a distribution without needing to download, unarchive the file, and perform costly metadata generation for introspection, if all the information they need is available in the filename.
 >
 > ...
 >
-> Currently, tools that consume sdists should, if they are to be fully correct, treat the name and version parsed from the filename as provisional, and verify them by downloading the file and generating the actual metadata (or reading it, if the sdist conforms to [PEP 643](https://peps.python.org/pep-0643/). Tools supporting this specification can treat the name and version from the filename as definitive. In theory, this could risk mistakes if a legacy filename is assumed to conform to this PEP, but in practice the chance of this appears to be vanishingly small.
+> Currently, tools that consume sdists should, if they are to be fully correct, treat the name and version parsed from the filename as provisional, and verify them by downloading the file and generating the actual metadata (or reading it, if the sdist conforms to [PEP 643](https://peps.python.org/pep-0643/)). Tools supporting this specification can treat the name and version from the filename as definitive. In theory, this could risk mistakes if a legacy filename is assumed to conform to this PEP, but in practice the chance of this appears to be vanishingly small.
 
 (Just to emphasize: PEP 625 standardizes a *file naming convention*. It took *over two years* to approve, and *almost four years in total* to see its final implementation in Setuptools - never mind any other build backends. And Pip *still* isn't able to take advantage of it, half a year after that.)
 
 Besides, if you're "downloading" a local file, then surely you shouldn't need to check the name and version like this. If you're asking to get a file from PyPI (or another index), meanwhile, you're already requesting it by name and version - and it should be the index's responsibility to ensure that it gives you the right file. Even if you don't trust the index (why are you using it, then?), nothing in the Pip command we're using actually *asks* to verify that the download correctly represents the name and version requested.
 
-## In the End
+## In the End, it Doesn't Even Matter
 
 Let's try this another way. Like I said, all of this name and version info is supposed to match up. But what if it doesn't? Of course, it's not very interesting if we intentionally break the build process like before, so to demonstrate, we'll need a setup that can actually create a valid wheel.
 
