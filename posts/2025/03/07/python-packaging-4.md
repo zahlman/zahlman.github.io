@@ -97,3 +97,29 @@ So, one could say that the slow performance on Windows is mostly Windows' fault,
 ## Pandas Thermidor aux Matplotlib with a Numpy Dependency, Garnished with Truffle PIL, Brandy and a Vendored Requests on top, and Pip
 
 ## Bloody `venv`s!
+
+Thanks for reading this far. I hope I've improved your view of Python virtual environments, and sharpened your critique of Pip.
+
+As I said in the teaser, there's more that people don't seem to like about venvs, but that will wait for another day. For now, just know that you *can* create them quickly, and use them effectively. And when you use a workflow tool like `uv`, Poetry, Hatch or PDM, it actually creates and manages virtual environments for you - you aren't really avoiding them, just adding a layer of abstraction. For all the supposed benefits of being written in Rust, `uv` doesn't save you time on this, either:
+
+```
+$ time uv venv --no-progress --no-config --offline --quiet --no-project with-uv
+
+real	0m0.105s
+user	0m0.049s
+sys	0m0.016s
+```
+
+That's about twice as long as the built-in `venv`. As far as I can tell, Astral has basically ported the logic of the third-party `virtualenv` (which the standard library `venv` is based upon) in Rust. This adds more activation scripts for additional environments, as well as a shim used for distutils support - even after the [removal of distutils from the standard library]().
+
+At any rate, it's faster than `virtualenv`:
+
+```
+$ time virtualenv --no-seed --no-download --quiet with-virtualenv
+
+real	0m0.180s
+user	0m0.155s
+sys	0m0.026s
+```
+
+...but it's not faster than `venv` using `--without-pip`, as seen earlier. Without installing Pip, the overall logic is pretty simple - you really just need to copy a template into place. There's no real reason to expect massive gains from Rust (or any statically compiled language) there.
