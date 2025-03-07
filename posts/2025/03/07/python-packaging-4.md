@@ -76,9 +76,11 @@ $ du -sB1 test-venv/lib/python3.12/site-packages
 
 This is primarily what I mean about it being Pip's fault.
 
+## Don't worry, dear, I'll have your Pip
+
 ## Windows, Egg, Pip and Python
 
-(Don't worry, I'm not bringing up the legacy "egg" packaging format here - just continuing with the [reference]().)
+(Don't worry, I'm not bringing up the legacy "egg" packaging format here - just continuing with the [reference](https://en.wikipedia.org/wiki/Spam_%28Monty_Python_sketch%29).)
 
 As part of my research for this piece, I booted into the copy of Windows 10 I had lying around on another SSD, for the first time in probably years. I didn't dare connect to the Internet, but I could still test how `venv` under Python 3.8 coped with installing an older Pip version (20.1.1, I think).
 
@@ -88,10 +90,10 @@ To keep a long story short: Pip of that era was comparable in size. A Windows ve
 
 So, one could say that the slow performance on Windows is mostly Windows' fault, since the majority of the time taken there is time not taken on Linux. But I suspect this is really a multiplier that applies to pretty much everything, and anyway, neither Pip nor Python devs can really do anything about it. So I don't mind keeping my attention focused on Pip here. More to the point: the results vary slightly according to Python and Pip versions, but not enough to matter to the discussion. It's not a *temporary* problem in Pip; if anything, the long-term trend has been for the problem to get worse, as Pip builds in more backwards-compatibility layers. (The most recent versions of Pip are not the biggest, though; they've recently completed some migrations from one dependency to another, and no longer have to vendor both.)
 
-## Don't worry, dear, I'll have your Pip
-
 ## Pip, Setuptools, `easy_install`, Python and Pip
 
 ## Pip, Pip, Baked `.pyc`s and Pip
+
+## Pandas Thermidor aux Matplotlib with a Numpy Dependency, Garnished with Truffle PIL, Brandy and a Vendored Requests on top, and Pip
 
 ## Bloody `venv`s!
