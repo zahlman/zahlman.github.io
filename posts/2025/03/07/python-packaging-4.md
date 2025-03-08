@@ -143,7 +143,9 @@ But really, a much cleaner solution was staring everyone in the face the entire 
 
 Because of the history, however, Pip didn't initially face pressure to shape itself up to work that way. (It goes without saying, I hope, that this is one of the key design mistakes I'm trying to address with [Paper](https://github.com/zahlman/paper).)
 
-## Pip, Pip, Baked `.pyc`s and Pip
+## Pip, Python, Runpy and Pip
+
+## Pip, Pip, Pip, Pip, Pip, Pip, Baked `.pyc`s, Pip, Pip, Pip and Pip
 
 ## Pandas Thermidor aux Matplotlib with a Numpy Dependency, Garnished with Truffle PIL, Brandy and a Vendored Requests on top, and Pip
 
