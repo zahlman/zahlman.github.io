@@ -1,11 +1,11 @@
 # Python packaging: Why we can't have nice things @python-packaging
 # Part 4: Multipiplation #python #pip #bloat #virtual-environments
 
-Over the years I've seen a lot of grumbling about Python's virtual environments, and resistance to using them - directly, at least. I have another piece planned about the general topic, and about how most of the issues people seem to complain about with virtual environments are really Pip's fault.
+Over the years I've seen a lot of grumbling about Python's [virtual environments](https://peps.python.org/pep-0405/), and resistance to using them - directly, at least. I have another piece planned about the general topic, and about how most of the issues people seem to complain about with virtual environments are really Pip's fault.
 
 Today, I want to focus on one specific issue: the perception that creating a virtual environment is slow and wastes disk space.
 
-Spoiler: it's almost entirely Pip's fault (except on Windows, where it's partly Windows' fault).
+Spoiler: it's Pip's fault - but also partly Windows' fault, *even if you don't use Windows*.
 
 <!-- TEASER_END -->
 
