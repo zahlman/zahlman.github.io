@@ -37,6 +37,7 @@ pip     24.0
 The virtual environment is created with a fresh copy of Pip, allowing standard idioms like `python -m pip` to just work, cross-platform<sup>\*</sup> and regardless of whether you're using a virtual environment or the base Python environment. However, this copy comes from a "bootstrap" wheel vendored with the Python standard library. In short, it's frozen in time along with the Python distribution. The Pip development team, meanwhile, only ever supports the most recent release, and Pip itself likes to nag you with messages that a new version is available (unless you `--disable-pip-version-check`). So, in practice, you'll need to upgrade as well:
 
 ```
+$ rm -r test-venv # start fresh
 $ time (python -m venv test-venv && ./test-venv/bin/pip install pip --upgrade)
 Requirement already satisfied: pip in ./test-venv/lib/python3.12/site-packages (24.0)
 Collecting pip
@@ -56,7 +57,18 @@ sys	0m0.344s
 
 Notably, this requires an Internet connection *even if* Pip's cache already contains the new version wheel - because it will contact PyPI to check if there's anything even newer.
 
-And, of course, it takes up quite a bit of space for this, too:
+If you read the documentation a little further, you might notice that there's built-in functionality for an immediate Pip upgrade. But it doesn't make things any faster:
+
+```
+$ rm -r test-venv # start fresh
+$ time python -m venv test-venv --upgrade-deps
+
+real	0m5.063s
+user	0m4.471s
+sys	0m0.350s
+```
+
+Regardless of the approach you take, the resulting environment also takes up quite a bit of space. Assuming we did upgrade to 25.0.1:
 
 ```
 $ du -sh test-venv/
