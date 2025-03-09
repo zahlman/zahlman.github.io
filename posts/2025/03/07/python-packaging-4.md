@@ -157,6 +157,79 @@ Because of the history, however, Pip didn't initially face pressure to shape its
 
 ## Pip, Python, Runpy and Pip
 
+As mentioned above, the simple way to make Pip install cross-environment is with the `--python` argument. I proposed it in my previous piece, it's simple, and it normally works.
+
+So this is a good time to point out that it's kind of a hack, and not completely reliable.
+
+It's not just any hack - it's clever ([and surprisingly complex](https://github.com/pypa/pip/blob/main/src/pip/__pip-runner__.py)). When Pip is given the `--python` argument, it basically re-runs itself via `subprocess` standard library functionality - using the destination environment's Python executable, to interpret its own code in the current location. But since its own code isn't in the destination environment, `import`s won't work normally in the new process, so it has to use more tools from the standard library: [runpy](https://github.com/python/cpython/blob/d457345bbc6414db0443819290b04a9a4333313d/Lib/runpy.py#L215)) (the same code [that powers Python's `-m` command-line option](https://docs.python.org/3/library/runpy.html)), and the [advanced import machinery](https://docs.python.org/3/library/importlib.html#importlib.abc.MetaPathFinder) provided by `importlib`, creating a `MetaPathFinder` that is added to [`sys.meta_path`](https://docs.python.org/3/library/sys.html#sys.meta_path). Part of the logic for this is contained in a specially named file, intended to make sure it isn't imported directly, but itself run as a subprocess [after looking up the filename](https://github.com/pypa/pip/blob/2d772146d94e65c948e41e4b19e1fc3bdfa4feae/src/pip/_internal/build_env.py#L43). And the re-run Pip gets the same complete command line, including the `--python` argument, so [an environment variable is used as a recursion guard](https://github.com/pypa/pip/blob/2d772146d94e65c948e41e4b19e1fc3bdfa4feae/src/pip/_internal/cli/main_parser.py#L80).
+
+This complex process doesn't actually create a whole lot of overhead, but it does come with a limitation: the destination environment's Python has to be able to run Pip. That normally isn't an issue, since the Pip support window from Python versions generally moves in lock-step with the support window for Python itself. And normally you won't need to use an older version of Pip (only the current Pip version is ever supported, remember?), so you can just keep it up to date, and use it with whatever Python environments are currently not EOL. However, if you maintain a package for an EOL version of Python - maybe you're one of those unfortunate people still stuck maintaining a 2.7-based system - too bad for you:
+
+```
+$ # Since Python 2.7 didn't have a venv standard library module,
+$ # we'll use the third-party virtualenv first.
+$ virtualenv --no-seed --python py2.7 old-venv
+$ pip --python old-venv/bin/python install numpy
+This version of pip does not support python 2.7 (requires >=3.8).
+```
+
+In fact, current Pip will explicitly guard against using Python 3.7 or lower, without considering whether it would actually work.
+
+So really, the robust way to do it is the pre-Pip-22.3 way:
+
+```
+$ pip --prefix old-venv install numpy
+
+Usage:   
+  pip <command> [options]
+
+no such option: --prefix
+```
+
+Oh, sorry, the `--python` option has to come before `install`, but `--prefix` goes after `install`.
+
+```
+$ pip install --prefix old-venv numpy
+Collecting numpy
+  Using cached numpy-2.2.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (62 kB)
+```
+
+Oh, sorry again, of course it needs to be told the Python version. After all, the point of virtual environments is that they mimic "real" environments, and a "real" environment (like, say, `/usr`) could have multiple Python versions in it.
+
+```
+$ pip install --prefix old-venv --python-version 2.7 numpy
+ERROR: When restricting platform and interpreter constraints using --python-version, --platform, --abi, or --implementation, either --no-deps must be set, or --only-binary=:all: must be set and --no-binary must not be set (or must be set to :none:).
+```
+
+Whoops! Well, Numpy has pretty good wheel support, so let's demand a wheel:
+
+```
+$ pip install --prefix old-venv --python-version 2.7 --only-binary=:all: numpy
+ERROR: Can not use any platform or abi specific options unless installing via '--target' or using '--dry-run'
+```
+
+My mistake, again. Although I really can't explain this limitation [and would consider it a bug](https://github.com/pypa/pip/issues/11890). Anyway, instead of giving it the location of the virtual environment, let's just directly specify the subdirectory where the files should go. Since there's a separate `site-packages` subdirectory per Python version on Linux, maybe it can even use that information!
+
+```
+$ pip install --target old-venv/lib/python2.7/site-packages/ --only-binary=:all: numpy
+Collecting numpy
+  Using cached numpy-2.2.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (62 kB)
+Downloading numpy-2.2.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (16.1 MB)
+```
+
+Hmm, I guess not.
+
+```
+$ pip install --target old-venv/lib/python2.7/site-packages/ --python-version 2.7 --only-binary=:all: numpy
+Collecting numpy
+  Downloading numpy-1.16.6-cp27-cp27mu-manylinux1_x86_64.whl.metadata (2.1 kB)
+Downloading numpy-1.16.6-cp27-cp27mu-manylinux1_x86_64.whl (17.0 MB)
+```
+
+Phew. Except it's still wrong, because Numpy's `f2py` etc. scripts are now in the wrong place (a `bin` subdirectory` of the `site-packages`, rather than the virtual environment's main `bin` directory).
+
+At least now we know why `--python` was added.
+
 ## Pip, Pip, Pip, Pip, Pip, Pip, Baked `.pyc`s, Pip, Pip, Pip and Pip
 
 ## Pandas Thermidor aux Matplotlib with a Numpy Dependency, Garnished with Truffle PIL, Brandy and a Vendored Requests on top, and Pip
