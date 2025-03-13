@@ -17,7 +17,7 @@ Let's see what's going on over there, shall we?
 
 {{% hitcounter %}}
 
-## Lovely Pip! Wonderful Pip!
+## `virtualenv`
 
 Now, I'm writing this from hardware that's over 10 years old (although I did replace the SSD and power supply along the way), so you might see better numbers. But when I create a virtual environment in Python 3.12:
 
@@ -92,7 +92,7 @@ $ du -sB1 test-venv/lib/python3.12/site-packages
 
 This is primarily what I mean about it being Pip's fault.
 
-## Don't worry, dear, I'll have your Pip
+## Don't Worry, Dear, I'll Have Your Pip
 
 Okay, so there seems to be a pretty clear bottleneck here. What if we could just make a virtual environment that just... hasn't got any Pip in it?
 
@@ -129,9 +129,7 @@ This leads to all sorts of ways to set up a system where either `python` doesn't
 
 As a result, the common practice on Windows is to have the installer *not* add entries to `PATH`, and to use a single common [launcher program](https://docs.python.org/3/using/windows.html#python-launcher-for-windows) - installed directly into the Windows folder, so it's always on `PATH` - to choose a Python version. However, with this approach, `pip.exe` won't be on the user's `PATH` - not any of the copies. Instead, `py -m pip` is the recommended way to run Pip on Windows. (This also solves the problem that Windows won't allow `pip.exe` to replace itself on disk while running.) This way, the launcher finds an appropriate Python environment (and in 3.5, it was [improved](https://peps.python.org/pep-0486/) to support virtual environments as well!), and then that Python runs the `pip` module from its `site-packages`. And now there's a simple approach that can be taught to everyone - well, notwithstanding that Windows users have to write `py` while Linux users are expected to write `python`. (More recently, one of the core Python developers [got the idea](https://github.com/brettcannon/python-launcher) that Linux systems would also benefit from a Python launcher. But the idea doesn't seem to have gotten much traction - there's no PEP for it or anything.)
 
-## Windows, Egg, Pip and Python
-
-(Don't worry, I'm not bringing up the legacy "egg" packaging format here - just continuing with the [reference](https://en.wikipedia.org/wiki/Spam_%28Monty_Python_sketch%29).)
+## Pip, Pip, Pip, Windows, and Pip
 
 Speaking of Windows, a brief interlude.
 
@@ -143,7 +141,7 @@ To keep a long story short: Pip of that era was comparable in size. A Windows ve
 
 So, one could say that the slow performance on Windows is mostly Windows' fault, since the majority of the time taken there is time not taken on Linux. But I suspect this is really a multiplier that applies to pretty much everything, and anyway, neither Pip nor Python devs can really do anything about it. So I don't mind keeping my attention focused on Pip here. More to the point: the results vary slightly according to Python and Pip versions, but not enough to matter to the discussion. It's not a *temporary* problem in Pip; if anything, the long-term trend has been for the problem to get worse, as Pip builds in more backwards-compatibility layers. (The most recent versions of Pip are not the biggest, though; they've recently completed some migrations from one dependency to another, and no longer have to vendor both.)
 
-## Pip, Setuptools, `easy_install`, Python and Pip
+## Pip, Setuptools, Pip, Pip, `easy_install`, and Pip
 
 The justification I gave above for having Pip install by default... rings a bit hollow to me. Sure, our system might have multiple versions of Python installed, each serving as a base for multiple virtual environments. Using a command like `python -m pip` (or `py -m pip`) makes it immediately clear which Python we want to use. But having an entire copy of the program seems incredibly wasteful just to control the context in which it's used. Pip has its own command line, and as mentioned above (and in part 2), it *can* install cross-environment.
 
@@ -159,7 +157,7 @@ But really, a much cleaner solution was staring everyone in the face the entire 
 
 Because of the history, however, Pip didn't initially face pressure to shape itself up to work that way. (It goes without saying, I hope, that this is one of the key design mistakes I'm trying to address with [Paper](https://github.com/zahlman/paper).)
 
-## Pip, Python, Runpy and Pip
+## Pip, `runpy`, Pip, Pip, Pip, `importlib`, Pip, `subprocess`, and Pip
 
 As mentioned above, the simple way to make Pip install cross-environment is with the `--python` argument. I proposed it in my previous piece, it's simple, and it normally works.
 
