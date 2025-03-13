@@ -1,11 +1,15 @@
 # Python packaging: Why we can't have nice things @python-packaging
 # Part 4: Multipiplation #python #pip #bloat #virtual-environments
 
-Over the years I've seen a lot of grumbling about Python's [virtual environments](https://peps.python.org/pep-0405/), and resistance to using them - directly, at least. I have another piece planned about the general topic, and about how most of the issues people seem to complain about with virtual environments are really Pip's fault.
+If you - like many other Python users - have multiple copies of Pip on your system, you might eventually start to wonder about why.
 
-Today, I want to focus on one specific issue: the perception that creating a virtual environment is slow and wastes disk space.
+Now, the pat answer for how they got there is that you [have multiple Python environments](https://pypi.org/project/package-installation-test/), and each of them gets a dedicated copy of Pip (or at least most of them do). And the pat answer for why they should each have a separate Pip is [so that you can run them from Python in order to choose the right Pip](https://stackoverflow.com/questions/25749621), which will then install into that environment. Besides which - if every environment has Pip in it, people who want to [make programmatic use of Pip](https://stackoverflow.com/questions/12332975) won't have to list it as a dependency.
 
-Spoiler: it's Pip's fault - but also partly Windows' fault, *even if you don't use Windows*.
+But if you're anything like me, eventually you'll find these answers like these supremely unsatisfying. You'll grow more and more annoyed with the realization that multiple copies of Pip are wasting your hard drive space. Sure, we have terabytes of it now, even on SSDs - but this is a matter of principle. Besides, making those copies takes time, and degrades your user experience of Python.
+
+From within a virtual environment - sorry, a café - in the theatre of my mind, I hear a chant: [Lovely Pip! Wonderful Pip!](https://en.wikipedia.org/wiki/Spam_%28Monty_Python_sketch%29).)
+
+Let's see what's going on over there, shall we?
 
 <!-- TEASER_END -->
 
