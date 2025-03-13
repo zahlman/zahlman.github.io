@@ -19,78 +19,138 @@ Let's see what's going on over there, shall we?
 
 ## `virtualenv`
 
-Now, I'm writing this from hardware that's over 10 years old (although I did replace the SSD and power supply along the way), so you might see better numbers. But when I create a virtual environment in Python 3.12:
+Before we can talk about Pip, we really need to talk about [virtual environments](https://peps.python.org/pep-0405/). If you use Python in any serious capacity, [you really should understand them](https://chriswarrick.com/blog/2018/09/04/python-virtual-environments/). I understand that a lot of people only run others' Python code, or put together some short scripts for personal use, and it's hard to get these users to care, [most of the time anyway](https://stackoverflow.com/questions/75608323).
+
+If you've ever created a virtual environment "manually" - using the standard library [`venv`](https://docs.python.org/3/library/venv.html) module - you may have been underwhelmed by the results. It's slow, and seems to use a lot of disk space.
+
+It wasn't always like this. Before `venv` was added to the standard library, there was [`virtualenv`](https://virtualenv.pypa.io/en/latest/). Only part of its functionality was ever included, and it's actively maintained in parallel, so it's actually become rather popular. And its users know that it can be made to run very fast.
+
+When `venv` first showed up in Python 3.3, it was quite fast, too. Even in a debug build, using my 10+-year-old hardware (SSD notwithstanding):
 
 ```
-$ time python -m venv test-venv
+$ time py3.3d -m venv test335d
+[67557 refs]
+
+real	0m0.111s
+user	0m0.097s
+sys	0m0.015s
+```
+
+## `venv` and Pip
+
+I used Python 3.3.5 for that example because it was the last patch before Python 3.4.0, where it all changed.
+
+But unfortunately, I can't show you an authentic demo on Python 3.4.0, because of OpenSSL, of all things. See, in Python 3.6, [older versions of SSL were deprecated](https://docs.python.org/3/library/ssl.html), but Python 3.3 and 3.4 actually expected an older version - I can't build SSL support for them on my current setup. And I suspect that's why I needed to use a debug build of 3.3.5 - the default build was segfaulting on startup, and I suspect that's SSL-related.
+
+3.4.x builds start up fine for me, but trying to use `venv` with the default options will produce an error message - and hacking the relevant check out of the standard library will result in either an uncaught Python exception or another segfault.
+
+Support for linking newer SSL (1.1.0) was backported to Python 3.5 - starting with [Python 3.5.3](https://www.python.org/downloads/release/python-353/), the first release after 3.6.0. But it was not backported to [Python 3.4.6](https://www.python.org/downloads/release/python-346/) - released the same day as 3.5.3 - (ironically) because the 3.4 branch was already in the "security fixes only" phase of development.
+
+Interestingly enough, that new linking support has lasted quite some time:
+
+```
+$ ./python
+Python 3.5.3 (default, Mar 12 2025, 18:33:13)
+[GCC 13.3.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import ssl
+>>> ssl.OPENSSL_VERSION
+'OpenSSL 3.0.13 30 Jan 2024'
+```
+
+... except that I still got a segfault when trying to test out `python -m venv` with this build, and trying to track that down ended with a truly bizarre [heisenbug](https://en.wikipedia.org/wiki/Heisenbug) that I won't even try to explain here.
+
+But thankfully, my pre-existing build of 3.5.10 worked, at least:
+
+```
+$ time py3.5 -m venv test3510
+
+real	0m1.613s
+user	0m1.439s
+sys	0m0.177s
+```
+
+So, what happened?
+
+## `venv`, Setuptools and Pip
+
+The secret here is really impossible to keep. What changed is that Python 3.4 adds the `ensurepip` standard library module. This allows you to add Pip (and, originally, also Setuptools - which was a dependency of Pip for quite some time) to your Python installation's `site-packages`. But also, of course, to virtual environments, and in fact this became the default behaviour. You could (and still can) turn it off using `--without-pip` - but then you'd be on your own for figuring out how to install anything there.
+
+Another issue here is the version of Pip involved. That Python 3.5 virtual environment ends up with Pip version 9.0.1 and Setuptools 28.8.0. Modern Pip is quite a bit bulkier, even though Setuptools is no longer included. For example, with the Python 3.12 build included in my Linux distro:
+
+```
+$ time python -m venv test312
 
 real	0m3.292s
 user	0m3.020s
 sys	0m0.219s
 ```
 
-That's already not great, but there's a further problem:
+The worst-case scenario is probably with Python 3.10 (before `ensurepip` stopped bootstrapping Setuptools):
 
 ```
-$ ./test-venv/bin/pip list
+$ time py3.10 -m venv test310
+
+real	0m4.053s
+user	0m3.638s
+sys	0m0.236s
+```
+
+On the other hand, if I hack together a separate Python 3.5.10 build that bootstraps the "original" Pip and Setuptools dependencies from 3.4.0 (Pip 1.5.4 and Setuptools 2.1, respectively):
+
+```
+$ time ./python3510 -m venv test3510
+
+real	0m1.286s
+user	0m1.157s
+sys	0m0.130s
+```
+
+## Pip, `venv`, Setuptools and Pip
+
+The other issue here, of course, is that the bootstrap provided by `ensurepip` is effectively frozen in time. In that Python 3.12 virtual environment, for example, we get a *reasonably* new version:
+
+```
+$ ./test312/bin/pip list
 Package Version
 ------- -------
 pip     24.0
 ```
 
-The virtual environment is created with a fresh copy of Pip, allowing standard idioms like `python -m pip` to just work, cross-platform<sup>\*</sup> and regardless of whether you're using a virtual environment or the base Python environment. However, this copy comes from a "bootstrap" wheel vendored with the Python standard library. In short, it's frozen in time along with the Python distribution. The Pip development team, meanwhile, only ever supports the most recent release, and Pip itself likes to nag you with messages that a new version is available (unless you `--disable-pip-version-check`). So, in practice, you'll need to upgrade as well:
+However, the Pip development team only ever supports the *most recent* release, and Pip itself likes to nag you with messages that a new version is available (unless you `--disable-pip-version-check`). So, in practice, you'll need to upgrade as well:
 
 ```
-$ rm -r test-venv # start fresh
-$ time (python -m venv test-venv && ./test-venv/bin/pip install pip --upgrade)
-Requirement already satisfied: pip in ./test-venv/lib/python3.12/site-packages (24.0)
-Collecting pip
-  Using cached pip-25.0.1-py3-none-any.whl.metadata (3.7 kB)
-Using cached pip-25.0.1-py3-none-any.whl (1.8 MB)
-Installing collected packages: pip
-  Attempting uninstall: pip
-    Found existing installation: pip 24.0
-    Uninstalling pip-24.0:
-      Successfully uninstalled pip-24.0
-Successfully installed pip-25.0.1
+$ rm -r test312/ # start fresh
+$ time python -m venv --upgrade-deps test312
 
-real	0m4.829s
-user	0m4.438s
-sys	0m0.344s
+real	0m4.890s
+user	0m4.462s
+sys	0m0.357s
 ```
 
-Notably, this requires an Internet connection *even if* Pip's cache already contains the new version wheel - because it will contact PyPI to check if there's anything even newer.
+Notably, this requires an Internet connection *even if* Pip's cache already contains the new version wheel - because it will contact PyPI to check if there's anything even newer. So the timing is a bit variable. (Doing the upgrade manually afterwards doesn't chagne anything.)
 
-If you read the documentation a little further, you might notice that there's built-in functionality for an immediate Pip upgrade. But it doesn't make things any faster:
+## Pip, Disk Space, Pip, Pip, Time, and Pip
 
-```
-$ rm -r test-venv # start fresh
-$ time python -m venv test-venv --upgrade-deps
-
-real	0m5.063s
-user	0m4.471s
-sys	0m0.350s
-```
-
-Regardless of the approach you take, the resulting environment also takes up quite a bit of space. Assuming we did upgrade to 25.0.1:
+Regardless of the approach you take, the resulting environment also takes up quite a bit of space:
 
 ```
-$ du -sh test-venv/
-13M	test-venv/
-$ du -sB1 test-venv/ # More precisely:
-13520896	test-venv/
+$ du -sh test312
+13M	test312
+$ du -sB1 test312
+13537280	test312
 ```
 
 Which, to be clear, is almost entirely due to the Pip installation:
 
 ```
-$ ls test-venv/lib/python3.12/site-packages
+$ ls test312/lib/python3.12/site-packages/
 pip  pip-25.0.1.dist-info
-$ du -sB1 test-venv/lib/python3.12/site-packages
-13455360	test-venv/lib/python3.12/site-packages
+$ du -sB1 test312/lib/python3.12/site-packages/
+13471744	test312/lib/python3.12/site-packages/
 ```
 
-This is primarily what I mean about it being Pip's fault.
+(The exact size will vary slightly depending on the directory where you try this, because compiled .pyc bytecode files will include paths.)
 
 ## Don't Worry, Dear, I'll Have Your Pip
 
