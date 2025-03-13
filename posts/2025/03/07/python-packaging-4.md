@@ -154,9 +154,9 @@ $ du -sB1 test312/lib/python3.12/site-packages/
 
 ## Don't Worry, Dear, I'll Have Your Pip
 
-Okay, so there seems to be a pretty clear bottleneck here. What if we could just make a virtual environment that just... hasn't got any Pip in it?
+Okay, so there seems to be a pretty clear bottleneck here. But what if we were to go back to the approach of `virtualenv` and Python 3.3, and just skip the Pip? What if we just made virtual environments that haven't got any Pip in them?
 
-As it turns out - [as I discussed in a previous post](https://zahlman.github.io/posts/2025/01/07/python-packaging-2/) - we absolutely can set up a system that only has a little bit of Pip. Of course we want to be able to install packages into the new virtual environment, but we aren't forced to give it a separate copy of Pip. The `venv` standard library module lets us simply create the venv `--without-pip`, and it's dramatically faster:
+[As I discussed in a previous post](https://zahlman.github.io/posts/2025/01/07/python-packaging-2/), we absolutely can set up a system that only has a little bit of Pip. We'll just use the `--without-pip` flag for `venv`, and our virtual environment creation becomes dramatically faster:
 
 ```
 $ time python -m venv --without-pip without-pip
@@ -166,7 +166,7 @@ user	0m0.041s
 sys	0m0.012s
 ```
 
-And smaller:
+And the environments become dramatically smaller:
 
 ```
 $ du -sh without-pip/
