@@ -96,6 +96,8 @@ user	0m3.638s
 sys	0m0.236s
 ```
 
+(The patch version I tested is 3.10.14 - this does matter, because the bundled Pip version potentially changes with each patch. I also tried with 3.11.9; it comes with a slightly bulkier Pip, and generates considerably bulkier bytecode, but the interpreter is slightly faster, so it comes out about even.)
+
 On the other hand, if I hack together a separate Python 3.5.10 build that bootstraps the "original" Pip and Setuptools dependencies from 3.4.0 (Pip 1.5.4 and Setuptools 2.1, respectively):
 
 ```
