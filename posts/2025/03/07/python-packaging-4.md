@@ -74,7 +74,7 @@ So, what happened?
 
 ## `venv`, Setuptools and Pip
 
-The secret here is really impossible to keep. What changed is that Python 3.4 adds the `ensurepip` standard library module. This allows you to add Pip (and, originally, also Setuptools - which was a dependency of Pip for quite some time) to your Python installation's `site-packages`. But also, of course, to virtual environments, and in fact this became the default behaviour. You could (and still can) turn it off using `--without-pip` - but then you'd be on your own for figuring out how to install anything there.
+It's quite simple, really - Python 3.4 adds the `ensurepip` standard library module. This allows you to add Pip (and, originally, also Setuptools - which was a dependency of Pip for quite some time) to your Python installation's `site-packages`. But also, of course, to virtual environments, and in fact this became the default behaviour. You could (and still can) turn it off using `--without-pip` - but then you'd be on your own for figuring out how to install anything there.
 
 Another issue here is the version of Pip involved. That Python 3.5 virtual environment ends up with Pip version 9.0.1 and Setuptools 28.8.0. Modern Pip is quite a bit bulkier, even though Setuptools is no longer included. For example, with the Python 3.12 build included in my Linux distro:
 
