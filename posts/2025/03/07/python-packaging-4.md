@@ -177,8 +177,6 @@ $ du -sh without-pip/
 
 And from there, of course, we can use any modern external copy of Pip (22.3 or newer) to install into that new environment, using something like `pip --python without-pip/bin/python`.
 
-Oh, by the way: *you've always been able to do this*, for as long as there have been virtual environments. When [venv](https://docs.python.org/3/library/venv.html) was added to the standard library in Python 3.3, it actually didn't bootstrap Pip; in 3.4, along with adding that functionality (as well as the [ensurepip](https://docs.python.org/3/library/ensurepip.html) standard library module), the `--without-pip` flag was added so that you could still have a "bare" environment.
-
 So of course that raises two questions: Why don't people seem to know about this? And why isn't it the default?
 
 In short, because everyone has been taught to do it that way, because it's supposedly easier to explain - given how Pip works.
