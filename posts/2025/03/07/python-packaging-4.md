@@ -36,7 +36,7 @@ user	0m0.097s
 sys	0m0.015s
 ```
 
-## `venv` and Pip
+## `venv` and OpenSSL
 
 I used Python 3.3.5 for that example because it was the last patch before Python 3.4.0, where it all changed.
 
@@ -106,7 +106,7 @@ user	0m1.157s
 sys	0m0.130s
 ```
 
-## Pip, `venv`, Setuptools and Pip
+## Pip, `venv`, `ensurepip` and Pip
 
 The other issue here, of course, is that the bootstrap provided by `ensurepip` is effectively frozen in time. In that Python 3.12 virtual environment, for example, we get a *reasonably* new version:
 
@@ -129,8 +129,6 @@ sys	0m0.357s
 ```
 
 Notably, this requires an Internet connection *even if* Pip's cache already contains the new version wheel - because it will contact PyPI to check if there's anything even newer. So the timing is a bit variable. (Doing the upgrade manually afterwards doesn't chagne anything.)
-
-## Pip, Disk Space, Pip, Pip, Time, and Pip
 
 Regardless of the approach you take, the resulting environment also takes up quite a bit of space:
 
@@ -199,7 +197,7 @@ To keep a long story short: Pip of that era was comparable in size to the Pip of
 
 So, one could say that the slow performance on Windows is mostly Windows' fault, since the majority of the time taken there is time not taken on Linux. But I suspect this is really a multiplier that applies to pretty much everything, and anyway, neither Pip nor Python devs can really do anything about it. So I don't mind keeping my attention focused on Pip here. More to the point: the results vary slightly according to Python and Pip versions, but not enough to matter to the discussion. It's not a *temporary* problem in Pip; if anything, the long-term trend has been for the problem to get worse, as Pip builds in more backwards-compatibility layers. (The most recent versions of Pip are not the biggest, though; they've recently completed some migrations from one dependency to another, and no longer have to vendor both.)
 
-## Pip, Setuptools, Pip, Pip, `easy_install`, and Pip
+## Pip, Setuptools, `easy_install` and Pip
 
 The justification I gave above for having Pip install by default... rings a bit hollow to me. Sure, our system might have multiple versions of Python installed, each serving as a base for multiple virtual environments. Using a command like `python -m pip` (or `py -m pip`) makes it immediately clear which Python we want to use. But having an entire copy of the program seems incredibly wasteful just to control the context in which it's used. Pip has its own command line, and as mentioned above (and in part 2), it *can* install cross-environment.
 
