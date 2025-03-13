@@ -76,7 +76,7 @@ So, what happened?
 
 It's quite simple, really - Python 3.4 adds the `ensurepip` standard library module. This allows you to add Pip (and, originally, also Setuptools - which was a dependency of Pip for quite some time) to your Python installation's `site-packages`. But also, of course, to virtual environments, and in fact this became the default behaviour. You could (and still can) turn it off using `--without-pip` - but then you'd be on your own for figuring out how to install anything there.
 
-Another issue here is the version of Pip involved. That Python 3.5 virtual environment ends up with Pip version 9.0.1 and Setuptools 28.8.0. Modern Pip is quite a bit bulkier, even though Setuptools is no longer included. For example, with the Python 3.12 build included in my Linux distro:
+Another issue here is the version of Pip involved. That Python 3.5 virtual environment ends up with Pip 9.0.1 and Setuptools 28.8.0. Modern Pip is bigger than both of those put together. For example, with the Python 3.12 build included in my Linux distro:
 
 ```
 $ time python -m venv test312
@@ -130,9 +130,9 @@ user	0m4.462s
 sys	0m0.357s
 ```
 
-Notably, this requires an Internet connection *even if* Pip's cache already contains the new version wheel - because it will contact PyPI to check if there's anything even newer. So the timing is a bit variable. (Doing the upgrade manually afterwards doesn't chagne anything.)
+Notably, this requires an Internet connection *even if* Pip's cache already contains the new version wheel - because it will contact PyPI to check if there's anything even newer. So it could stutter if your connection is interrupted.
 
-Regardless of the approach you take, the resulting environment also takes up quite a bit of space:
+You could do the upgrade manually afterwards instead, but that isn't any faster. Either way, the resulting environment also takes up quite a bit of space:
 
 ```
 $ du -sh test312
@@ -177,27 +177,7 @@ $ du -sh without-pip/
 
 And from there, of course, we can use any modern external copy of Pip (22.3 or newer) to install into that new environment, using something like `pip --python without-pip/bin/python`.
 
-So of course that raises two questions: Why don't people seem to know about this? And why isn't it the default?
-
-In short, because everyone has been taught to do it that way, because it's supposedly easier to explain - given how Pip works.
-
-Windows plays a significant role here. See, the normal way of organizing installed applications on Windows isn't very friendly for command-line use. Typically, each program gets a sub-folder within `C:\Program Files` (or whatever other drive letter you chose) - so if you want to use them from the command line, you'd have to add each of those entries to the `PATH` environment variable. That would pollute a [length-limited](https://stackoverflow.com/questions/34491244) environment variable, and also cause confusion between `.exe`s with matching names (not just Python, but the `pip.exe` wrappers).
-
-This leads to all sorts of ways to set up a system where either `python` doesn't run Python, `pip` doesn't run Pip, or - most importantly - [`pip` installs for a different version of Python than `python` runs](https://stackoverflow.com/questions/14295680). (And the advice you can find about the problem most easily - such as the previous link - tends to be very confused.)
-
-As a result, the common practice on Windows is to have the installer *not* add entries to `PATH`, and to use a single common [launcher program](https://docs.python.org/3/using/windows.html#python-launcher-for-windows) - installed directly into the Windows folder, so it's always on `PATH` - to choose a Python version. However, with this approach, `pip.exe` won't be on the user's `PATH` - not any of the copies. Instead, `py -m pip` is the recommended way to run Pip on Windows. (This also solves the problem that Windows won't allow `pip.exe` to replace itself on disk while running.) This way, the launcher finds an appropriate Python environment (and in 3.5, it was [improved](https://peps.python.org/pep-0486/) to support virtual environments as well!), and then that Python runs the `pip` module from its `site-packages`. And now there's a simple approach that can be taught to everyone - well, notwithstanding that Windows users have to write `py` while Linux users are expected to write `python`. (More recently, one of the core Python developers [got the idea](https://github.com/brettcannon/python-launcher) that Linux systems would also benefit from a Python launcher. But the idea doesn't seem to have gotten much traction - there's no PEP for it or anything.)
-
-## Pip, Pip, Pip, Windows, and Pip
-
-Speaking of Windows, a brief interlude.
-
-As part of my research for this piece, I booted into the copy of Windows 10 I had lying around on another SSD, for the first time in probably years. I didn't dare connect to the Internet, but I could still test how `venv` under Python 3.8 coped with installing an older Pip version (20.1.1, I think).
-
-To keep a long story short: Pip of that era was comparable in size to the Pip of today. A Windows venv, at least in that test, took about an additional 1MB of disk space beyond what Pip requires - mainly because of a surprisingly large wrapper executable used to delegate to the system Pip, which also has to be duplicated for terminal vs. GUI uses of Python. (On Linux, the same `python` executable works either way, and the venv just uses a symlink by default. Asking `venv` on Windows for `--symlinks` failed for me and I didn't feel like investigating it, beyond noting that the error messages vaguely implied that it was trying to create symlinks *in the wrong direction*.) And it takes about three times as long to create the venv, whether or not Pip is included. Taking about 150 milliseconds instead of 50 [isn't a big deal](https://lawsofux.com/doherty-threshold/), but taking about 9 seconds instead of 3 certainly is.
-
-(Overall, I was amazed how sluggish *everything* felt - since I didn't really have a memory of everything suddenly feeling more performant when I switched to Linux in the first place. I knew that my "baseline" RAM usage - i.e. with a single user logged in graphically, not running any programs - was higher on Windows, but I hadn't realized it was on the order of 70% higher. I guess the built-in "Windows Defender" has a lot to do with this - and perhaps also the venv creation time, considering all the I/O it does. I don't really want to get into this in any detail, but I do wish I'd done the experiment [before my Linux anniversary](https://zahlman.github.io/posts/2025/01/24/leaning-in-to-my-ux/).)
-
-So, one could say that the slow performance on Windows is mostly Windows' fault, since the majority of the time taken there is time not taken on Linux. But I suspect this is really a multiplier that applies to pretty much everything, and anyway, neither Pip nor Python devs can really do anything about it. So I don't mind keeping my attention focused on Pip here. More to the point: the results vary slightly according to Python and Pip versions, but not enough to matter to the discussion. It's not a *temporary* problem in Pip; if anything, the long-term trend has been for the problem to get worse, as Pip builds in more backwards-compatibility layers. (The most recent versions of Pip are not the biggest, though; they've recently completed some migrations from one dependency to another, and no longer have to vendor both.)
+So - why don't people seem to know about this? And why isn't it the default?
 
 ## Pip, Setuptools, `easy_install` and Pip
 
@@ -214,6 +194,24 @@ Well, that's *one* way to solve the bootstrapping problem, I guess. And I'm sure
 But really, a much cleaner solution was staring everyone in the face the entire time. Install Pip as a separate application, like the Python Launcher for Windows. Let that installation include its own private environment just for Pip, using the virtual environment mechanism that was just added. Fix the Pip command line to make it as easy as possible to specify a target environment (and have it refuse to install in its own environment, except to self-upgrade). And for bonus points on Windows: have the launcher expose its Python-detection logic, so that Pip in its own environment could deduce the *path for* the environment that `py` would run, and choose that as the destination by default.
 
 Because of the history, however, Pip didn't initially face pressure to shape itself up to work that way. (It goes without saying, I hope, that this is one of the key design mistakes I'm trying to address with [Paper](https://github.com/zahlman/paper).)
+
+## Pip, Pip, Pip, Windows, and Pip
+
+In short, because everyone has been taught to do it that way, because it's supposedly easier to explain - given how Pip works.
+
+Windows plays a significant role here. See, the normal way of organizing installed applications on Windows isn't very friendly for command-line use. Typically, each program gets a sub-folder within `C:\Program Files` (or whatever other drive letter you chose) - so if you want to use them from the command line, you'd have to add each of those entries to the `PATH` environment variable. That would pollute a [length-limited](https://stackoverflow.com/questions/34491244) environment variable, and also cause confusion between `.exe`s with matching names (not just Python, but the `pip.exe` wrappers).
+
+This leads to all sorts of ways to set up a system where either `python` doesn't run Python, `pip` doesn't run Pip, or - most importantly - [`pip` installs for a different version of Python than `python` runs](https://stackoverflow.com/questions/14295680). (And the advice you can find about the problem most easily - such as the previous link - tends to be very confused.)
+
+As a result, the common practice on Windows is to have the installer *not* add entries to `PATH`, and to use a single common [launcher program](https://docs.python.org/3/using/windows.html#python-launcher-for-windows) - installed directly into the Windows folder, so it's always on `PATH` - to choose a Python version. However, with this approach, `pip.exe` won't be on the user's `PATH` - not any of the copies. Instead, `py -m pip` is the recommended way to run Pip on Windows. (This also solves the problem that Windows won't allow `pip.exe` to replace itself on disk while running.) This way, the launcher finds an appropriate Python environment (and in 3.5, it was [improved](https://peps.python.org/pep-0486/) to support virtual environments as well!), and then that Python runs the `pip` module from its `site-packages`. And now there's a simple approach that can be taught to everyone - well, notwithstanding that Windows users have to write `py` while Linux users are expected to write `python`. (More recently, one of the core Python developers [got the idea](https://github.com/brettcannon/python-launcher) that Linux systems would also benefit from a Python launcher. But the idea doesn't seem to have gotten much traction - there's no PEP for it or anything.)
+
+As part of my research for this piece, I booted into the copy of Windows 10 I had lying around on another SSD, for the first time in probably years. I didn't dare connect to the Internet, but I could still test how `venv` under Python 3.8 coped with installing an older Pip version (20.1.1, I think).
+
+To keep a long story short: Pip of that era was comparable in size to the Pip of today. A Windows venv, at least in that test, took about an additional 1MB of disk space beyond what Pip requires - mainly because of a surprisingly large wrapper executable used to delegate to the system Pip, which also has to be duplicated for terminal vs. GUI uses of Python. (On Linux, the same `python` executable works either way, and the venv just uses a symlink by default. Asking `venv` on Windows for `--symlinks` failed for me and I didn't feel like investigating it, beyond noting that the error messages vaguely implied that it was trying to create symlinks *in the wrong direction*.) And it takes about three times as long to create the venv, whether or not Pip is included. Taking about 150 milliseconds instead of 50 [isn't a big deal](https://lawsofux.com/doherty-threshold/), but taking about 9 seconds instead of 3 certainly is.
+
+(Overall, I was amazed how sluggish *everything* felt - since I didn't really have a memory of everything suddenly feeling more performant when I switched to Linux in the first place. I knew that my "baseline" RAM usage - i.e. with a single user logged in graphically, not running any programs - was higher on Windows, but I hadn't realized it was on the order of 70% higher. I guess the built-in "Windows Defender" has a lot to do with this - and perhaps also the venv creation time, considering all the I/O it does. I don't really want to get into this in any detail, but I do wish I'd done the experiment [before my Linux anniversary](https://zahlman.github.io/posts/2025/01/24/leaning-in-to-my-ux/).)
+
+So, one could say that the slow performance on Windows is mostly Windows' fault, since the majority of the time taken there is time not taken on Linux. But I suspect this is really a multiplier that applies to pretty much everything, and anyway, neither Pip nor Python devs can really do anything about it. So I don't mind keeping my attention focused on Pip here. More to the point: the results vary slightly according to Python and Pip versions, but not enough to matter to the discussion. It's not a *temporary* problem in Pip; if anything, the long-term trend has been for the problem to get worse, as Pip builds in more backwards-compatibility layers. (The most recent versions of Pip are not the biggest, though; they've recently completed some migrations from one dependency to another, and no longer have to vendor both.)
 
 ## Pip, `runpy`, Pip, Pip, Pip, `importlib`, Pip, `subprocess`, and Pip
 
@@ -294,7 +292,7 @@ At least now we know why `--python` was added.
 
 ## Pandas Thermidor aux Matplotlib with a Numpy Dependency, Garnished with Truffle PIL, Brandy and a Vendored Requests on top, and Pip
 
-## Bloody `venv`s!
+## Bloody `uv`ikings!
 
 Thanks for reading this far. I hope I've improved your view of Python virtual environments, and sharpened your critique of Pip.
 
@@ -310,7 +308,7 @@ sys	0m0.016s
 
 That's about twice as long as the built-in `venv`. As far as I can tell, Astral has basically ported the logic of the third-party `virtualenv` (which the standard library `venv` is based upon) in Rust. This adds more activation scripts for additional environments, as well as a shim used for distutils support - even after the [removal of distutils from the standard library]().
 
-At any rate, it's faster than `virtualenv`:
+At any rate, it's faster than `virtualenv` when told to omit Pip:
 
 ```
 $ time virtualenv --no-seed --no-download --quiet with-virtualenv
@@ -320,4 +318,6 @@ user	0m0.155s
 sys	0m0.026s
 ```
 
-...but it's not faster than `venv` using `--without-pip`, as seen earlier. Without installing Pip, the overall logic is pretty simple - you really just need to copy a template into place. There's no real reason to expect massive gains from Rust (or any statically compiled language) there.
+...but it's not faster than `venv`, as seen earlier. Without installing Pip, the overall logic is pretty simple - you really just need to copy a template into place. There's no real reason to expect massive gains from Rust (or any statically compiled language) there.
+
+Which leads into my planned topic for next time...
