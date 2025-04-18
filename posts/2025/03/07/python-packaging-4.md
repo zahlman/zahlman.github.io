@@ -290,6 +290,62 @@ At least now we know why `--python` was added.
 
 ## Pip, Pip, Pip, Pip, Pip, Pip, Baked `.pyc`s, Pip, Pip, Pip and Pip
 
+This is the part where I descend into madness.
+
+Long before I started writing this post, rather than using `--upgrade-deps`, I tried explicitly upgrading Pip after creating a virtual environment with all the defaults. And I would get results along the lines of:
+
+```
+$ rm -r test312/
+$ time python -m venv test312
+
+real	0m3.246s
+user	0m3.006s
+sys	0m0.210s
+$ time test312/bin/python -m pip install --upgrade pip
+Requirement already satisfied: pip in ./test312/lib/python3.12/site-packages (24.0)
+Collecting pip
+  Using cached pip-25.0.1-py3-none-any.whl.metadata (3.7 kB)
+Using cached pip-25.0.1-py3-none-any.whl (1.8 MB)
+Installing collected packages: pip
+  Attempting uninstall: pip
+    Found existing installation: pip 24.0
+    Uninstalling pip-24.0:
+      Successfully uninstalled pip-24.0
+Successfully installed pip-25.0.1
+
+real	0m1.622s
+user	0m1.406s
+sys	0m0.176s
+```
+
+And I couldn't help but notice that the time taken for the first step was very close to twice the time taken for the second. "Could the overall `ensurepip` code path be inadvertently installing Pip twice?", I wondered.
+
+In short: the answer is no - but *also sort of yes*.
+
+Of course, right off the bat this isn't an apples-to-apples comparison. The installed Pip 24.0 is installing Pip 25.0.1, which is smaller and thus faster to install. Pip 25.0.1 also installs packages slightly faster - perhaps there are some optimizations, but as it turns out, this is *also* due to it being smaller. The effects are synergistic: if I replace the Pip 24.0 wheel used by `ensurepip` with a Pip 25.0.1 wheel, the virtual environment creation time goes from about 3.2 seconds to 2.5 - over a 20% time savings.
+
+But it's still not obvious exactly where the extra time is spent. I started my investigation by instrumenting the installed Pip 25.0.1 code, and using it to install a new copy of 25.0.1 (from its own cache) into a new virtual environment. (I really should have used a proper profiler for this, but so it goes.) As I dug further and further looking for a bottleneck, I eventually realized: the biggest time sink is pre-compiling the code to `.pyc` files (which is ultimately implemented in C and can't really be improved except by parallelization), but there's also tons of overhead coming from *importing modules*. And there's no single culprit there, either - it's purely a matter of how many modules get imported.
+
+Specifically, the average breakdown ended up looking like:
+
+* 900 milliseconds on precompilation
+* 100 milliseconds on the actual install logic (copying files, making script wrappers etc.)
+* 200 milliseconds handling the `--python` option (interpreter startup/teardown and `import`ing code the first time, plus the `subprocess` logic)
+* 300 milliseconds on interpreter startup/teardown plus `import`ing code, the second time
+* 250 milliseconds on Pip's version self-check logic
+----
+1.75 seconds total
+
+The overhead of `--python` is a consequence of its implementation, described in the previous section. It does some standard top-level imports, parses the command line, then decides to start over in a new process (with the target environment's Python interpreter). Quite a few modules are imported here, but not all of the ones involved in an actual installation. But even discounting that (and focusing on the time that Pip spends installing itself) we see that over a third of the time is pure overhead. The time spent on the self-check logic is worth highlighting. Close to half of this is, again, importing even more modules. It also spends about 70 milliseconds creating an "SSL truststore context", and 30 milliseconds creating *two* "Pip session" objects (which, it seems, encapsulate the process of connecting to PyPI). And then it does nothing with all of that setup - because, of course, there's no reason to try to connect to PyPI and check whether a newer Pip version is available, while in the middle of installing a new Pip version.
+
+At least it doesn't break if you disable your internet connection.
+
+I went even further, and investigated the time spent when `ensurepip` gets Pip to install itself from a wheel. To do this - because I was still, stubbornly, not using proper tools - I ended up forking Pip to add timing instrumentation, rebuilding the wheel, then copying the standard library `ensurepip` code and modifying it to add more timing instrumentation and make it install the modified wheel instead of the standard one.
+
+Long story short: importing is much slower from the wheel, and a huge fraction of Pip's own code gets imported this way. I didn't look into the details of [how Python imports from zip archives](https://docs.python.org/3/library/zipimport.html), but I imagine that it's optimized for cases where relatively little of the archive contents need to be interpreted, and that it works a file at a time. Each import was actually taking on the order of 4 or 5 times as long in my testing, while everything else about the process (including module teardown, it seems) was about as fast.
+
+Perhaps the overall process would be faster if `ensurepip` explicitly unpacked the wheel into a temporary directory first, and then ran Pip from there, but [without writing out `.pyc` files]() when importing the Pip code (since that bytecode cache would be useless afterwards). But now perhaps you can see what I meant about "sort of" installing twice: Pip's code has to be unpacked from a wheel, and `imported` (i.e., bytecode-compiled and loaded into memory), just so that it can actually do its work. But the principal work that it does is to a) unpack its own code from a wheel and then b) bytecode-compile it so that the installed version has cached bytecode!
+
 ## Pandas Thermidor aux Matplotlib with a Numpy Dependency, Garnished with Truffle PIL, Brandy and a Vendored Requests on top, and Pip
 
 ## Bloody `uv`ikings!
