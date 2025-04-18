@@ -348,6 +348,10 @@ Perhaps the overall process would be faster if `ensurepip` explicitly unpacked t
 
 ## Pandas Thermidor aux Matplotlib with a Numpy Dependency, Garnished with Truffle PIL, Brandy and a Vendored Requests on top, and Pip
 
+Maybe you don't care about using an extra 15 MB of disk space in every virtual environment, since disk space is so cheap nowadays. After all, a lot of people will end up creating multiple virtual environments with larger dependencies - such as Numpy, Pandas and other parts of the SciPy stack - and duplicate those, too. (To say nothing of people doing AI/ML work with PyTorch, CUDA etc....) With better thought-out design, those could potentially be hard-linked from a common source in Pip's cache. Which, it stands to reason, would also be faster - since the work of unpacking the wheel wouldn't be repeated.
+
+But we instead live in a world where all these things get duplicated, and the only effort Pip's cache saves is actually downloading the wheel. (It doesn't even prevent Pip from connecting to the Internet to check for newer versions on PyPI, unless you're careful with specifying package versions.) And there's one last bit of insult added to the injury: Pip's vendored dependencies. It makes sense that Pip can't fetch its dependencies on the fly when it installs itself - there's an obvious bootstrapping problem there. But a couple of those dependencies - I'm particularly thinking of Requests and Rich - are quite popular packages in themselves. If you follow the standard recommendations, you might have several copies of these installed on your machine already - yet not have access to them without a bit of hacking (e.g. `import pip._vendor.requests` is definitely not an intentional or supported part of the API).
+
 ## Bloody `uv`ikings!
 
 Thanks for reading this far. I hope I've improved your view of Python virtual environments, and sharpened your critique of Pip.
