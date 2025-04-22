@@ -25,7 +25,7 @@ If you've ever created a virtual environment "manually" - using the standard lib
 
 It wasn't always like this. Before `venv` there was [`virtualenv`](https://virtualenv.pypa.io/en/latest/). Only part of its functionality was ever included, and it's actively maintained in parallel, so it's actually become rather popular. And its users know that it can be made to run very fast.
 
-In Python 3.3, when `venv` was added to the standard library, it was quite fast, too. Even in a debug build, using my 10+-year-old hardware (SSD notwithstanding):
+In Python 3.3, when `venv` was added to the standard library, it was quite fast, too. Even in a debug build, using my 10+-year-old hardware (though I replaced the SSD more recently):
 
 ```
 $ time py3.3d -m venv test335d
@@ -38,29 +38,15 @@ sys	0m0.015s
 
 ## `venv` and OpenSSL
 
-I used Python 3.3.5 for that example because it was the last patch before Python 3.4.0, where it all changed.
+For this post I wanted to show off "authentic" testing results as much as possible - by compiling (or having already compiled) a bunch of old Python versions from source, and showing how they actually perform.
 
-Unfortunately, I can't show you an authentic demo on Python 3.4.0 - because of OpenSSL, of all things. See, in Python 3.6, [older versions of SSL were deprecated](https://docs.python.org/3/library/ssl.html), but Python 3.3 and 3.4 actually expected an older version - I can't build SSL support for them on my current setup. And I suspect that's why I needed to use a debug build of 3.3.5 - the default build was segfaulting on startup, and I suspect that's SSL-related.
+Unfortunately, I wasn't able to get everything working exactly as I wanted, mainly due to issues with OpenSSL support. Basically, everything prior to 3.5.3 expects to use outdated versions of OpenSSL, which I don't have available to work with. (In Python 3.6, [older versions of SSL were deprecated](https://docs.python.org/3/library/ssl.html); [3.5.3]((https://www.python.org/downloads/release/python-353/)) was the next patch for 3.5 after that release, and support for newer versions was added there. It wasn't added to [3.4.6](https://www.python.org/downloads/release/python-346/) - released the same day as 3.5.3 - because Python 3.4 was already in the "security fixes only" phase of development. (Which is a bit ironic considering the relevance of SSL to security, but I digress.)
 
-3.4.x builds start up fine for me, but trying to use `venv` with the default options will produce an SSL-related error message - and hacking the relevant check out of the standard library will result in either an uncaught Python exception or another segfault.
+I had to use a debug build of 3.3.5 because otherwise it would crash on startup (even without involving Pip, or anything else that might expect to connect to the Internet), and `venv` would give SSL-related error messages (or worse, if I tried hacking an explicit check out of the standard library source) even though that, too, shouldn't require an Internet connection.
 
-Support for linking newer SSL (1.1.0) was backported to Python 3.5 - starting with [Python 3.5.3](https://www.python.org/downloads/release/python-353/), the first release after 3.6.0. But it was not backported to [Python 3.4.6](https://www.python.org/downloads/release/python-346/) - released the same day as 3.5.3 - (ironically) because the 3.4 branch was already in the "security fixes only" phase of development.
+Anyway, I had further issues with 3.5.3 that I wasn't able to work out, but I did at least manage to test with 3.5.10. (Which, apparently, can even link to contemporary SSL, which is much newer than the 3.5.10 release itself.)
 
-Interestingly enough, that new linking support has lasted quite some time:
-
-```
-$ ./python
-Python 3.5.3 (default, Mar 12 2025, 18:33:13)
-[GCC 13.3.0] on linux
-Type "help", "copyright", "credits" or "license" for more information.
->>> import ssl
->>> ssl.OPENSSL_VERSION
-'OpenSSL 3.0.13 30 Jan 2024'
-```
-
-... except that I still got a segfault when trying to test out `python -m venv` with this build. I thoroughly confused myself while trying to track down the problem and it's not worth trying to recall my notes at this point.
-
-But thankfully, my pre-existing build of 3.5.10 worked, at least:
+Anyway, all of this is building up to the fact that default virtual environment creation got *much* slower in 3.4, and stayed that way:
 
 ```
 $ time py3.5 -m venv test3510
@@ -72,7 +58,7 @@ sys	0m0.177s
 
 You'll just have to trust me that Python 3.4 would reproduce this slowdown if I could get it to work at all.
 
-So, why does it take so much longer? And what has that got to do with SSL?
+But why does this happen? And what could it have to do with SSL, considering that `venv` works without an Internet connection?
 
 ## `venv`, Setuptools and Pip
 
