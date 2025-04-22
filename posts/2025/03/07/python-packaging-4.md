@@ -114,6 +114,28 @@ user	0m1.157s
 sys	0m0.130s
 ```
 
+Of course, this also depends on your hardware, and your OS.
+
+A virtual environment with a current version of Pip installed also takes up quite a bit of space:
+
+```
+$ du -sh test312
+13M	test312
+$ du -sB1 test312
+13537280	test312
+```
+
+Which, to be clear, is almost entirely due to the Pip installation:
+
+```
+$ ls test312/lib/python3.12/site-packages/
+pip  pip-25.0.1.dist-info
+$ du -sB1 test312/lib/python3.12/site-packages/
+13471744	test312/lib/python3.12/site-packages/
+```
+
+(The exact size will vary slightly depending on the directory where you try this, because compiled .pyc bytecode files will include paths.)
+
 ## Pip, `venv`, `ensurepip` and Pip
 
 It's actually a bit worse than that.
@@ -140,25 +162,7 @@ sys	0m0.357s
 
 Notably, this requires an Internet connection *even if* Pip's cache already contains the new version wheel - because it will contact PyPI to check if there's anything even newer. So it could stutter if your connection is interrupted.
 
-You could do the upgrade manually afterwards instead, but that isn't any faster. Either way, the resulting environment also takes up quite a bit of space:
-
-```
-$ du -sh test312
-13M	test312
-$ du -sB1 test312
-13537280	test312
-```
-
-Which, to be clear, is almost entirely due to the Pip installation:
-
-```
-$ ls test312/lib/python3.12/site-packages/
-pip  pip-25.0.1.dist-info
-$ du -sB1 test312/lib/python3.12/site-packages/
-13471744	test312/lib/python3.12/site-packages/
-```
-
-(The exact size will vary slightly depending on the directory where you try this, because compiled .pyc bytecode files will include paths.)
+You could do the upgrade manually afterwards instead, but that isn't any faster (although you can avoid the need for an Internet connection if you specify an exact version and already have it cached).
 
 ## Don't Worry, Dear, I'll Have Your Pip
 
