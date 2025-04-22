@@ -70,13 +70,19 @@ user	0m1.439s
 sys	0m0.177s
 ```
 
-So, what happened?
+You'll just have to trust me that Python 3.4 would reproduce this slowdown if I could get it to work at all.
+
+So, why does it take so much longer? And what has that got to do with SSL?
 
 ## `venv`, Setuptools and Pip
 
-It's quite simple, really - Python 3.4 adds the `ensurepip` standard library module. This allows you to add Pip (and, originally, also Setuptools - which was a dependency of Pip for quite some time) to your Python installation's `site-packages`. But also, of course, to virtual environments, and in fact this became the default behaviour. You could (and still can) turn it off using `--without-pip` - but then you'd be on your own for figuring out how to install anything there.
+It's quite simple, really - Python 3.4 adds the `ensurepip` standard library module. This allows you to bootstrap Pip (and, originally, also Setuptools - which was a dependency of Pip for quite some time) into your Python installation's `site-packages`. At the same time, though, bootstrapping Pip into new virtual environments became the default. You'd now have to disable this using `--without-pip` - and if you did this, you'd have to figure out how to install anything else in that virtual environment. Nowadays, of course, we can use an existing Pip with [the `--python` option](https://pip.pypa.io/en/stable/topics/python-option/), but it wasn't so simple back then.
 
-Another issue here is the version of Pip involved. That Python 3.5 virtual environment ends up with Pip 9.0.1 and Setuptools 28.8.0. Modern Pip is bigger than both of those put together. For example, with the Python 3.12 build included in my Linux distro:
+I should note here that this bootstrapping process *doesn't* use the Internet - it can't, because that would require the bootstrap to know something about package installation already (specifically, how to download from PyPI). Instead, it uses a [prepared wheel stored in the standard library folder](https://github.com/python/cpython/tree/3.13/Lib/ensurepip/_bundled), importing Pip code from inside that wheel to get Pip to install itself.
+
+It still needs to reach into the SSL implementation - but I'm not yet ready to explain why.
+
+Today, the bootstrapping process is slower than with Python 3.5. That's because Python 3.5 bundled Pip 9.0.1 and Setuptools 28.8.0, and modern Pip is bigger than both of those put together. For example, with the Python 3.12 build included in my Linux distro:
 
 ```
 $ time python -m venv test312
