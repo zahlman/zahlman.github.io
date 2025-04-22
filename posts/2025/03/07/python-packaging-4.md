@@ -64,7 +64,7 @@ But why does this happen? And what could it have to do with SSL, considering tha
 
 It's quite simple, really - Python 3.4 adds the `ensurepip` standard library module. This allows you to bootstrap Pip (and, originally, also Setuptools - which was a dependency of Pip for quite some time) into your Python installation's `site-packages`. At the same time, though, bootstrapping Pip into new virtual environments became the default. You'd now have to disable this using `--without-pip` - and if you did this, you'd have to figure out how to install anything else in that virtual environment. Nowadays, of course, we can use an existing Pip with [the `--python` option](https://pip.pypa.io/en/stable/topics/python-option/), but it wasn't so simple back then.
 
-I should note here that this bootstrapping process *doesn't* use the Internet - it can't, because that would require the bootstrap to know something about package installation already (specifically, how to download from PyPI). Instead, it uses a [prepared wheel stored in the standard library folder](https://github.com/python/cpython/tree/3.13/Lib/ensurepip/_bundled), importing Pip code from inside that wheel to get Pip to install itself.
+I should note here that this bootstrapping process *still doesn't* use the Internet - it can't, because that would require the bootstrap to know something about package installation already (specifically, how to download from PyPI). Instead, it uses a [prepared wheel stored in the standard library folder](https://github.com/python/cpython/tree/3.13/Lib/ensurepip/_bundled), importing Pip code from inside that wheel to get Pip to install itself.
 
 It still needs to reach into the SSL implementation - but I'm not yet ready to explain why.
 
@@ -102,7 +102,7 @@ sys	0m0.130s
 
 Of course, this also depends on your hardware, and your OS.
 
-A virtual environment with a current version of Pip installed also takes up quite a bit of space:
+Speaking of the effect of Pip's size on install time - the resulting virtual environment takes quite a bit of disk space:
 
 ```
 $ du -sh test312
@@ -111,7 +111,7 @@ $ du -sB1 test312
 13537280	test312
 ```
 
-Which, to be clear, is almost entirely due to the Pip installation:
+and almost all of that (on Linux) is for Pip:
 
 ```
 $ ls test312/lib/python3.12/site-packages/
@@ -124,7 +124,7 @@ $ du -sB1 test312/lib/python3.12/site-packages/
 
 ## Pip, `venv`, `ensurepip` and Pip
 
-It's actually a bit worse than that.
+It gets a bit worse, too.
 
 The bootstrap provided by `ensurepip` is effectively frozen in time. In that Python 3.12 virtual environment, for example, we get a *reasonably* new version:
 
@@ -146,9 +146,9 @@ user	0m4.462s
 sys	0m0.357s
 ```
 
-Notably, this requires an Internet connection *even if* Pip's cache already contains the new version wheel - because it will contact PyPI to check if there's anything even newer. So it could stutter if your connection is interrupted.
+Notably, this *does* require an Internet connection *even if* Pip's cache already contains the new version wheel - because it will contact PyPI to check if there's anything even newer. So it could stutter if your connection is interrupted.
 
-You could do the upgrade manually afterwards instead, but that isn't any faster (although you can avoid the need for an Internet connection if you specify an exact version and already have it cached).
+You could do the upgrade manually afterwards instead, but that isn't any faster (although you can avoid the need for an Internet connection if you explicitly put a Pip wheel somewhere and explicitly tell Pip to install from that wheel).
 
 ## Don't Worry, Dear, I'll Have Your Pip
 
