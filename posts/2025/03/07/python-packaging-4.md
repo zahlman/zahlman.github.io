@@ -1,13 +1,13 @@
 # Python packaging: Why we can't have nice things @python-packaging
 # Part 4: Multipiplation #python #pip #bloat #virtual-environments
 
-If you - like many other Python users - have multiple copies of Pip on your system, you might eventually start to wonder about why.
+If you — like many other Python users — have multiple copies of Pip on your system, you might eventually start to wonder about why.
 
-Now, the pat answer for how they got there is that you [have multiple Python environments](https://pypi.org/project/package-installation-test/), and each of them gets a dedicated copy of Pip (or at least most of them do). And the pat answer for why they should each have a separate Pip is [so that you can run them from Python in order to choose the right Pip](https://stackoverflow.com/questions/25749621), which will then install into that environment. Besides which - if every environment has Pip in it, people who want to [make programmatic use of Pip](https://stackoverflow.com/questions/12332975) won't have to list it as a dependency.
+Now, the pat answer for how they got there is that you [have multiple Python environments](https://pypi.org/project/package-installation-test/), and each of them gets a dedicated copy of Pip (or at least most of them do). And the pat answer for why they should each have a separate Pip is [so that you can run them from Python in order to choose the right Pip](https://stackoverflow.com/questions/25749621), which will then install into that environment. Besides which — if every environment has Pip in it, people who want to [make programmatic use of Pip](https://stackoverflow.com/questions/12332975) won't have to list it as a dependency.
 
-But if you're anything like me, eventually you'll find these answers like these supremely unsatisfying. You'll grow more and more annoyed with the realization that multiple copies of Pip are wasting your hard drive space. Sure, we have terabytes of it now, even on SSDs - but this is a matter of principle. Besides, making those copies takes time, and degrades your user experience of Python.
+But if you're anything like me, eventually you'll find these answers like these supremely unsatisfying. You'll grow more and more annoyed with the realization that multiple copies of Pip are wasting your hard drive space. Sure, we have terabytes of it now, even on SSDs — but this is a matter of principle. Besides, making those copies takes time, and degrades your user experience of Python.
 
-From within a virtual environment - sorry, a café - in the theatre of my mind, I hear a chant: [Lovely Pip! Wonderful Pip!](https://en.wikipedia.org/wiki/Spam_%28Monty_Python_sketch%29))
+From within a café — sorry, a virtual environment — in the theatre of my mind, I hear a chant: [Lovely Pip! Wonderful Pip!](https://en.wikipedia.org/wiki/Spam_%28Monty_Python_sketch%29))
 
 Let's see what's going on over there, shall we?
 
@@ -19,9 +19,9 @@ Let's see what's going on over there, shall we?
 
 ## `virtualenv`
 
-Before we can talk about Pip, we really need to talk about [virtual environments](https://peps.python.org/pep-0405/). I understand that a lot of people only run others' Python code, or put together some short scripts for personal use, and it's hard to get these users to care about virtual environments - [even when Linux distros conspire with the Python dev team to try to make them care](https://stackoverflow.com/questions/75608323). However, if you use Python in any serious capacity, [you really should understand them](https://chriswarrick.com/blog/2018/09/04/python-virtual-environments/).
+Before we can talk about Pip, we really need to talk about [virtual environments](https://peps.python.org/pep-0405/). I understand that a lot of people only run others' Python code, or put together some short scripts for personal use, and it's hard to get these users to care about virtual environments — [even when Linux distros conspire with the Python dev team to try to make them care](https://stackoverflow.com/questions/75608323). However, if you use Python in any serious capacity, [you really should understand them](https://chriswarrick.com/blog/2018/09/04/python-virtual-environments/).
 
-If you've ever created a virtual environment "manually" - using the standard library [`venv`](https://docs.python.org/3/library/venv.html) module - you may have been underwhelmed by the results. It's slow, and seems to use a lot of disk space.
+If you've ever created a virtual environment "manually" — using the standard library [`venv`](https://docs.python.org/3/library/venv.html) module — you may have been underwhelmed by the results. It's slow, and seems to use a lot of disk space.
 
 It wasn't always like this. Before `venv` there was [`virtualenv`](https://virtualenv.pypa.io/en/latest/). Only part of its functionality was ever included, and it's actively maintained in parallel, so it's actually become rather popular. And its users know that it can be made to run very fast.
 
@@ -38,9 +38,9 @@ sys	0m0.015s
 
 ## `venv` and OpenSSL
 
-For this post I wanted to show off "authentic" testing results as much as possible - by compiling (or having already compiled) a bunch of old Python versions from source, and showing how they actually perform.
+For this post I wanted to show off "authentic" testing results as much as possible — by compiling (or having already compiled) a bunch of old Python versions from source, and showing how they actually perform.
 
-Unfortunately, I wasn't able to get everything working exactly as I wanted, mainly due to issues with OpenSSL support. Basically, everything prior to 3.5.3 expects to use outdated versions of OpenSSL, which I don't have available to work with. (In Python 3.6, [older versions of SSL were deprecated](https://docs.python.org/3/library/ssl.html); [3.5.3]((https://www.python.org/downloads/release/python-353/)) was the next patch for 3.5 after that release, and support for newer versions was added there. It wasn't added to [3.4.6](https://www.python.org/downloads/release/python-346/) - released the same day as 3.5.3 - because Python 3.4 was already in the "security fixes only" phase of development. (Which is a bit ironic considering the relevance of SSL to security, but I digress.)
+Unfortunately, I wasn't able to get everything working exactly as I wanted, mainly due to issues with OpenSSL support. Basically, everything prior to 3.5.3 expects to use outdated versions of OpenSSL, which I don't have available to work with. (In Python 3.6, [older versions of SSL were deprecated](https://docs.python.org/3/library/ssl.html); [3.5.3]((https://www.python.org/downloads/release/python-353/)) was the next patch for 3.5 after that release, and support for newer versions was added there. It wasn't added to [3.4.6](https://www.python.org/downloads/release/python-346/) — released the same day as 3.5.3 — because Python 3.4 was already in the "security fixes only" phase of development. (Which is a bit ironic considering the relevance of SSL to security, but I digress.)
 
 I had to use a debug build of 3.3.5 because otherwise it would crash on startup (even without involving Pip, or anything else that might expect to connect to the Internet), and `venv` would give SSL-related error messages (or worse, if I tried hacking an explicit check out of the standard library source) even though that, too, shouldn't require an Internet connection.
 
@@ -62,11 +62,11 @@ But why does this happen? And what could it have to do with SSL, considering tha
 
 ## `venv`, Setuptools and Pip
 
-It's quite simple, really - Python 3.4 adds the `ensurepip` standard library module. This allows you to bootstrap Pip (and, originally, also Setuptools - which was a dependency of Pip for quite some time) into your Python installation's `site-packages`. At the same time, though, bootstrapping Pip into new virtual environments became the default. You'd now have to disable this using `--without-pip` - and if you did this, you'd have to figure out how to install anything else in that virtual environment. Nowadays, of course, we can use an existing Pip with [the `--python` option](https://pip.pypa.io/en/stable/topics/python-option/), but it wasn't so simple back then.
+It's quite simple, really: Python 3.4 adds the `ensurepip` standard library module. This allows you to bootstrap Pip (and, originally, also Setuptools — which was a dependency of Pip for quite some time) into your Python installation's `site-packages`. At the same time, though, bootstrapping Pip into new virtual environments became the default. You'd now have to disable this using `--without-pip` — and if you did this, you'd have to figure out how to install anything else in that virtual environment. Nowadays, of course, we can use an existing Pip with [the `--python` option](https://pip.pypa.io/en/stable/topics/python-option/), but it wasn't so simple back then.
 
 I should note here that this bootstrapping process *still doesn't* use the Internet - it can't, because that would require the bootstrap to know something about package installation already (specifically, how to download from PyPI). Instead, it uses a [prepared wheel stored in the standard library folder](https://github.com/python/cpython/tree/3.13/Lib/ensurepip/_bundled), importing Pip code from inside that wheel to get Pip to install itself.
 
-It still needs to reach into the SSL implementation - but I'm not yet ready to explain why.
+It still needs to reach into the SSL implementation — but I'm not yet ready to explain why.
 
 Today, the bootstrapping process is slower than with Python 3.5. That's because Python 3.5 bundled Pip 9.0.1 and Setuptools 28.8.0, and modern Pip is bigger than both of those put together. For example, with the Python 3.12 build included in my Linux distro:
 
@@ -78,7 +78,7 @@ user	0m3.020s
 sys	0m0.219s
 ```
 
-The worst-case scenario is probably with Python 3.10 - before `ensurepip` stopped bootstrapping Setuptools:
+The worst-case scenario is probably with Python 3.10 — before `ensurepip` stopped bootstrapping Setuptools:
 
 ```
 $ time py3.10 -m venv test310
@@ -88,7 +88,7 @@ user	0m3.638s
 sys	0m0.236s
 ```
 
-(The patch version I tested is 3.10.14 - this does matter, because the bundled Pip version potentially changes with each patch. I also tried with 3.11.9; it comes with a slightly bulkier Pip, and generates considerably bulkier bytecode, but the interpreter is slightly faster, so it comes out about even.)
+(The patch version I tested is 3.10.14 — this does matter, because the bundled Pip version potentially changes with each patch. I also tried with 3.11.9; it comes with a slightly bulkier Pip, and generates considerably bulkier bytecode, but the interpreter is slightly faster, so it comes out about even.)
 
 On the other hand, if I hack together a separate Python 3.5.10 build that bootstraps the "original" Pip and Setuptools dependencies from 3.4.0 (Pip 1.5.4 and Setuptools 2.1, respectively):
 
@@ -102,7 +102,7 @@ sys	0m0.130s
 
 Of course, this also depends on your hardware, and your OS.
 
-Speaking of the effect of Pip's size on install time - the resulting virtual environment takes quite a bit of disk space:
+Speaking of the effect of Pip's size on install time — the resulting virtual environment takes quite a bit of disk space:
 
 ```
 $ du -sh test312
@@ -146,7 +146,7 @@ user	0m4.462s
 sys	0m0.357s
 ```
 
-Notably, this *does* require an Internet connection *even if* Pip's cache already contains the new version wheel - because it will contact PyPI to check if there's anything even newer. So it could stutter if your connection is interrupted.
+Notably, this *does* require an Internet connection *even if* Pip's cache already contains the new version wheel — because it will contact PyPI to check if there's anything even newer. So it could stutter if your connection is interrupted.
 
 You could do the upgrade manually afterwards instead, but that isn't any faster (although you can avoid the need for an Internet connection if you explicitly put a Pip wheel somewhere and explicitly tell Pip to install from that wheel).
 
@@ -185,21 +185,19 @@ So, why are we copying Pip into the destination environment? Rather, why would P
 
 It seems like that has at least a bit to do with the history of Pip's relationship with Python. The core Python dev team has seemingly always sought to keep packaging at arms-length distance from the main project. (Well, notwithstanding the part where `distutils` was incorporated into the standard library [years before Pip existed](https://docs.python.org/2.2/lib/lib.html) and didn't get removed [until 3.12](https://docs.python.org/3/whatsnew/3.12.html), despite being roundly judged as broken, [long obsolete](https://stackoverflow.com/questions/25337706/) and [basically unfixable](https://mail.python.org/archives/list/distutils-sig@python.org/message/HPQOKOFVTZUCSGKGCPLV64JZI2F4LVO3).) As such (and learning from the mistakes made with `distutils`), Pip really couldn't really (and didn't) become a standard library module or package. (Doing that would also have interfered with the separate versioning and maintenance of Pip; "the standard library is where modules go to die", as stated [in a famous talk by Kenneth Reitz](https://kennethreitz.org/talks/python-for-humans).)
 
-But rather than becoming an entirely separately distributed program, we ended up with the `ensurepip` setup described earlier. (I assume the `pip.exe` wrapper on Windows runs something like `python -m ensurepip` first before `python -m pip`.) So now you don't have to have Pip installed (although you still pay disk space for it - but the wheel is a fraction of the size of an installed copy), but if you want it, you can easily install it. (And then upgrade it....)
+But rather than becoming an entirely separately distributed program, we ended up with the `ensurepip` setup described earlier. (I assume the `pip.exe` wrapper on Windows runs something like `python -m ensurepip` first before `python -m pip`.) So now you don't have to have Pip installed (although you still pay disk space for it — but the wheel is a fraction of the size of an installed copy), but if you want it, you can easily install it. (And then upgrade it....)
 
-Well, that's *one* way to solve the bootstrapping problem, I guess. And I'm sure it's much more pleasant than the initial offer made by Python 3.3 - where you'd have to find a separate path to install Pip, perhaps using `easy_install`, or `ez_setup` (both part of Setuptools at the time, but maybe also made available separately - this is a depth of historical research I'm just not that interested in).
+Well, that's *one* way to solve the bootstrapping problem, I guess. And I'm sure it's much more pleasant than the initial offer made by Python 3.3 — where you'd have to find a separate path to install Pip, perhaps using `easy_install`, or `ez_setup` (both part of Setuptools at the time, but maybe also made available separately — this is a depth of historical research I'm just not that interested in).
 
 ## Pip, Pip, Pip, Windows, and Pip
 
 Another important reason we ended up with this default workflow is... Windows.
 
-See, the normal way of organizing installed applications on Windows isn't very friendly for command-line use. Typically, each program gets a sub-folder within `C:\Program Files` - so if you want to use them from the command line, you'd have to add each of those entries to the `PATH` environment variable. That would pollute a [length-limited](https://stackoverflow.com/questions/34491244) environment variable, and also cause confusion between `.exe`s with matching names (not just Python, but the `pip.exe` wrappers).
+See, the normal way of organizing installed applications on Windows isn't very friendly for command-line use. Typically, each program gets a sub-folder within `C:\Program Files` — so if you want to use them from the command line, you'd have to add each of those entries to the `PATH` environment variable. That would pollute a [length-limited](https://stackoverflow.com/questions/34491244) environment variable, and also cause confusion between `.exe`s with matching names (not just Python, but the `pip.exe` wrappers). This leads to all sorts of ways to set up a system where either `python` doesn't run Python, `pip` doesn't run Pip, or — most importantly — [`pip` installs for a different version of Python than `python` runs](https://stackoverflow.com/questions/14295680). (And most of the information you'll find about fixing the problem, in my experience, is confused, cargo-cult nonsense. There are some examples among the answers on that Stack Overflow question, for that matter.)
 
-This leads to all sorts of ways to set up a system where either `python` doesn't run Python, `pip` doesn't run Pip, or - most importantly - [`pip` installs for a different version of Python than `python` runs](https://stackoverflow.com/questions/14295680). (And the advice you can find about the problem most easily - such as the previous link - tends to be very confused.)
+As a result, the common practice on Windows is to have the installer *not* add entries to `PATH`, and to use a single common [launcher program](https://docs.python.org/3/using/windows.html#python-launcher-for-windows) — installed directly into the Windows folder, so it's always on `PATH` — to choose a Python version. However, with this approach, `pip.exe` won't be on the user's `PATH` — not any of the copies. Instead, `py -m pip` is the recommended way to run Pip on Windows. (This also solves the problem that Windows won't allow `pip.exe` to replace itself on disk while running.) This way, the launcher finds an appropriate Python environment (and in 3.5, it was [improved](https://peps.python.org/pep-0486/) to support virtual environments as well!), and then that Python executable runs the `pip` module from its `site-packages`.
 
-As a result, the common practice on Windows is to have the installer *not* add entries to `PATH`, and to use a single common [launcher program](https://docs.python.org/3/using/windows.html#python-launcher-for-windows) - installed directly into the Windows folder, so it's always on `PATH` - to choose a Python version. However, with this approach, `pip.exe` won't be on the user's `PATH` - not any of the copies. Instead, `py -m pip` is the recommended way to run Pip on Windows. (This also solves the problem that Windows won't allow `pip.exe` to replace itself on disk while running.) This way, the launcher finds an appropriate Python environment (and in 3.5, it was [improved](https://peps.python.org/pep-0486/) to support virtual environments as well!), and then that Python executable runs the `pip` module from its `site-packages`.
-
-And now there's a simple approach that can be taught to everyone - well, notwithstanding that Windows users have to write `py` while Linux users are expected to write `python`. (More recently, one of the core Python developers [got the idea](https://github.com/brettcannon/python-launcher) that Linux systems would also benefit from a Python launcher. But the idea doesn't seem to have gotten much traction - there's no PEP for it or anything.)
+And now there's a simple approach that can be taught to everyone — well, notwithstanding that Windows users have to write `py` while Linux users are expected to write `python`. (More recently, one of the core Python developers [got the idea](https://github.com/brettcannon/python-launcher) that Linux systems would also benefit from a Python launcher. But the idea doesn't seem to have gotten much traction — there's no PEP for it or anything.)
 
 I'd argue that a much cleaner solution was staring everyone in the face the entire time:
 
@@ -221,9 +219,9 @@ Earlier in this post, I explained the simple way to make Pip install cross-envir
 
 So this is a good time to point out that it's kind of a hack, and not completely reliable.
 
-It's not just any hack - it's clever ([and surprisingly complex](https://github.com/pypa/pip/blob/main/src/pip/__pip-runner__.py)). When Pip is given the `--python` argument, it basically re-runs itself via `subprocess` standard library functionality - using the destination environment's Python executable, to interpret its own code in the current location. But since its own code isn't in the destination environment, `import`s won't work normally in the new process, so it has to use more tools from the standard library: [runpy](https://docs.python.org/3/library/runpy.html) (the same code that powers Python's [`-m` command-line option](https://docs.python.org/3/using/cmdline.html#cmdoption-m)), and the [advanced import machinery](https://docs.python.org/3/library/importlib.html#importlib.abc.MetaPathFinder) provided by `importlib`, creating a `MetaPathFinder` that is added to [`sys.meta_path`](https://docs.python.org/3/library/sys.html#sys.meta_path). Part of the logic for this is contained in a specially named file, intended to make sure it isn't imported directly, but itself run as a subprocess [after looking up the filename](https://github.com/pypa/pip/blob/2d772146d94e65c948e41e4b19e1fc3bdfa4feae/src/pip/_internal/build_env.py#L43). And the re-run Pip gets the same complete command line, *including the `--python` argument*, so [an environment variable is used as a recursion guard](https://github.com/pypa/pip/blob/2d772146d94e65c948e41e4b19e1fc3bdfa4feae/src/pip/_internal/cli/main_parser.py#L80).
+It's not just any hack — it's clever ([and surprisingly complex](https://github.com/pypa/pip/blob/main/src/pip/__pip-runner__.py)). When Pip is given the `--python` argument, it basically re-runs itself via `subprocess` standard library functionality — using the destination environment's Python executable, to interpret its own code in the current location. But since its own code isn't in the destination environment, `import`s won't work normally in the new process, so it has to use more tools from the standard library: [runpy](https://docs.python.org/3/library/runpy.html) (the same code that powers Python's [`-m` command-line option](https://docs.python.org/3/using/cmdline.html#cmdoption-m)), and the [advanced import machinery](https://docs.python.org/3/library/importlib.html#importlib.abc.MetaPathFinder) provided by `importlib`, creating a `MetaPathFinder` that is added to [`sys.meta_path`](https://docs.python.org/3/library/sys.html#sys.meta_path). Part of the logic for this is contained in a specially named file, intended to make sure it isn't imported directly, but itself run as a subprocess [after looking up the filename](https://github.com/pypa/pip/blob/2d772146d94e65c948e41e4b19e1fc3bdfa4feae/src/pip/_internal/build_env.py#L43). And the re-run Pip gets the same complete command line, *including the `--python` argument*, so [an environment variable is used as a recursion guard](https://github.com/pypa/pip/blob/2d772146d94e65c948e41e4b19e1fc3bdfa4feae/src/pip/_internal/cli/main_parser.py#L80).
 
-There's also an important limitation here: the destination environment's Python has to be able to run Pip. That normally isn't an issue, since the Pip support window from Python versions generally moves in lock-step with the support window for Python itself. And normally you won't need to use an older version of Pip (only the current Pip version is ever supported, remember?), so you can just keep it up to date, and use it with whatever Python environments are currently not EOL. However, if you maintain a package for an EOL version of Python - maybe you're one of those unfortunate people still stuck maintaining a 2.7-based system - too bad for you:
+There's also an important limitation here: the destination environment's Python has to be able to run Pip. That normally isn't an issue, since the Pip support window from Python versions generally moves in lock-step with the support window for Python itself. And normally you won't need to use an older version of Pip (only the current Pip version is ever supported, remember?), so you can just keep it up to date, and use it with whatever Python environments are currently not EOL. However, if you maintain a package for an EOL version of Python — maybe you're one of those unfortunate people still stuck maintaining a 2.7-based system — too bad for you:
 
 ```
 $ # Since Python 2.7 didn't have a venv standard library module,
@@ -288,7 +286,7 @@ Downloading numpy-1.16.6-cp27-cp27mu-manylinux1_x86_64.whl (17.0 MB)
 
 Phew.
 
-Except *it's still wrong*, because Numpy's `f2py` etc. scripts are now in the wrong place (a `bin` subdirectory of the `site-packages`, rather than the virtual environment's main `bin` directory).
+Except *it's still wrong*, because Numpy's `f2py` etc. scripts are now in the wrong place (a `bin` subdirectory of the `site-packages`, rather than the virtual environment's main `bin` directory). That's because, when you use `--target`, Pip doesn't recognize that it's installing into a virtual environment — the specified folder is just a folder.
 
 At least now we know why `--python` was added.
 
@@ -338,11 +336,11 @@ While the timing isn't perfectly consistent, generally in my tests it broke down
 * 300 milliseconds on interpreter startup/teardown plus `import`ing code, the second time
 * 250 milliseconds on Pip's version self-check logic
 
-The overhead of `--python` is a consequence of its implementation, described in the previous section. It does some standard top-level imports, parses the command line, then decides to start over in a new process (with the target environment's Python interpreter). Quite a few modules are imported here, but not all of the ones involved in an actual installation. But even discounting that (and focusing on the time that Pip spends installing itself) we see that over a third of the time is pure overhead. The time spent on the self-check logic is worth highlighting. Close to half of this is, again, importing even more modules. It also spends about 70 milliseconds creating an "SSL truststore context", and 60 milliseconds creating *two* "Pip session" objects (which, it seems, are supposed to encapsulate the process of connecting to PyPI). And then it does nothing with all of that setup - because, of course, there's no reason to try to connect to PyPI and check whether a newer Pip version is available, while in the middle of installing a new Pip version.
+The overhead of `--python` is a consequence of its implementation, described in the previous section. It does some standard top-level imports, parses the command line, then decides to start over in a new process (with the target environment's Python interpreter). Quite a few modules are imported here, but not all of the ones involved in an actual installation. But even discounting that (and focusing on the time that Pip spends installing itself) we see that over a third of the time is pure overhead. The time spent on the self-check logic is worth highlighting. Close to half of this is, again, importing even more modules. It also spends about 70 milliseconds creating an "SSL truststore context", and 60 milliseconds creating *two* "Pip session" objects (which, it seems, are supposed to encapsulate the process of connecting to PyPI). And then it does nothing with all of that setup — because, of course, there's no reason to try to connect to PyPI and check whether a newer Pip version is available, while in the middle of installing a new Pip version.
 
 At least it doesn't break if you disable your Internet connection. But I guess this is why it touches the SSL implementation even if it *doesn't* connect to the Internet.
 
-I went even further, and investigated the time spent when `ensurepip` gets Pip to install itself from a wheel. To do this - because I was still, stubbornly, not using proper tools - I ended up forking Pip to add timing instrumentation, rebuilding the wheel, then copying the standard library `ensurepip` code and modifying it to add more timing instrumentation and make it install the modified wheel instead of the standard one.
+I went even further, and investigated the time spent when `ensurepip` gets Pip to install itself from a wheel. To do this — because I was still, stubbornly, not using proper tools — I ended up forking Pip to add timing instrumentation, rebuilding the wheel, then copying the standard library `ensurepip` code and modifying it to add more timing instrumentation and make it install the modified wheel instead of the standard one.
 
 Long story short: importing is much slower from the wheel, and a huge fraction of Pip's own code gets imported this way. I didn't look into the details of [how Python imports from zip archives](https://docs.python.org/3/library/zipimport.html), but I imagine that it's optimized for cases where relatively little of the archive contents need to be interpreted, and that it works a file at a time. Each import was actually taking on the order of 4 or 5 times as long in my testing, while everything else about the process (including module teardown, it seems) was about as fast.
 
@@ -350,15 +348,15 @@ Perhaps the overall process would be faster if `ensurepip` explicitly unpacked t
 
 ## Pandas Thermidor aux Matplotlib with a Numpy Dependency, Garnished with Truffle PIL, Brandy and a Vendored Requests on top, and Pip
 
-Maybe you don't care about using an extra 15 MB of disk space in every virtual environment, since disk space is so cheap nowadays. After all, a lot of people will end up creating multiple virtual environments with larger dependencies - such as Numpy, Pandas and other parts of the SciPy stack - and duplicate those, too. (To say nothing of people doing AI/ML work with PyTorch, CUDA etc....) With better thought-out design, those could potentially be hard-linked from a common source in Pip's cache. Which, it stands to reason, would also be faster - since the work of unpacking the wheel wouldn't be repeated.
+Maybe you don't care about using an extra 15 MB of disk space in every virtual environment, since disk space is so cheap nowadays. After all, a lot of people will end up creating multiple virtual environments with larger dependencies — such as Numpy, Pandas and other parts of the SciPy stack — and duplicate those, too. (To say nothing of people doing AI/ML work with PyTorch, CUDA etc....) With better thought-out design, those could potentially be hard-linked from a common source in Pip's cache. Which, it stands to reason, would also be faster — since the work of unpacking the wheel wouldn't be repeated.
 
-But we instead live in a world where all these things get duplicated, and the only effort Pip's cache saves is actually downloading the wheel. (It doesn't even prevent Pip from connecting to the Internet to check for newer versions on PyPI, unless you're careful with specifying package versions.) And there's one last bit of insult added to the injury: Pip's vendored dependencies. It makes sense that Pip can't fetch its dependencies on the fly when it installs itself - there's an obvious bootstrapping problem there. But a couple of those dependencies - I'm particularly thinking of Requests and Rich - are quite popular packages in themselves. If you follow the standard recommendations, you might have several copies of these installed on your machine already - yet not have access to them without a bit of hacking (e.g. `import pip._vendor.requests` is definitely not an intentional or supported part of the API).
+But we instead live in a world where all these things get duplicated, and the only effort Pip's cache saves is actually downloading the wheel. (It doesn't even prevent Pip from connecting to the Internet to check for newer versions on PyPI, unless you're careful with specifying package versions.) And there's one last bit of insult added to the injury: Pip's vendored dependencies. It makes sense that Pip can't fetch its dependencies on the fly when it installs itself — there's an obvious bootstrapping problem there. But a couple of those dependencies — I'm particularly thinking of Requests and Rich — are quite popular packages in themselves. If you follow the standard recommendations, you might have several copies of these installed on your machine already — yet not have access to them without a bit of hacking (e.g. `import pip._vendor.requests` is definitely not an intentional or supported part of the API).
 
 ## Bloody `uv`ikings!
 
 Thanks for reading this far. I hope I've improved your view of Python virtual environments, and sharpened your critique of Pip.
 
-As I said in the teaser, there's more that people don't seem to like about venvs, but that will wait for another day. For now, just know that you *can* create them quickly, and use them effectively. And when you use a workflow tool like `uv`, Poetry, Hatch or PDM, it actually creates and manages virtual environments for you - you aren't really avoiding them, just adding a layer of abstraction. For all the supposed benefits of being written in Rust, `uv` doesn't save you time on this, either:
+As I said in the teaser, there's more that people don't seem to like about venvs, but that will wait for another day. For now, just know that you *can* create them quickly, and use them effectively. And when you use a workflow tool like `uv`, Poetry, Hatch or PDM, it actually creates and manages virtual environments for you — you aren't really avoiding them, just adding a layer of abstraction. For all the supposed benefits of being written in Rust, `uv` doesn't save you time on this, either:
 
 ```
 $ time uv venv --no-progress --no-config --offline --quiet --no-project with-uv
@@ -368,7 +366,7 @@ user	0m0.049s
 sys	0m0.016s
 ```
 
-That's about twice as long as the built-in `venv`. As far as I can tell, Astral has basically ported the logic of the third-party `virtualenv` (which the standard library `venv` is based upon) in Rust. This adds more activation scripts for additional environments, as well as a shim used for distutils support - even after the [removal of distutils from the standard library](https://peps.python.org/pep-0632/).
+That's about twice as long as the built-in `venv`. As far as I can tell, Astral has basically ported the logic of the third-party `virtualenv` (which the standard library `venv` is based upon) in Rust. This adds more activation scripts for additional environments, as well as a shim used for distutils support — even after the [removal of distutils from the standard library](https://peps.python.org/pep-0632/).
 
 At any rate, it's faster than `virtualenv` when told to omit Pip:
 
@@ -380,6 +378,6 @@ user	0m0.155s
 sys	0m0.026s
 ```
 
-...but it's not faster than `venv`, as seen earlier. Without installing Pip, the overall logic is pretty simple - you really just need to copy a template into place. There's no real reason to expect massive gains from Rust (or any statically compiled language) there.
+...but it's not faster than `venv`, as seen earlier. Without installing Pip, the overall logic is pretty simple — you really just need to copy a template into place. There's no real reason to expect massive gains from Rust (or any statically compiled language) there.
 
 Which leads into my planned topic for next time...
