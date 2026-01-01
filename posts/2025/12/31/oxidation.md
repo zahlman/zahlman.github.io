@@ -43,7 +43,9 @@ I recognize that's a bold claim. Python has a reputation for poor performance ev
 
     In `pip`'s case, the main culprits are Rich and Requests (and their dependencies). The total module count is over five hundred — seriously. These are things that are not expensive in Rust, of course, but they're also things that are *generally unnecessary in Python, too*. Much of the imported code is not relevant to `pip`'s operation at all, and much more will be irrelevant most of the time.
 
-    Python 3.15 is set to offer a [`lazy` soft keyword for imports](https://peps.python.org/pep-0810/), but it will be years before `pip` can reliably take advantage of that unless they offer separate wheels per Python version (which I doubt they will try). In the mean time, `pip` does try to defer the Requests imports until the first time an Internet request is needed. But that brings us to:
+    Python 3.15 is set to offer a [`lazy` soft keyword for imports](https://peps.python.org/pep-0810/), but it will be years before `pip` can reliably take advantage of that unless they offer separate wheels per Python version (which I doubt they will try). In the mean time, `pip` does try to defer the Requests imports until the first time an Internet request is needed.
+
+    Speaking of Internet requests...
 
 1. The cache that `pip` uses for downloads isn't really a download cache. It's an *HTTP* cache; `pip`'s web requests go through a wrapper that checks the cache first, through a controller that simulates a real web request. That cache stores the wheels according to a *hash of the original URL*, with a bit of `msgpack` metadata attached. (Wheels that are locally built from an sdist are cached separately, though.)
 
@@ -51,7 +53,9 @@ I recognize that's a bold claim. Python has a reputation for poor performance ev
 
     Seriously.
 
-    Nothing prevents a Python program from caching in a more intelligent way. It could also trivially cache the unpacked files from a wheel instead of (just) the wheel. Speaking of which...
+    Nothing prevents a Python program from caching in a more intelligent way. It could also trivially cache the unpacked files from a wheel instead of (just) the wheel.
+
+    Speaking of files...
 
 1. One of the features `uv` is praised for, outside of its speed and ergonomics, is that its environments don't waste redundant disk space. Even without making several copies of `pip` itself (to avoid the issues with the `--python` option), it will waste your disk space in the long run by copying the files for the same wheel into multiple environments.
 
@@ -59,31 +63,29 @@ I recognize that's a bold claim. Python has a reputation for poor performance ev
 
     Hard-linking the files means not doing the disk I/O to read and write the file data, of course. But it's also much faster *even for empty files* in Python, because it can be cleanly expressed with fewer system calls:
 
-    ```python
-    $ touch foo
-    $ python -m timeit --setup 'import os' 'with open("foo") as f, open("bar", "w") as b: b.write(f.read()); os.unlink("bar")'
-    5000 loops, best of 5: 54.4 usec per loop
-    $ python -m timeit --setup 'import os' 'os.link("foo", "bar"); os.unlink("bar")'
-    50000 loops, best of 5: 8.46 usec per loop
-    ```
+        $ touch foo
+        $ python -m timeit --setup 'import os' 'with open("foo") as f, open("bar", "w") as b: b.write(f.read()); os.unlink("bar")'
+        5000 loops, best of 5: 54.4 usec per loop
+        $ python -m timeit --setup 'import os' 'os.link("foo", "bar"); os.unlink("bar")'
+        50000 loops, best of 5: 8.46 usec per loop
 
     There are even more opportunities to cache stuff than what `uv` currently does (I don't mind if they take the idea from here). In PAPER I'm keeping the wheel itself as well as unpacked files, just in case they're useful later; and I'm caching pre-compiled `.pyc` files (in my testing, reusing these is not problematic; the worst that happens is that paths might disappear from stack traces, but even then, only if the corresponding `.py` files are removed.)
 
-Speaking of precompilation...
+    Speaking of precompilation...
 
 1. In that famous initial benchmark, "Installing Trio's dependencies with a warm cache" (the one still at the top of the README), one major reason for `uv`'s outperformance (aside of course from the fact that tools like `pip-sync` rely on `pip`, which as explained above can't have *nearly* as "warm" of a cache) is that the default setting for `uv` was (maybe still is; I haven't been paying enough attention) not to pre-compile `.py` files to `.pyc` on installation, where `pip` does this by default. This pre-compilation is usually not *necessary* (unless perhaps you're installing something as root into a root-owned folder, that will later be run by an unprivileged user), and is sometimes completely *un*necessary (some modules of some packages might never be touched by some users). But it does avoid a performance hiccup the first time you use a third-party library.
 
     `uv` certainly *can* pre-compile to bytecode, of course. And when it does so, it parallelizes the process, and `pip` does not. Again, `pip` currently can't rely on modern Python features that would make thread-based concurrency actually parallel; it would need to spin up separate processes using `multiprocessing`.
 
-    But it *could* do that. It's nothing specific to Rust. In fact, the standard library `compileall` offers a primitive solution for it (which Python itself depends on for its own installation process, in the Makefile). Separate processes have a cost, but it can be incurred according to heuristics and be a net win (and the per-process cost could be improved by other changes).
+    But it *could* do that. It's nothing specific to Rust. In fact, the standard library `compileall` offers a primitive solution for it (which Python itself depends on for its own installation process, in the Makefile). Separate processes have a cost, but it can be incurred according to heuristics and be a net win (and the per-process cost could be improved by other changes). And to my understanding, `pip` support for this is being actively worked on.
 
     And of course, when `pip` pre-compiles bytecode, it's invoking functionality within the interpreter which again is written in C. To my understanding, `uv` also uses that at the core, rather than trying to reinvent it.
 
-Speaking of parallelism...
+    Speaking of parallelism...
 
 1. `uv` also apparently parallelizes downloads. I'm unsure how much that really matters given that you only have one Internet connection and it's normally targeting either `pypi.org` or `pythonhosted.com`, but people have told me it's significant when you download a lot of packages.
 
-Speaking of downloading multiple packages...
+    Speaking of downloading multiple packages...
 
 1. The algorithm `pip` uses to resolve dependencies is overkill (and the code for it, [extracted](https://github.com/sarugaku/resolvelib) as `resolvelib`, is quite arcane). It's a fully backtracking resolve which rather naively chooses where to backtrack when it has options. Of course, it beats the one `pip` had prior to [April 2020](https://pip.pypa.io/en/stable/news/#b1-2020-04-21), which from the reports I heard (I've really never had any difficult package resolution cases for my own projects) often just straight up didn't work.
 
