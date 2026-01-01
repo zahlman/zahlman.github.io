@@ -23,6 +23,12 @@ In the new year, I'm thinking of moving these "meta" sections back to the end of
 
 ## The Elephant in my Room
 
+If you haven't heard by now, I'm making [PAPER](https://github.com/zahlman/paper), a pure-Python package installer intended to replace the main use cases of both `pip` and [Pipx](https://pipx.pypa.io/stable/) along with doing some *very basic* virtual environment management. It should end up being much smaller and faster than `pip`, and capable of directly installing cross-environment cleanly without re-launching itself in the target environment.
+
+But why? And why would I mention this in an article about `uv`?
+
+Pretty simple: the superiority of `uv` over `pip` makes Python look bad, and in my view *needlessly so*. I think `pip` could be a lot better if it weren't hamstrung by ancient, short-sighted design and concessions to backwards compatibility. And the best way to prove that is to make something better.
+
 ## Rocket-ship-emoji Blazing Fast, Written in Rust Sparkle-emoji
 
 The most obvious thing to say about `uv`, snark aside, is that it genuinely does perform `pip`'s tasks far faster than `pip` does, overall. The thing that annoys me about this is that the discussion will be full of people who attribute this to the implementation language and seemingly don't think about it any further. That's overly reductive, and a bad habit in general, but in this case I'm very solidly convinced that the conclusion is mostly just wrong.
