@@ -77,6 +77,8 @@ Speaking of precompilation...
 
     But it *could* do that. It's nothing specific to Rust. In fact, the standard library `compileall` offers a primitive solution for it (which Python itself depends on for its own installation process, in the Makefile). Separate processes have a cost, but it can be incurred according to heuristics and be a net win (and the per-process cost could be improved by other changes).
 
+    And of course, when `pip` pre-compiles bytecode, it's invoking functionality within the interpreter which again is written in C. To my understanding, `uv` also uses that at the core, rather than trying to reinvent it.
+
 Speaking of parallelism...
 
 1. `uv` also apparently parallelizes downloads. I'm unsure how much that really matters given that you only have one Internet connection and it's normally targeting either `pypi.org` or `pythonhosted.com`, but people have told me it's significant when you download a lot of packages.
