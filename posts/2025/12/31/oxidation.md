@@ -31,19 +31,57 @@ First off, it's not really that `uv` is fast. It's much more that *`pip` is slow
 
 I recognize that's a bold claim. Python has a reputation for poor performance even among other "dynamic" languages (where JavaScript in particular has seen significant work on optimization). The proof is in the pudding, of course, and I've been cooking for far too long. But let me just point out the things I'm trying to fix, performance-wise:
 
- of causes of its poor performance. Of course I don't deny that doing things in a compiled language like Rust is going to offer additional benefits; I just doubt that they're as significant, or that they would matter so much once the real problems are addressed.
+1. `pip` is slow *even when it's effectively doing nothing*. Running something simple like `pip --version`, or `pip install` (with no packages specified) takes much longer than it ought to — many times as long as starting up the Python runtime itself; longer than a cold import of `numpy`; and certainly longer than the equivalent command for many other Python applications. And since installing with `--python` requires re-starting `pip` (re-running the code in a new process, under the target environment's Python), part of that cost is paid again.
 
- I recognize that's a bold claim. Python has a reputation for poor performance even among other "dynamic" languages (where JavaScript in particular has seen significant work on optimization). The proof is in the pudding, of course, and I've been cooking for far too long. But let me just point out the things I'm trying to fix:, performance-wise:
+    In my analysis, there's no single bottleneck causing this, but there is a clear cause: the sheer amount of modules being imported, which requires top-level code to run for each. In general this isn't explicitly doing anything explicitly costly, but "top-level code" includes `class` and `def` statements. Not the cost of calling functions or instantiating classes, but of creating the `function` and `class` objects in the first place. (Of course there is also the cost of garbage collection afterwards).
 
-1. (top-level imports and `--python`)
+    In `pip`'s case, the main culprits are Rich and Requests (and their dependencies). The total module count is over five hundred — seriously. These are things that are not expensive in Rust, of course, but they're also things that are *generally unnecessary in Python, too*. Much of the imported code is not relevant to `pip`'s operation at all, and much more will be irrelevant most of the time.
 
-1. (download cache)
+    Python 3.15 is set to offer a [`lazy` soft keyword for imports](https://peps.python.org/pep-0810/), but it will be years before `pip` can reliably take advantage of that unless they offer separate wheels per Python version (which I doubt they will try). In the mean time, `pip` does try to defer the Requests imports until the first time an Internet request is needed. But that brings us to:
 
-1. (hard-linking)
+1. The cache that `pip` uses for downloads isn't really a download cache. It's an *HTTP* cache; `pip`'s web requests go through a wrapper that checks the cache first, through a controller that simulates a real web request. That cache stores the wheels according to a *hash of the original URL*, with a bit of `msgpack` metadata attached. (Wheels that are locally built from an sdist are cached separately, though.)
 
-1. (precompilation)
+    So, for example, `pip` has been held back from [offering an offline mode](https://github.com/pypa/pip/issues/8057) (install only what's available in cache) for years since the idea was proposed, in large part because it *literally can't figure out what it has downloaded without contacting the Internet again*.
 
-1. (resolver)
+    Seriously.
+
+    Nothing prevents a Python program from caching in a more intelligent way. It could also trivially cache the unpacked files from a wheel instead of (just) the wheel. Speaking of which...
+
+1. One of the features `uv` is praised for, outside of its speed and ergonomics, is that its environments don't waste redundant disk space. Even without making several copies of `pip` itself (to avoid the issues with the `--python` option), it will waste your disk space in the long run by copying the files for the same wheel into multiple environments.
+
+    The way `uv` achieves this is by making hard links to files from the cache rather than copying them. It's also a performance feature, and it's trivial to perform in Python, and it isn't meaningfully sped up by Rust because it mainly depends on making system calls (to code written in C).
+
+    Hard-linking the files means not doing the disk I/O to read and write the file data, of course. But it's also much faster *even for empty files* in Python, because it can be cleanly expressed with fewer system calls:
+
+    ```python
+    $ touch foo
+    $ python -m timeit --setup 'import os' 'with open("foo") as f, open("bar", "w") as b: b.write(f.read()); os.unlink("bar")'
+    5000 loops, best of 5: 54.4 usec per loop
+    $ python -m timeit --setup 'import os' 'os.link("foo", "bar"); os.unlink("bar")'
+    50000 loops, best of 5: 8.46 usec per loop
+    ```
+
+    There are even more opportunities to cache stuff than what `uv` currently does (I don't mind if they take the idea from here). In PAPER I'm keeping the wheel itself as well as unpacked files, just in case they're useful later; and I'm caching pre-compiled `.pyc` files (in my testing, reusing these is not problematic; the worst that happens is that paths might disappear from stack traces, but even then, only if the corresponding `.py` files are removed.)
+
+Speaking of precompilation...
+
+1. In that famous initial benchmark, "Installing Trio's dependencies with a warm cache" (the one still at the top of the README), one major reason for `uv`'s outperformance (aside of course from the fact that tools like `pip-sync` rely on `pip`, which as explained above can't have *nearly* as "warm" of a cache) is that the default setting for `uv` was (maybe still is; I haven't been paying enough attention) not to pre-compile `.py` files to `.pyc` on installation, where `pip` does this by default. This pre-compilation is usually not *necessary* (unless perhaps you're installing something as root into a root-owned folder, that will later be run by an unprivileged user), and is sometimes completely *un*necessary (some modules of some packages might never be touched by some users). But it does avoid a performance hiccup the first time you use a third-party library.
+
+    `uv` certainly *can* pre-compile to bytecode, of course. And when it does so, it parallelizes the process, and `pip` does not. Again, `pip` currently can't rely on modern Python features that would make thread-based concurrency actually parallel; it would need to spin up separate processes using `multiprocessing`.
+
+    But it *could* do that. It's nothing specific to Rust. In fact, the standard library `compileall` offers a primitive solution for it (which Python itself depends on for its own installation process, in the Makefile). Separate processes have a cost, but it can be incurred according to heuristics and be a net win (and the per-process cost could be improved by other changes).
+
+Speaking of parallelism...
+
+1. `uv` also apparently parallelizes downloads. I'm unsure how much that really matters given that you only have one Internet connection and it's normally targeting either `pypi.org` or `pythonhosted.com`, but people have told me it's significant when you download a lot of packages.
+
+Speaking of downloading multiple packages...
+
+1. The algorithm `pip` uses to resolve dependencies is overkill (and the code for it, [extracted](https://github.com/sarugaku/resolvelib) as `resolvelib`, is quite arcane). It's a fully backtracking resolve which rather naively chooses where to backtrack when it has options. Of course, it beats the one `pip` had prior to [April 2020](https://pip.pypa.io/en/stable/news/#b1-2020-04-21), which from the reports I heard (I've really never had any difficult package resolution cases for my own projects) often just straight up didn't work.
+
+    The algorithm in `uv` is apparently much more sophisticated. This is very much not my wheelhouse (pun intended) and I'm hoping I can find a small third-party solution for it. But clearly it's the sort of thing that can be make to work by writing Python code. (More easily, if anything.)
+
+Any of those could merit a separate post, and indeed I consider most of those topics part of my backlog.
 
 ## Easy as Seven-Two-Three
 
@@ -55,7 +93,7 @@ And again, this is an ecosystem-wide standard now. It's worth noting that it was
 
 Presumably there are other tools that can do it too.
 
-## It Slices, it Dices, it Makes Julienne... Wheels
+## It Slices, it Dices, it Makes Julienne... Wheels?
 
 One of the things many people seem to like about Rust is that it strives to be an all-in-one solution, for both developers and end users. On top of what other tools like Hatch, Poetry and PDM have offered, it even grabs and installs [standalone builds](https://github.com/astral-sh/python-build-standalone) of Python, thanks to the work of [Gregory Szorc](https://github.com/indygreg).
 
