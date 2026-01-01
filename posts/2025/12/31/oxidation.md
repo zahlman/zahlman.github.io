@@ -57,6 +57,14 @@ Presumably there are other tools that can do it too.
 
 ## It Slices, it Dices, it Makes Julienne... Wheels
 
+One of the things many people seem to like about Rust is that it strives to be an all-in-one solution, for both developers and end users. On top of what other tools like Hatch, Poetry and PDM have offered, it even grabs and installs [standalone builds](https://github.com/astral-sh/python-build-standalone) of Python, thanks to the work of [Gregory Szorc](https://github.com/indygreg).
+
+This is not my favourite thing at all; I very much subscribe to the UNIX philosophy and would prefer to compose my tool chain. It comes across that the various packaging standards developed over the last several years have been aimed at facilitating that. There was a period when I was using Poetry, but it wasn't really for package management, but for its build backend. (Since my projects generally are pure Python, I mainly use Flit now, but will of course switch to [`bbbb`](https://github.com/zahlman/bbbb) when and where it meets my needs.) Of course, `uv` [even covers that now](https://docs.astral.sh/uv/concepts/build-backend/), at least for pure Python projects.
+
+Really, I'm mainly not a fan of having a bunch of subcommands of `uv` (and the shortcut `uvx`) that do what I see as widely disparate things. I felt the same way about Poetry, and I especially dislike having these tools manage the *use* of virtual environments (by providing a "shell" and/or automatically choosing which one to use based on the current working directory). I use the stock activation script when in development mode; that isn't everyone's cup of tea, of course, but I know I have the freedom to just specify a path to the environment's Python directly. (Which I often do when I'm just messing around with temporary environments to test something out.)
+
+But I can't really do anything to change popular opinion.
+
 ## Conclusion
 
 I can't really offer much of a conclusion here. I'm writing out some thoughts in a blog post; this isn't some formulaic high school essay. If you like `uv` and it's solving real problems for you, by all means continue to use it and don't let me hold you back from that. It just... isn't the tooling I hoped we'd get, for reasons that probably don't matter to a lot of people. If you like the ideas behind what I'm doing, I'm happy for any and all support. And I hope I can keep teaching people about Python packaging — and about Python, and really anything else I know about — far into the future.
