@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Python packaging: Why we can't have nice things - Part 3: Premature Compilation | Zahlblog</title>
+<link href="../../../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../../../../rss.xml">
+<link rel="canonical" href="https://zahlman.github.io/posts/2025/02/28/python-packaging-3/">
+<link rel="icon" href="../../../../../icon_32x32.png" sizes="32x32">
+<link rel="icon" href="../../../../../icon_192x192.png" sizes="192x192">
+<!--[if lt IE 9]><script src="../../../../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Karl Knechtel">
+<link rel="prev" href="../../../01/24/leaning-in-to-my-ux/" title="Leaning IN to my U/X" type="text/html">
+<link rel="next" href="../../../12/31/oxidation/" title="Python Packaging 外伝１: Oxidation and Radiation - The Rise of `uv` in 2025" type="text/html">
+<meta property="og:site_name" content="Zahlblog">
+<meta property="og:title" content="Python packaging: Why we can't have nice things - Part 3: Premature Co">
+<meta property="og:url" content="https://zahlman.github.io/posts/2025/02/28/python-packaging-3/">
+<meta property="og:description" content="Pip 25.0 has been out for a bit over a month now; and we now also have an official blog post about the release, as well as a 25.0.1 patch for a regression.
+Pip 25.0 has what I consider a very serious ">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2025-02-28T00:00:00-05:00">
+<meta property="article:tag" content="pip">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="security">
+<meta property="article:tag" content="setuptools">
+</head>
+<body>
+        <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+        <div class="container">
+            <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+        <div class="col-md-0 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="zb-sidebar" aria-expanded="true" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+        <div class="col-md-12 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="../../../../../">
+            <span id="blog-title">Zahlblog</span>
+            </a>
+        </div>
+    </div>
+
+            </header>
+</div>
+
+        <div class="container" id="content" role="main">
+            <div class="body-content">
+                <div class="row">
+                    <aside id="zb-sidebar" class="col-md-4 blog-sidebar bs-nav-collapsible collapse show"><p class="sidebar-heading">Search</p>
+    
+<!-- DuckDuckGo custom search -->
+<form method="get" id="search" action="https://duckduckgo.com/" class="navbar-form pull-left">
+<img src="https://duckduckgo.com/assets/logo_header.v109.svg" width="28" height="28"><input type="hidden" name="sites" value="https://zahlman.github.io/"><input type="hidden" name="k8" value="#444444"><input type="hidden" name="k9" value="#D51920"><input type="hidden" name="kt" value="h"><input type="text" name="q" maxlength="255" placeholder="Search…" class="span2" style="margin-top:4px;margin-left:4px;"><input type="submit" value="DuckDuckGo Search" style="visibility: hidden;">
+</form>
+<!-- End of custom search -->
+
+    <p class="sidebar-heading">Posts by year
+    </p>
+<ul>
+<li><a href="../../../../../2025">2025</a></li>
+        <li><a href="../../../../../2024">2024</a></li>
+        <li><a href="../../../../../2023">2023</a></li>
+        <li><a href="../../../../../2022">2022</a></li>
+    </ul>
+<p class="sidebar-standalone"><a href="../../../../../tags-and-series">Tags</a> | <a href="../../../../../rss.xml">RSS feed</a></p>
+<p>
+    </p>
+<hr>
+<p class="sidebar-heading">Info</p>
+    <ul>
+<li><a href="../../../../../pages/about">About Me</a></li>
+        <li><a href="../../../../../pages/codidact">Codidact</a></li>
+        <li><a href="../../../../../pages/dpo">My archived posts from discuss.python.org</a></li>
+    </ul></aside><div class="col-md-8 blog-main">
+                        
+    
+        <h1 class="p-name">
+            <a href="." rel="bookmark" class="u-url">
+                Python packaging: Why we can't have nice things<br><small>Part 3: Premature Compilation</small>
+            </a>
+        </h1>
+    
+
+    
+    <nav aria-label="Post navigation"><ul class="pager hidden-print">
+<li class="previous">
+        <a href="../../../12/31/oxidation/" class="page-link" aria-label="Next post (December 31, 2025)">
+                <span aria-hidden="true">« Next post (December 31, 2025)</span>
+        </a>
+    </li>
+
+
+            
+        
+        
+    <li class="next">
+        <a href="../../../01/24/leaning-in-to-my-ux/" class="page-link" aria-label="Previous post (January 24, 2025)">
+                <span aria-hidden="true">Previous post (January 24, 2025) »</span>
+        </a>
+    </li>
+
+
+        </ul></nav><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><div class="metadata">
+                
+    <p class="byline author vcard p-author h-card">
+        <span class="byline-name fn p-name" itemprop="author">
+            Karl Knechtel
+        </span>
+    </p>
+
+                
+    <p class="dateline">
+        <a href="." rel="bookmark">
+            
+    
+    <time class="published dt-published" datetime="2025-02-28T00:00:00-05:00" itemprop="datePublished" title="February 28, 2025">
+        February 28, 2025
+    </time></a>
+    </p>
+
+                
+        <p class="commentline">
+            <a href="#giscus-comments">Comments</a>
+        </p>
+
+            </div>
+        </header><div class="p-summary entry-summary">
+            <p>Pip 25.0 <a href="https://discuss.python.org/t/_/78392">has been out</a> for <a href="https://github.com/pypa/pip/releases/tag/25.0">a bit over a month now</a>; and we now also have an <a href="https://ichard26.github.io/blog/2025/01/whats-new-in-pip-25.0/">official blog post</a> about the release, as well as a 25.0.1 patch for a regression.</p>
+<p>Pip 25.0 has what I consider a very serious security vulnerability. In the Python ecosystem, it's normal and expected that third-party packages provide their own, arbitrary "setup" code for installation (for example, to run C compilers in project-specific ways, when the code uses a C extension). But Pip will run such code <em>in many more situations than you might naively expect</em>. I think it's obvious that running arbitrary code <em>when you aren't expecting it and prepared for it</em> is a much bigger problem. The user should have a chance to decide whether to trust the code, first.</p>
+<p>I believe that warnings are more important than baiting people to read the post, so here's the PSA up front:</p>
+<ol>
+<li>
+<p><strong>Never use Pip to download, test, "dry-run" etc. an untrusted source distribution (sdist).</strong> <a href="https://github.com/pypa/pip/issues/1884">It will try to build the package</a>, <strong>potentially running arbitrary code</strong> (as building an sdist always entails). Instead, use the <a href="https://pypi.org">PyPI website</a> directly, or the <a href="https://docs.pypi.org/api/json/">API</a> it provides.</p>
+</li>
+<li>
+<p><strong>Never use <code>sudo</code> to run Pip</strong> (nor run it with administrative privileges on Windows). Aside from the potential problems caused by conflicting with the system package manager, Pip <a href="https://github.com/pypa/pip/issues/11034"><strong>will not drop privileges</strong></a> when it runs as root and attempts to build an sdist - which again, <strong>potentially runs arbitrary code</strong>.</p>
+</li>
+<li>
+<p>If you expect wheels to be available for the packages you want to install with Pip, <strong>strongly consider adding <code>--only-binary=:all:</code> to the Pip command</strong> to ensure that only wheels are used. If you really need to use sdists, it's wise to inspect them first, which by definition isn't possible with a fully automated installation.</p>
+</li>
+<li>
+<p>If you release Python packages, <a href="https://pradyunsg.me/blog/2022/12/31/wheels-are-faster-pure-python/">please try to provide wheels for them</a>, even if - no, <em>especially</em> if your package includes only Python code and doesn't require explicitly "compiling" anything. An sdist is <em>much</em> slower to install than a wheel even in these cases, and making a wheel available allows your users to demand wheels from Pip - raising the overall baseline for trust and safety in the Python ecosystem.</p>
+</li>
+</ol>
+<p>Okay, I did clickbait a bit. This security issue <em>isn't</em> some new discovery. In fact, it has plagued Pip <em>for its entire history</em>.</p>
+<p>Please enjoy my detailed analysis below.</p>
+<!-- END_TEASER -->
+
+<h2>Meta</h2>
+<p>
+<a href="https://hits.sh/zahlman.github.io+python-packaging-3/"><img alt="Hits (powered by hits.sh)" src="https://hits.sh/zahlman.github.io+python-packaging-3.svg?view=today-total&amp;label=Hits+%28powered+by+hits.sh%29&amp;color=02b983"></a>
+</p>
+<h2>Description and Demonstration</h2>
+<p>Let's say you want to install a package from PyPI that you aren't sure about. (For the purpose of this hypothetical, we'll use the <a href="https://pypi.org/project/issue7325"><code>issue7325</code></a> package that was created specifically for one of the many bug reports made about the general problem.)</p>
+<p>Sure, the PyPI team strives to keep malware off the system, and there are plenty of eyes on big-name projects all the time; but nothing is guaranteed in this life.</p>
+<p>You might suppose that you could just inspect the Python code before you ever try running (or <code>import</code>ing) it, but that's only safe for a pure-Python wheel. If the project depends on a compiled C library, for example, then you won't be able to inspect it in a wheel (even if the wheel includes <code>.c</code> source code files, you can't verify that the compiled code actually corresponds to it). And if you install from an sdist, of course, Pip will try to build the package for you automatically, and you've heard (correctly) that this can run arbitrary code.</p>
+<p>Since you don't want to allow unaudited, arbitrary code execution (to "get pwnt", as the kids probably still say), you hatch the plan of <em>downloading</em> the sdist first, so that you can manually unpack it first (it's just an ordinary <code>.tar.gz</code> file, after all), inspect it, and only then try the installation (knowing that you can specify the <code>.tar.gz</code> filename instead of a PyPI package name when you <code>pip install</code>).</p>
+<p>You've just learned that Pip has a <code>download</code> command, so you try:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>pip<span class="w"> </span>download<span class="w"> </span>issue7325
+</pre></div>
+
+<p>... and <em>promptly get pwnt anyway</em>. The next thing you know, you're getting a message (because this is white-hat hacking; no actual harm was done - <em>this time</em>...) every time you start Python in that environment:</p>
+<div class="code"><pre class="code literal-block"><span class="n">WARNING</span><span class="p">:</span><span class="w"> </span><span class="n">use</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="s2">"pip download --no-deps"</span><span class="w"> </span><span class="n">allowed</span><span class="w"> </span><span class="n">arbitrary</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="n">execution</span>
+<span class="w">         </span><span class="n">see</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">pypa</span><span class="o">/</span><span class="n">pip</span><span class="o">/</span><span class="n">issues</span><span class="o">/</span><span class="mi">7325</span>
+</pre></div>
+
+<p>There's also a <code>--dry-run</code> option for <code>pip install</code> which has the same problem. The only thing "dry" about a Pip dry-run install is the actual copying of files into the Python environment. It will still attempt to build a wheel by the normal process.</p>
+<p>And therein lies the bug: Pip built the package, even though it was explicitly asked only to download that package.</p>
+<p>(Apologies to the impatient, but there's much more I need to say before I can disclose <em>why</em> Pip does this.)</p>
+<p>Of course, you can avoid this risk by demanding wheels:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>pip<span class="w"> </span>download<span class="w"> </span>--only-binary<span class="o">=</span>:all:<span class="w"> </span>issue7325
+</pre></div>
+
+<p>... which would fail in this case, because a wheel was deliberately not provided for demonstration purposes. Again: if you release Python code, please provide wheels if you can. If your code is pure Python, you have no excuse. If you use <a href="https://build.pypa.io/en/stable/">PyPA's standard build front-end</a> (which I highly recommend), it will already make the wheel by default - all you have to do is include it when you upload to PyPI. If you don't have a dedicated build front-end, well first off you <a href="https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html">shouldn't be running setup.py directly</a> (and if you don't use Setuptools for building then you almost certainly do have a build front-end), but <a href="https://pip.pypa.io/en/stable/cli/pip_wheel/"><code>pip wheel</code></a> works in a pinch.</p>
+<p>And, of course, there are other reasons why you might want to download an sdist. Maybe you know that there's some C code that needs a special patch for your system, or you want to edit some compiler options because you think you can optimize something. Or maybe you really need that package and the wheel just isn't available for your system. Or maybe the <em>latest version</em> isn't available as a wheel for your system yet, and you need that.</p>
+<p>Whatever your situation, the safe way to get an sdist is from the PyPI website. <a href="https://pypi.org/project/issue7325/#files">Look up the package you want, click on "Download files", and select the file you want</a>. You can get wheels this way, too. If you really need to use the command line, <a href="https://docs.pypi.org/api/">a JSON API is available</a>:</p>
+<div class="code"><pre class="code literal-block">$<span class="w"> </span>curl<span class="w"> </span>-s<span class="w"> </span>https://pypi.org/pypi/issue7325/0.1/json<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">'.urls[0].url'</span>
+<span class="s2">"https://files.pythonhosted.org/packages/c0/51/bd28cda650e3f0123ea82936f96b3fd28da90ec8b2af89a9029e25768647/issue7325-0.1.tar.gz"</span>
+</pre></div>
+
+<p>(Here, <code>"0.1"</code> is the version; the <code>urls</code> array in the JSON data includes any sdists or wheels for that release in arbitrary order. Automation is left as an exercise.)</p>
+<h2>It Can Happen to You</h2>
+<p>I first noticed this issue as a result of a friend showing me a blog post from 2022 titled <a href="https://moyix.blogspot.com/2022/09/someones-been-messing-with-my-subnormals.html">Someone’s Been Messing With My Subnormals!</a>. Ostensibly, it's not about Pip at all. It's rather about what can happen to floating-point math in your Python program when C extensions are compiled a certain way and then included in the project, however indirectly. Specifically: there's a compiler option <code>--ffast-math</code> supported by both GCC and clang, which indirectly causes the compiled code to mess with global process state, which changes the behaviour of <a href="https://en.wikipedia.org/wiki/Subnormal_number">"subnormal"</a> floating-point values. I think I have a reasonably good understanding of the technical details involved in this -- but they don't normally concern me, so I don't spend a lot of time thinking about them.</p>
+<p>So why am I bringing this up, you ask? Well, it turns out that this story has a buried lede. Because the floating-point math problem involves <em>global</em> process state, you can trigger it simply by having specific dependencies - even transitively - in your project. In order to verify how widespread the problem is, and figure out which packages most commonly cause downstream problems, the author determined that it would be necessary to examine <em>every</em> package on PyPI. And because of how poorly the ecosystem handles package metadata (more on that another time), the natural way to do a properly <em>thorough</em> job of that would be to <em>download</em> every package, and then try to scrape metadata out of them (which might be represented a few different ways - depending on whether a wheel is available, and whether the package includes <code>pyproject.toml</code> and/or <code>PKG-INFO</code> per modern standards).</p>
+<p>And, well, that's where all hell broke loose:</p>
+<blockquote>
+<p>I actually started down this path and set about running <code>pip install --dry-run --ignore-installed --report</code> on all 397,267 packages. This turned out to be a <em>terrible</em> idea. Unbeknownst to me, <span style="color: red"><strong>even with --dry-run pip will execute arbitrary code found in the package's setup.py</strong></span>. In fact, <span style="color: red"><strong>merely asking pip to</strong> <em>download</em> <strong>a package can execute arbitrary code</strong></span> (see pip issues <a href="https://github.com/pypa/pip/issues/7325">7325</a> and <a href="https://github.com/pypa/pip/issues/1884">1884</a> for more details)! So when I tried to dry-run install almost 400K Python packages, <a href="https://twitter.com/moyix/status/1566561433898426368">hilarity ensued</a>. I spent a long time <a href="https://twitter.com/moyix/status/1566578412663209984">cleaning up the mess</a>, and discovered some <a href="https://twitter.com/moyix/status/1566609622680608770">pretty poor setup.py practices</a> along the way. But hey, at least I got <a href="https://twitter.com/moyix/status/1566612152558944257">two free pictures of anime catgirls</a>, deposited directly into my home directory. Convenient!</p>
+<p>Once I had managed to clean up the mess (or hopefully, anyway—I never did find out what package tried to execute sudo), I decided I needed a different approach.</p>
+</blockquote>
+<p>(Editor's note: Yes, that last link <em>does</em> include the catgirl pictures in question.)</p>
+<p>So, to reiterate from the introduction: the arbitrary setup code included with an sdist can be run <em>even for innocuous sounding "download" commands</em>.</p>
+<p>And, again: I don't fault Python for relying on arbitrary code at install time in general. The <em>requirements</em> to set up a Python project are pretty well arbitrarily complex, and nobody has really put forward a system that reliably handles even the common cases in any secure manner - at least, aside from pure Python projects where there's nothing to build. The same problem is also seen in other packaging systems for other languages, like NPM. (<a href="https://medium.com/@v_pragma/12-strange-things-that-can-happen-after-installing-an-npm-package-45de7fbf39f0">Here's just one of many</a> articles on that topic I found with a <a href="https://duckduckgo.com/?q=npm+arbitrary+code+on+installation">quick search</a>.) And, of course, if you're going to <em>use</em> an installed library, it can run arbitrary code at <code>import</code> time, or when you call any of its functions. That's just how it is with third-party code: ultimately, trust has to come from somewhere.</p>
+<p>But the <em>entire point</em> of having a command like <code>pip download</code> is so that Pip's resolver can figure out which package is appropriate for your system and then <em>just download it for you</em>, which you'd typically do <em>specifically so that you can inspect it</em> before doing anything with it. (After all, you can't just rely on reading the code on GitHub etc. in general - there's no guarantee that code actually matches what you downloaded. <a href="https://docs.pypi.org/trusted-publishers/">There's a new system to make that possible</a>, but publishers have to opt in to it.) Or maybe you want to store it somewhere, perhaps as part of <a href="https://stackoverflow.com/questions/18052217">setting up your own index</a>. But regardless, you <em>aren't</em> trying to install it <em>yet</em>.</p>
+<p>The above quote uses the only red text in the entire article, and is also, as far as I know, the main reason it got as much attention as it did. True, not all of those packages were actually downloaded; and of course a lot of them would have been available as wheels. So no, our author did not exactly run 397,267 pieces of untrusted code unintentionally.</p>
+<p>But still, I can't pass on the opportunity to make the reference:</p>
+<iframe style="width:50%;aspect-ratio:16/9;margin:0 auto;display:block" src="https://www.youtube.com/embed/Az49aNuYeJs" title="YouTube video player" frameborder="0" allow="fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+<!-- It looks like I have to do the whole thing with raw HTML... -->
+<div style="text-align:center"><em>That is not a small number!</em></div>
+<p>There's something else I need to point out here. The author of that post, <a href="https://x.com/moyix">Brendan Dolan-Gavitt</a> (@moyix) is not just some random C expert who read the Pip documentation (but not thoroughly enough). No, Brendan Dolan-Gavitt is a <strong>security researcher</strong> with an impressive publication history <a href="https://moyix.blogspot.com/2006/12/malware-with-twist.html">going back to at least 2006</a>.</p>
+<p>Yeah.</p>
+<p>Again: <strong>do not use Pip to download sdists for examination. Instead, go to the <a href="https://www.pypi.org">actual PyPI website</a>, find the page for the package you want, optionally choose a version from the "Release history" (manually determining what version you want), and choose the "Download files" option; or use the JSON API.</strong></p>
+<p>I don't know of any official, ready-made, secure automation for using the JSON API for this task. If you decide to implement a solution, please share and promote it.</p>
+<p>Using the website interface is also, arguably, the best way to protect yourself against typo-squatters and other malware packages - on top of the PyPI maintenance team's own attempts to remove those projects.</p>
+<h2>Let's Make Things Silly</h2>
+<p>While I'm thankful to <a href="https://pypi.org/user/wim.glenn/">Wim Jeantine-Glenn</a> for creating an example (for Pip issue 7325) that demonstrates the problem in a reasonably realistic (but minimal) way, in my opinion it really doesn't show off how absurd this all is.</p>
+<p>With that in mind, I prepared the following Bash script you can use to reproduce the problem on Linux - quickly (less than a second on my 10-year-old machine), directly and <em>without an Internet connection</em>. All you need is for <code>pip</code> to refer to a working copy of Pip. It's also written to highlight many things that might otherwise not be obvious about the nature of the problem.</p>
+<div class="code"><pre class="code literal-block"><span class="ch">#!/bin/bash</span>
+<span class="c1"># Copyright (c) 2025 Karl Knechtel.</span>
+<span class="c1"># Permission is granted to reproduce this code locally for testing purposes,</span>
+<span class="c1"># but please don't republish or redistribute it - instead, please direct</span>
+<span class="c1"># interested readers to this blog post at</span>
+<span class="c1"># https://zahlman.github.io/posts/2025/02/28/python-packaging-3/ .</span>
+mkdir<span class="w"> </span>demo-0.1.0<span class="w"> </span><span class="c1"># [1]</span>
+cat<span class="w"> </span><span class="s">&lt;&lt; done_toml &gt; demo-0.1.0/pyproject.toml # [2]</span>
+<span class="s">[project]</span>
+<span class="s">name = "demo"</span>
+<span class="s">version = "0.1.0"</span>
+<span class="s">dependencies = []</span>
+<span class="s">[build-system]</span>
+<span class="s">requires = [ ]</span>
+<span class="s">build-backend = "build"</span>
+<span class="s">backend-path = "."</span>
+<span class="s">done_toml</span>
+cat<span class="w"> </span><span class="s">&lt;&lt; done_info &gt; demo-0.1.0/PKG-INFO # [3]</span>
+<span class="s">Metadata-Version: 2.4</span>
+<span class="s">Name: demo</span>
+<span class="s">Version: 0.1.0</span>
+<span class="s">done_info</span>
+cat<span class="w"> </span><span class="s">&lt;&lt; done_setup &gt; demo-0.1.0/build.py # [4]</span>
+<span class="s">__import__('sys').exit("Arbitrary code could have been executed here.")</span>
+<span class="s">done_setup</span>
+tar<span class="w"> </span>czf<span class="w"> </span>demo-0.1.0.tar.gz<span class="w"> </span>demo-0.1.0/<span class="w"> </span><span class="c1"># [5]</span>
+pip<span class="w"> </span>download<span class="w"> </span>--no-deps<span class="w"> </span>--no-build-isolation<span class="w"> </span>./demo-0.1.0.tar.gz<span class="w"> </span><span class="c1"># [6]</span>
+rm<span class="w"> </span>-r<span class="w"> </span>demo-0.1.0/<span class="w"> </span>demo-0.1.0.tar.gz
+</pre></div>
+
+<p>Footnotes from the code:</p>
+<ol>
+<li>
+<p>The general approach is to create a <a href="https://packaging.python.org/en/latest/specifications/source-distribution-format/">valid sdist - fully compliant with all up-to-date standards</a> - locally, and then ask Pip to "download" the file. Yes, this is a perfectly valid (if pointless) use of <code>pip download</code>, as the output will make clear. It's actually pretty easy to create such an sdist - it's just a zipped (or should I say <a href="https://en.wikipedia.org/wiki/Election_Night_Special">Zzzzzzzzzzzzzzzipped</a>?) tar archive, containing "source" metadata in the form of <code>pyproject.toml</code> and "built" metadata in the form of <code>PKG-INFO</code>. Note in particular that the folder name includes the name and version for the project - that's part of the expected structure for the sdist.</p>
+</li>
+<li>
+<p>Here we create a <code>pyproject.toml</code> file <a href="https://packaging.python.org/en/latest/specifications/pyproject-toml/#pyproject-toml-spec">following the appropriate standards</a>. We have a <code>[project]</code> table (originally defined by <a href="https://peps.python.org/pep-0621/">PEP 621</a>) defining name, version and dependency information. Only the name and version are mandatory - and the version could be marked as "dynamic" instead - but that doesn't make sense for our use case. The dependencies would default to an empty list, but it's more amusing IMO to be explicit about this. We also have a <code>[build-system]</code> table (originally defined by <a href="https://peps.python.org/pep-0518/">PEP 518</a>) explaining what tools to use to create a wheel from the sdist. (Normally, the same tool would be used to create the sdist from a source tree - but in this example, the "build system" we specify is a fake.)</p>
+</li>
+<li>
+<p>Here we create the corresponding <a href="https://packaging.python.org/en/latest/specifications/core-metadata/#core-metadata">"core metadata"</a> <code>PKG-INFO</code> file. Normally this would end up copied verbatim into any corresponding wheel (named <code>METADATA</code> inside wheels), unless the project uses dynamic metadata. In order to conform to modern standards, we need to implement at least version 2.2 of the metadata spec - but it turns out that we can trivially implement version 2.4, the most recent. Updates to the spec generally <em>allow</em> us to add information, but don't <em>require</em> it - for example, version 2.4 allows for <a href="https://peps.python.org/pep-0639/">using license files</a> in an up-to-date way - but our example project, being ephemeral, doesn't have its own license. As with <code>pyproject.toml</code>, only the name and version (and the metadata version) need to be specified.</p>
+</li>
+<li>
+<p>Here we define a fake "build system" for the sdist, which just immediately errors out. The name <code>build.py</code> corresponds to what was defined in <code>pyproject.toml</code>. The main thing I want to highlight here is that <strong>Setuptools has nothing to do with the problem</strong>. For projects that use Setuptools (the default if you don't include a <code>[build-system]</code> table), Pip would tell Setuptools to build the project, and Setuptools would (among other things) potentially run a top-level <code>setup.py</code> script in order to do so. But this is purely an implementation detail. Setuptools is, in these cases, only doing what it's told. It's entirely Pip's fault that Pip tells Setuptools to do this.</p>
+</li>
+<li>
+<p>Finally we can create the sdist. Notice in particular that the only actual Python code included is the "build system". As described <a href="https://zahlman.github.io/posts/2024/12/24/python-packaging-1/">in part 1</a>, it's perfectly valid for the sdist - as well as any resulting wheel - to define no installable code packages at all. The name <code>demo</code> applies to the <em>distribution</em> - not to anything that will be <code>import</code>ed by users. Anyway, we name the file with the distribution name and version, according to rules <a href="https://peps.python.org/pep-0625/">defined in PEP 625</a> - there's no wiggle room here.</p>
+</li>
+<li>
+<p>Now that we have an sdist, we can tell Pip to "download" it, and then we'll clean up by deleting the sdist archive and the corresponding folder. Pip won't actually modify any <code>site-packages</code> contents, but it will try to build the sdist into a wheel. Note in particular the <code>--no-deps</code> and <code>--no-build-isolation</code> flags here, for later.</p>
+</li>
+</ol>
+<p>When you try this, you should get a result like:</p>
+<div class="code"><pre class="code literal-block"><span class="k">Proc</span><span class="nv">essing</span><span class="w"> </span><span class="nv">.</span><span class="o">/</span><span class="nv">demo</span><span class="o">-</span><span class="mf">0.1</span><span class="nv">.0.tar.gz</span>
+<span class="w">  </span><span class="nf">File</span><span class="w"> </span><span class="nv">was</span><span class="w"> </span><span class="nv">already</span><span class="w"> </span><span class="nv">downloaded</span><span class="w"> </span><span class="o">/&lt;</span><span class="nv">absolute</span><span class="w"> </span><span class="nv">path</span><span class="w"> </span><span class="nv">omitted</span><span class="o">&gt;/</span><span class="nv">demo</span><span class="o">-</span><span class="mf">0.1</span><span class="nv">.0.tar.gz</span>
+<span class="w">  </span><span class="nf">Preparing</span><span class="w"> </span><span class="nv">metadata</span><span class="w"> </span><span class="p">(</span><span class="nv">pyproject.toml</span><span class="p">)</span><span class="w"> </span><span class="nv">...</span><span class="w"> </span><span class="nv">error</span>
+<span class="w">  </span><span class="nl">error:</span><span class="w"> </span><span class="nf">subprocess</span><span class="o">-</span><span class="nv">exited</span><span class="o">-</span><span class="nv">with</span><span class="o">-</span><span class="nv">error</span>
+
+<span class="w">  </span><span class="err">×</span><span class="w"> </span><span class="nf">Preparing</span><span class="w"> </span><span class="nv">metadata</span><span class="w"> </span><span class="p">(</span><span class="nv">pyproject.toml</span><span class="p">)</span><span class="w"> </span><span class="nv">did</span><span class="w"> </span><span class="nv">not</span><span class="w"> </span><span class="nv">run</span><span class="w"> </span><span class="nv">successfully.</span>
+<span class="w">  </span><span class="err">│</span><span class="w"> </span><span class="nf">exit</span><span class="w"> </span><span class="nv">code</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">  </span><span class="err">╰─&gt;</span><span class="w"> </span><span class="err">[1</span><span class="w"> </span><span class="nf">lines</span><span class="w"> </span><span class="nv">of</span><span class="w"> </span><span class="nv">output</span><span class="p">]</span>
+<span class="w">      </span><span class="nf">Arbitrary</span><span class="w"> </span><span class="nv">code</span><span class="w"> </span><span class="nv">could</span><span class="w"> </span><span class="nv">have</span><span class="w"> </span><span class="nv">been</span><span class="w"> </span><span class="nv">executed</span><span class="w"> </span><span class="nv">here.</span>
+<span class="w">      </span><span class="err">[</span><span class="k">end</span><span class="w"> </span><span class="nv">of</span><span class="w"> </span><span class="nv">output</span><span class="p">]</span>
+
+<span class="w">  </span><span class="nl">note:</span><span class="w"> </span><span class="nf">This</span><span class="w"> </span><span class="nv">error</span><span class="w"> </span><span class="nv">originates</span><span class="w"> </span><span class="nv">from</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">subprocess</span><span class="p">,</span><span class="w"> </span><span class="nv">and</span><span class="w"> </span><span class="nv">is</span><span class="w"> </span><span class="nv">likely</span><span class="w"> </span><span class="nv">not</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">problem</span><span class="w"> </span><span class="nv">with</span><span class="w"> </span><span class="nv">pip.</span>
+<span class="nl">error:</span><span class="w"> </span><span class="nf">metadata</span><span class="o">-</span><span class="nv">generation</span><span class="o">-</span><span class="nv">failed</span>
+
+<span class="err">×</span><span class="w"> </span><span class="nf">Encountered</span><span class="w"> </span><span class="nv">error</span><span class="w"> </span><span class="nv">while</span><span class="w"> </span><span class="nv">generating</span><span class="w"> </span><span class="nv">package</span><span class="w"> </span><span class="nv">metadata.</span>
+<span class="err">╰─&gt;</span><span class="w"> </span><span class="nf">See</span><span class="w"> </span><span class="nv">above</span><span class="w"> </span><span class="nv">for</span><span class="w"> </span><span class="nv">output.</span>
+
+<span class="nl">note:</span><span class="w"> </span><span class="nf">This</span><span class="w"> </span><span class="nv">is</span><span class="w"> </span><span class="nv">an</span><span class="w"> </span><span class="nv">issue</span><span class="w"> </span><span class="nv">with</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">package</span><span class="w"> </span><span class="nv">mentioned</span><span class="w"> </span><span class="nv">above</span><span class="p">,</span><span class="w"> </span><span class="nv">not</span><span class="w"> </span><span class="nv">pip.</span>
+<span class="nl">hint:</span><span class="w"> </span><span class="nf">See</span><span class="w"> </span><span class="nv">above</span><span class="w"> </span><span class="nv">for</span><span class="w"> </span><span class="nv">details.</span>
+</pre></div>
+
+<p>The <code>Arbitrary code could have been executed here.</code> message, of course, comes from <code>build.py</code> - it's not a warning from Pip.</p>
+<p>Perhaps the funniest part here is that there are two disclaimers of responsibility from Pip. These are standard messages, and normally make sense - when Pip tells the build system to build a wheel, it can't do anything about bugs in the build system itself, nor about errors in the project's build configuration. But, of course, it <em>is</em> a problem with Pip in this case <em>that a build is attempted at all</em>.</p>
+<p>It does this even though the file is <em>already right there in the current directory</em>, and Pip <em>knows</em> that it's right there (<code>File was already downloaded</code>) and simply uses the existing file directly.</p>
+<p>It does this even though we explicitly told it that we only want to "download" the code, not to build nor install it.</p>
+<p>It does this even though we explicitly told it that we don't want to obtain any project dependencies (<code>--no-deps</code>). (The <code>--no-build-isolation</code> flag is more just for entertainment. It's perfectly valid to include this flag for <code>pip download</code> and that it does something meaningful - although not <em>relevant</em> to the demo. Normally, when Pip starts a build process, it would create a temporary venv for it, and install <em>the build system's</em> dependencies there - along with the build system itself, if not included. Since we include our fake "build system" and it has no dependencies of its own, we save some time by asking Pip to just build in the current environment. This build system isolation, by the way, often results in needing an Internet connection to build projects even though you already have everything necessary installed - a topic for another day.)</p>
+<p>It does this with every version of Pip that's compatible with currently supported versions of Python, and would do it with much older versions as well - going back for almost the entire history of Pip, adjusting for UI tweaks and changes to standards made along the way.</p>
+<p>It does this even though we follow every modern packaging standard to the letter. Including some updates that were <em>specifically</em> intended to facilitate Pip in avoiding unnecessary builds of this sort.</p>
+<h2>The Big Reveal</h2>
+<p>Dear reader, can you guess <em>why</em>, exactly, Pip is starting this build process, and running arbitrary code without oversight? I've made some vague allusions to it already, but you might still never guess.</p>
+<p>It's so that Pip can <strong>make sure that the name and version metadata that you'd get from building the project, match what you requested</strong>.</p>
+<p>Yes, really.</p>
+<p>The name and version already present in the filename per PEP 625.</p>
+<p>The name and version already present, and matching, in the top-level folder name of the archive, per the sdist standard.</p>
+<p>The name and version already present, and matching, in the <code>pyproject.toml</code> file, per PEP 621.</p>
+<p>The name and version already present, and matching, in the <code>PKG-INFO</code> file, per the core metadata specification.</p>
+<p>That name and version.</p>
+<p>It's not about dependencies - we explicitly specify <code>--no-deps</code> in this test, and I've traced the code and verified that it passes information all the way along the chain to the effect of "we don't need to find out what the dependencies are when we build this project and get the metadata". (If we add a dependency specification, Pip won't try to download it, unless we remove the <code>--no-deps</code> flag.)</p>
+<p>Now, it could be argued that, once upon a time, most of that information wasn't reliable. After all, it wasn't until fairly recently that we actually had PEP 625 fully implemented in Setuptools, even though it pretty much matches what Setuptools was already doing - well, aside from the handling of hyphens and underscores, I guess. (And Pip won't complain if you try to install a local file with a non-conforming filename, either. After all, there theoretically are a few old, pre-standard projects already up on PyPI that don't conform, even though Setuptools would have usually generated conforming names back then, and even though Setuptools used to be the only game in town.) And it's not like an installer really needs to care about the name of that top-level folder; it can just extract the archive.</p>
+<p>And there's no guarantee that build systems actually implement PEP 621 (when creating the sdist), either. It's the official stance of the Pip development team, accordingly, that "tools should not read metadata from <code>pyproject.toml</code>" - which makes sense as long as the core metadata specification is still a thing. Notably, Poetry <a href="https://github.com/python-poetry/roadmap/issues/3">didn't implement PEP 621 until last September</a>). Besides, Pip still supports legacy <code>setup.py</code>-based builds, therefore sdists aren't actually required to contain a <code>pyproject.toml</code> at all - even though this file is part of the official specification of the "source distribution format".</p>
+<p>But a <code>PKG-INFO</code> file is - and, as far as I can tell, always has been - supposed to be canonical metadata. If the build system adds it to the sdist, anything that's actually in there is supposed to be authoritative, and not subject to change when creating a wheel (or an egg, to consider legacy processes). The <em>specific purpose</em> of the version 2.2 update to the core metadata format was to make sure that this file provides reliable name and version info. Those values must now be listed explicitly and cannot be marked as "dynamic" (i.e., to be calculated when creating a wheel) - they must be determined at sdist creation time (i.e., tools that compute a version number from source control history, need to do that when making an sdist from the repository). But as it stands, Pip doesn't even <em>check if the file is present</em>.</p>
+<p>And Pip is, in a meaningful sense, <em>supposed to</em> leverage PEP 625 - since it was written by a Pip developer specifically to avoid this headache, with the expectation that it won't cause a real problem. Quoting from the PEP:</p>
+<blockquote>
+<p>The filename contains the distribution name and version, to aid tools identifying a distribution without needing to download, unarchive the file, and perform costly metadata generation for introspection, if all the information they need is available in the filename.</p>
+<p>...</p>
+<p>Currently, tools that consume sdists should, if they are to be fully correct, treat the name and version parsed from the filename as provisional, and verify them by downloading the file and generating the actual metadata (or reading it, if the sdist conforms to <a href="https://peps.python.org/pep-0643/">PEP 643</a>). Tools supporting this specification can treat the name and version from the filename as definitive. In theory, this could risk mistakes if a legacy filename is assumed to conform to this PEP, but in practice the chance of this appears to be vanishingly small.</p>
+</blockquote>
+<p>(Just to emphasize: PEP 625 standardizes a <em>file naming convention</em>. It took <em>over two years</em> to approve, and <em>almost four years in total</em> to see its final implementation in Setuptools - never mind any other build backends. And Pip <em>still</em> isn't able to take advantage of it, half a year after that.)</p>
+<p>Besides, if you're "downloading" a local file, then surely you shouldn't need to check the name and version like this. If you're asking to get a file from PyPI (or another index), meanwhile, you're already requesting it by name and version - and it should be the index's responsibility to ensure that it gives you the right file. Even if you don't trust the index (why are you using it, then?), nothing in the Pip command we're using actually <em>asks</em> to verify that the download correctly represents the name and version requested.</p>
+<h2>In the End, it Doesn't Even Matter</h2>
+<p>Let's try this another way. Like I said, all of this name and version info is supposed to match up. But what if it doesn't? Of course, it's not very interesting if we intentionally break the build process like before, so to demonstrate, we'll need a setup that can actually create a valid wheel.</p>
+<p>To do this, I'll specify <a href="https://flit.pypa.io/">Flit</a>'s build backend, <code>flit-core</code>, as the one to use. (It's available separately; you don't need the Flit tool suite installed to use it.)</p>
+<p>Here's the modified script:</p>
+<div class="code"><pre class="code literal-block"><span class="ch">#!/bin/bash</span>
+<span class="c1"># Copyright (c) 2025 Karl Knechtel.</span>
+<span class="c1"># Permission is granted to reproduce this code locally for testing purposes,</span>
+<span class="c1"># but please don't republish or redistribute it - instead, please direct</span>
+<span class="c1"># interested readers to this blog post at</span>
+<span class="c1"># https://zahlman.github.io/posts/2025/02/28/python-packaging-3/ .</span>
+mkdir<span class="w"> </span>demo_a-0.1.0<span class="w"> </span><span class="c1"># [1]</span>
+cat<span class="w"> </span><span class="s">&lt;&lt; done_toml &gt; demo_a-0.1.0/pyproject.toml # [2]</span>
+<span class="s">[project]</span>
+<span class="s">name = "demo-b"</span>
+<span class="s">version = "0.2.0"</span>
+<span class="s">dependencies = [ ]</span>
+<span class="s">description = ""</span>
+<span class="s">[build-system]</span>
+<span class="s">requires = [ "flit-core" ]</span>
+<span class="s">build-backend = "flit_core.buildapi"</span>
+<span class="s">done_toml</span>
+cat<span class="w"> </span><span class="s">&lt;&lt; done_info &gt; demo_a-0.1.0/PKG-INFO # [3]</span>
+<span class="s">Metadata-Version: 2.4</span>
+<span class="s">Name: demo-c</span>
+<span class="s">Version: 0.3.0</span>
+<span class="s">done_info</span>
+touch<span class="w"> </span>demo_a-0.1.0/demo_b.py<span class="w"> </span><span class="c1"># [4]</span>
+tar<span class="w"> </span>czf<span class="w"> </span>demo_d-0.4.0.tar.gz<span class="w"> </span>demo_a-0.1.0/<span class="w"> </span><span class="c1"># [5]</span>
+pip<span class="w"> </span>download<span class="w"> </span>./demo_d-0.4.0.tar.gz<span class="w"> </span><span class="c1"># [6]</span>
+rm<span class="w"> </span>-r<span class="w"> </span>demo_a-0.1.0/<span class="w"> </span>demo_d-0.4.0.tar.gz
+</pre></div>
+
+<p>Notes:</p>
+<ol>
+<li>
+<p>We'll still make the same <code>pyproject.toml</code> as before, and we'll describe a name of <code>demo-a</code> and version <code>0.1.0</code> for the top-level folder. But our <code>pyproject.toml</code> dictates a name of <code>demo-b</code> and version <code>0.2.0</code>.</p>
+</li>
+<li>
+<p>Aside from specifying the build system, the new <code>pyproject.toml</code> also provides an empty <code>project.description</code> (because Flit will insist on having one, even though the standards don't technically require it).</p>
+</li>
+<li>
+<p>We make a <code>PKG-INFO</code> "built metadata" file as before, and here we'll specify a third conflicting name of <code>demo-c</code> and version <code>0.3.0</code>.</p>
+</li>
+<li>
+<p>Although the standard (as far as I can tell) allows you to distribute wheels with no Python modules or packages in them, Flit insists on a top-level name (because it only does automatic discovery of whether or not you use <a href="https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/">src layout</a>, and thus doesn't offer explicit configuration options for what packages are present). So we create an empty <code>demo_b.py</code> to avoid an error from Flit. (Note that the Python filename uses an underscore so that it would hypothetically work with <code>import</code>; but <em>distribution</em> names are allowed to contain hyphens - which are then normalized to underscores in filenames, so that it's clear where the name ends and the version begins.)</p>
+</li>
+<li>
+<p>We set up the final conflicting name, <code>demo-d</code>, and version, <code>0.4.0</code>, in the filename for the sdist.</p>
+</li>
+<li>
+<p>We "download" the sdist as before, and then clean up as before.</p>
+</li>
+</ol>
+<p>See how much you can guess about what will happen before proceeding.</p>
+<p>On my system, the results look like:</p>
+<div class="code"><pre class="code literal-block"><span class="k">Proc</span><span class="nv">essing</span><span class="w"> </span><span class="nv">.</span><span class="o">/</span><span class="nv">demo_d</span><span class="o">-</span><span class="mf">0.4</span><span class="nv">.0.tar.gz</span>
+<span class="w">  </span><span class="nf">File</span><span class="w"> </span><span class="nv">was</span><span class="w"> </span><span class="nv">already</span><span class="w"> </span><span class="nv">downloaded</span><span class="w"> </span><span class="o">/&lt;</span><span class="nv">absolute</span><span class="w"> </span><span class="nv">path</span><span class="w"> </span><span class="nv">omitted</span><span class="o">&gt;/</span><span class="nv">demo_d</span><span class="o">-</span><span class="mf">0.4</span><span class="nv">.0.tar.gz</span>
+<span class="w">  </span><span class="nf">Installing</span><span class="w"> </span><span class="nv">build</span><span class="w"> </span><span class="nv">dependencies</span><span class="w"> </span><span class="nv">...</span><span class="w"> </span><span class="nv">done</span>
+<span class="w">  </span><span class="nf">Getting</span><span class="w"> </span><span class="nv">requirements</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">build</span><span class="w"> </span><span class="nv">wheel</span><span class="w"> </span><span class="nv">...</span><span class="w"> </span><span class="nv">done</span>
+<span class="w">  </span><span class="nf">Preparing</span><span class="w"> </span><span class="nv">metadata</span><span class="w"> </span><span class="p">(</span><span class="nv">pyproject.toml</span><span class="p">)</span><span class="w"> </span><span class="nv">...</span><span class="w"> </span><span class="nv">done</span>
+<span class="nf">Successfully</span><span class="w"> </span><span class="nv">downloaded</span><span class="w"> </span><span class="nv">demo</span><span class="o">-</span><span class="nv">b</span>
+</pre></div>
+
+<p>Now, to some extent it's Flit's choice that we end up with <code>demo-b</code> as the reported "successfully downloaded" package. Normally, the sdist provided to <code>flit-core</code> would also have been created by <code>flit-core</code>, so the mismatch between the <code>pyproject.toml</code> and <code>PKG-INFO</code> couldn't happen. Flit's choice, apparently, is to ignore the <code>PKG-INFO</code> file completely and re-create <code>METADATA</code> based on the <code>pyproject.toml</code> contents.</p>
+<p>Notably, though, the file names aren't used: <code>flit-core</code> can't see the name of the original tarball, nor the name of the top-level folder in that tarball - following the standard, the build system is given already-unpacked source, and runs within that directory. Although the information in these filenames is supposed to be reliable following PEP 625, not only does Pip not use it, but the build backend <em>can't</em> use it (because the build <em>front</em>end doesn't <em>provide</em> it).</p>
+<p>But the real reason I'm showing you this, of course, is because <strong>Pip doesn't report any error</strong>. Pip receives an sdist with all sorts of contradictory information, goes out of its way to invoke <code>flit-core</code> to build a wheel, gets a wheel for a <code>demo-b</code> package that doesn't match the original filename... <em>and then it doesn't care</em>. This result is, apparently, a "successful download". Oh, and that wheel is ultimately discarded - it doesn't show up in <code>pip cache list</code> afterward. Ultimately, the result of all that work was just to make the output say <code>Successfully downloaded demo-b</code> rather than <code>Successfully downloaded demo_d</code>. (Of course, <code>demo-d</code> and <code>demo_d</code> are both valid distribution names, so the filename doesn't unambiguously represent the distribution name.)</p>
+<p>(But considering that <em>we already had the file</em>, would it be any less ridiculous for Pip to say the download was <em>un</em>successful?)</p>
+<h2>History</h2>
+<p>When I started writing this post, I knew that this issue had existed for a long time, but I wasn't completely sure when it had been introduced. I did know that PyPI hosts versions of Pip going all the way back to <a href="https://pypi.org/project/pip/0.2/">0.2</a>, which is the first to bear the name "Pip" (having been <a href="https://en.wikipedia.org/wiki/Pip_%28package_manage%29#History">originally named</a> "pyinstall"). Since I was lagging behind on editing, I decided I might as well do a bit more research. With some difficulty (and perhaps a story for another time), I managed to set up Pip 0.2 in a separate environment for testing.</p>
+<p>Of course, it requires Python 2.x, and the command syntax has changed over the years, and so have the packaging standards. And in those days, Pip explicitly had Setuptools as a dependency.</p>
+<p>But I did eventually manage to create a compatible test project (with actually a surprisingly recent version of Setuptools), and try out a "download" using <code>pip install --no-install</code> (yes, that really was the syntax, to "Download and unpack all packages, but don't actually install them".</p>
+<p>And just as I expected, the "download" and "unpack" process would still "build" the project separately, and therefore run arbitrary code from <code>setup.py</code>.</p>
+<p>So there you have it - the problem has existed for Pip's entire history, over 16 years.</p>
+<p>Just to round things off, I've assembled a timeline of relevant events, thus:</p>
+<h3>October 2009</h3>
+<p><a href="https://pip.pypa.io/en/stable/news/#v0-5">Version 0.5 adds</a> the <code>--no-deps</code> and <code>--download</code> flags for <code>pip install</code>. The <code>--download</code> flag actually specifies a directory where downloads should be put (the canonical name is <code>--download-dir</code> per the changelog), but it implies <code>--no-install</code> when set. (Given the wording in future bug reports, one would be forgiven for assuming that the feature of downloading without full installation was added here, but it wasn't.)</p>
+<h3>July 2011</h3>
+<p>It's reported in <a href="https://github.com/pypa/pip/issues/315">Pip issue 315</a> that <code>pip install --download</code> won't download dependencies, even <em>without</em> specifying <code>--no-deps</code>. (The <code>--download</code> flag for <code>pip install</code> was available since at least 0.6, and <code>--no-deps</code> since 0.5; but the earliest versions are not dated in the changelog, and there's no clear indication of exactly when the download feature was added. PyPI doesn't )</p>
+<h3>January 2012</h3>
+<p>It's pointed out in <a href="https://github.com/pypa/pip/issues/425">Pip issue 425</a> that Pip runs arbitrary code from <code>setup.py</code> in a separate context - the risk of the connection to PyPI being spoofed. (In those days, SSL and HTTPS were not nearly so plug-and-play as they are now.)</p>
+<h3>February 2012</h3>
+<p><a href="https://pip.pypa.io/en/stable/news/#v1-1">Pip v1.1 is released</a>, fixing the issue reported in July 2011.</p>
+<h3>September 2012</h3>
+<p><a href="https://github.com/pypa/pip/issues/661">Pip issue 661</a> is the first I can find that directly describes the problem. The issue was deemed a problem with the <code>setup.py</code> of the to-be-downloaded package, added to that package's issue tracker almost two years later, and finally closed in 2017 after no further commentary. A salient comment:</p>
+<blockquote>
+<p>The root problem here is that Python packaging does not yet have static metadata, and thus requires running <code>setup.py</code> to even acquire metadata about a package; to make sure it is actually the right project name and version, to find out what dependencies it has, etc. And projects like psycopg2 or scipy that have build dependencies are not careful to make it possible to get that metadata out of <code>setup.py</code> if you don't have all the build dependencies present on your system, because they primarily think of setup.py as intended for actual installation.</p>
+</blockquote>
+<p>(This issue with build dependencies causing <code>setup.py</code> to fail was a major part of the motivation for introducing <code>pyproject.toml</code>.)</p>
+<h3>December 2013</h3>
+<p><a href="https://github.com/pypa/pip/issues/1374">Pip issue 1374</a> is another similar report. A distinction is drawn between building the package vs. running <code>setup.py egg_info</code> (not meaningful with modern <code>pyproject.toml</code>-based builds), which in principle is only supposed to figure out the metadata but in practical terms might invoke compilers for C code etc. anyway. The explanation is offered that "This is necessary to extract dependency information in order to download any dependencies."; everyone apparently overlooks that <code>--no-deps</code> has no effect on this behaviour.</p>
+<h3>June 2014</h3>
+<p><a href="https://github.com/pypa/pip/issues/1884">Pip issue 1884</a>, "Avoid generating metadata in <code>pip download --no-deps ...</code>" (as it's currently titled), is opened. This seems to have become the canonical version of the bug report (others are closed as duplicates of it). The first reply offers a choice quote:</p>
+<blockquote>
+<p>It's an unfortunate fact of the Python packaging ecosystem that anything related to packaging always involves arbitrary code execution (referring to <code>setup.py</code>).</p>
+</blockquote>
+<p>(This was before wheels existed, of course, so that would have been even more true.)</p>
+<p>There are several later duplicates of the issue - not all of them recognized and marked as such. For example, <a href="https://github.com/pypa/pip/issues/2103">issue 2103</a> wasn't marked as a duplicate.</p>
+<h3>April 2015</h3>
+<p><a href="https://github.com/pypa/pip/issues/2643">The original proposal</a> is made for the <code>pip download</code> command that will be added in Pip 8.0.0, as issue 2643.</p>
+<h3>January 2016</h3>
+<p><a href="https://pip.pypa.io/en/stable/news/#v8-0-0">Pip v8.0.0 is released</a>, deprecating <code>pip install --download</code> in favour of the newly added <code>pip download</code>.</p>
+<h3>November 2016</h3>
+<p><a href="https://pip.pypa.io/en/stable/news/#v9-0-0">Pip v9.0.0 is released</a>, adding a <code>--platform</code> flag for <code>pip download</code>. This has a bug whereby specifying a platform only works with wheels and errors out unless wheels are demanded. But in a way, this accidentally, partially, temporarily fixes the main issue.</p>
+<h3>February 2017</h3>
+<p><a href="https://github.com/pypa/pip/issues/4289">Pip issue 4289</a>, 'Issue with "pip download --platform" semantics', is opened, reporting the (undocumented) restriction mentioned above.</p>
+<h3>May 2017</h3>
+<p>Some comments on issue 4289 propose that it shouldn't be necessary to run <code>setup.py</code> when using <code>pip download --no-deps</code>.</p>
+<h3>June 2017</h3>
+<p>A proposal is made to close issue 1884 because the <code>pip install --download</code> command syntax no longer exists. In fact, this syntax has only been deprecated, and it's pointed out that the problem still exists with <code>pip download</code>, so the issue isn't closed.</p>
+<h3>March 2018</h3>
+<p><a href="https://pip.pypa.io/en/stable/news/#b1-2018-03-31">Pip v10.0.0.b1 is released</a>, fixing issue 4289 (and thereby revealing the main problem again for some users). The deprecated <code>pip install --download</code> is also removed, along with the completely nonsensical ability to specify <code>pip download --editable</code>.</p>
+<h3>November 2019</h3>
+<p>The title of issue 1884 is edited for the first time, to reflect the command syntax change from <code>pip install --download</code> to <code>pip download</code>. (This is almost four years after the new command was actually implemented.)</p>
+<p><a href="https://github.com/pypa/pip/issues/7325">Pip issue 7325</a>, 'Disallow execution of setup.py when "pip download --no-deps someproject"', is opened.</p>
+<h3>April 2020</h3>
+<p><a href="https://github.com/pypa/pip/issues/7995">Pip issue 7995</a>, "<code>pip download --no-deps --no-binary</code> does some unwanted build steps" is opened. A choice quote:</p>
+<blockquote>
+<blockquote>
+<p>Is there any case where it is useful to collect dependencies when <code>--no-deps</code> is specified?</p>
+</blockquote>
+<p>No, pip is just not smart enough to not do it. The “problem” here is that <code>pip download</code> simply reuses code from <code>pip install</code> and just skips the actual install part.</p>
+</blockquote>
+<p>Meanwhile, a workaround is offered on issue 1884, but it turns out not to work in current versions of Pip.</p>
+<h3>June 2020</h3>
+<p><a href="https://github.com/pypa/pip/issues/8387">Pip issue 8387</a>, "Using pip download to fetch package sources seems to trigger building wheels for some packages.", is opened on the Pip bug tracker. This is another duplicate, but it notably reveals the fact that <code>setup.py egg_info</code> is run when <code>--no-use-pep517</code> is passed to <code>pip download</code>. (Again, one may wonder why a download command is accepting options that control the build process; the obvious answer is that the UI <em>explicitly provides for</em> the expectation that the project will be built even though only a download is requested.)</p>
+<h3>July 2020</h3>
+<p>PEP 625, <a href="https://peps.python.org/pep-0625/">"Filename of a Source Distribution"</a>, is created. The proposal is supposed to standardize the filenames used for sdists, following existing common-but-not-guaranteed practices, such that Pip could reliably determine the project name and version from the filename. It will take over two years for this proposal to be accepted.</p>
+<h3>August 2020</h3>
+<p>Relevant commentary on issue 1884, with links to additional discussion on the Python Discourse forum:</p>
+<blockquote>
+<p>The root problem is that <a href="https://discuss.python.org/t/why-isnt-source-distribution-metadata-trustworthy-can-we-make-it-so/2620">source distribution metadata is not trustworthy</a>, and <a href="https://discuss.python.org/t/pip-download-just-the-source-packages-no-building-no-metadata-etc/4651">it’s difficult to avoid building metadata sinnce pip needs to check for package integrity</a>. The thing we really need to do before any of this can reasonably happen is to have standardisation on essential sdist metadata (namely package name and version) somehow. There has been efforts on this; feel free to contribute to them.</p>
+</blockquote>
+<p>It's further noted that:</p>
+<blockquote>
+<p><code>pip download foo-1.0</code> could find a file <code>foo-1.0.tar.gz</code> which contained a project called bar, version 2.0.</p>
+<p>Pip has to get the package metadata (by building) to confirm that the filename matches the metadata.</p>
+</blockquote>
+<p>(This is the problem that PEP 625 aims to solve.)</p>
+<p>It is not really explained why such a hypothetical result should be a problem (or what to do with the already downloaded file) when <code>--no-deps</code> is specified. Instead:</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>Honestly, why not just get the PyPI URL and download it directly? You seem to be going to a lot of effort (and expecting others to as well) to basically download a file whose name you know.</p>
+</blockquote>
+<p>...the reason not to just get the PyPI URL and download directly is that I want to get the same file that <code>pip install</code> would have chosen. And I don't know the filename ahead of time, the input is not necessarily a project name + version (pinned) but a general <a href="https://pip.pypa.io/en/stable/reference/pip_install/#requirement-specifiers">requirement specifier</a>.</p>
+<p>...</p>
+<p>So I figure the only way to reliably download the correct release file (correct meaning "same one that pip would choose") is to use pip itself. Since there is no public API here, that means using the command line interface in a subprocess.</p>
+</blockquote>
+<p><em>[no response]</em></p>
+</blockquote>
+<h3>September 2020</h3>
+<p><a href="https://github.com/pypa/pip/issues/8850">Pip issue 8850</a>, "<code>pip download --no-deps</code> runs <code>setup.py egg_info</code> unnecessarily and fails", is opened. Notably, the name of the <a href="https://setuptools.pypa.io/en/latest/deprecated/commands.html#egg-info-create-egg-metadata-and-set-build-tags"><code>egg_info</code> subcommand</a> refers to the long-outdated "egg" format for packages; Pip still supports this (but at least it's <em>deprecated</em>... since 23.2... on Python 3.11 and up... and there may still be binary distribution formats that use the corresponding <code>.egg-info</code> metadata format). This report was dismissed as a bug in the package (which was trying to use undocumented internals of Pip in its <code>setup.py</code> logic).</p>
+<h3>October 2020</h3>
+<p>PEP 643, <a href="https://peps.python.org/pep-0643/">"Metadata for Package Source Distributions"</a> describes version 2.2 of the core metadata (i.e. <code>PKG-INFO</code>) standard. According to this standard, the <code>Name</code> and <code>Version</code> of the project MUST NOT be marked as <code>dynamic</code> in an sdist, and consequently the values for these in the corresponding wheel MUST match.</p>
+<h3>December 2020</h3>
+<p>It is <a href="https://github.com/pypa/pip/issues/1884#issuecomment-745568242">discovered and reported on issue 1884</a> that the demand for unnecessary metadata may have to do with the resolver. Pull requests <a href="https://github.com/pypa/pip/pull/9305">9305</a> and <a href="https://github.com/pypa/pip/pull/9311">9311</a> are created accordingly, but ultimately go nowhere. (This appears to explain the problem with the workaround offered in April.)</p>
+<h3>March 2021</h3>
+<p><a href="https://github.com/pypa/pip/issues/9701">Pip issue 9701</a>, "pip download --no-deps tries to use PEP517 so badly it is not usable to download stuff", is opened. We get this choice quote:</p>
+<blockquote>
+<p>The problem is that the only way to be sure that a sdist actually provides the version you specify is to build it. Yes, we could rely on the sdist filename, but it's not technically reliable, and we'd need to special-case stuff to make it work.</p>
+<p>If and when build backends start including <a href="https://peps.python.org/pep-0643/">PEP 643</a> style metadata in sdists, to a level where it's worth the effort to check it before trying a build, we could use that to avoid the build step where the data is available statically. But I'm not even sure if any tools have implemented PEP 643 yet...</p>
+<p>To be honest, though, if you want to just download a sdist from PyPI, pip probably isn't the tool you want. It's not that hard to query the PyPI JSON interface for the sdist url, and wget it. If I were doing this often enough that manually downloading via the web interface was insufficient, that's what I'd do.</p>
+</blockquote>
+<p>(Editor's note: the link to PEP 643, "Metadata for Package Source Distributions", is not present in the original. To be fair, at this point the PEP had only been accepted a few months ago. Before that point, to my understanding, sdists were still expected to include a <code>PKG-INFO</code> file, but it's unclear what if anything one could actually <em>do with</em> that information.)</p>
+<p>Meanwhile, back on issue 1884, in response to someone ruminating about forking Pip or starting work on a replacement:</p>
+<blockquote>
+<p>I'm genuinely not being sarcastic or passive-aggressive here, I agree with this - I think it could only be healthy for the ecosystem to have alternatives to pip, which can look at alternative approaches without all of the backward compatibility constraints that pip works under.</p>
+<p>...</p>
+<p>By the way, I assume you're aware that if all you actually want is to download a file from PyPI, the JSON API is pretty straightforward to use. You can even do it as a shell one-liner, if you like:</p>
+<p><code>wget $(curl https://pypi.org/pypi/pip/json| jq -r '.releases[.info.version][] | select(.packagetype=="sdist") | .url')</code></p>
+<p>Making that into a Python script with options, etc, is pretty straightforward.</p>
+</blockquote>
+<p>(But it is still, to the best of my knowledge, not offered officially as a tool by PyPA. It also doesn't invoke any resolver logic.)</p>
+<p>There's also a reference back to issue 7995, and an objection that validation can't just be opt-in:</p>
+<blockquote>
+<p>The biggest roadblock (aside from coming up with a rule that makes sense) is implementation; validation should only be skipped on very specific subcommand-option combinations, and it’s not trivial to pass all the needed context all the way down to where the validation is done.</p>
+</blockquote>
+<p>This "pass all the needed context" language appears to refer to the December 2020 discovery. There's also a reference to <a href="https://github.com/pypa/pip/issues/6607">issue 6607</a>, "Build Logic Refactor", from June 2019, which proposes some cleanups for that context chain.</p>
+<p>(Again, the complaints made on issue 1884 in August 2020 are not addressed.)</p>
+<p>Finally the issue was (understandably) duped to 7995.</p>
+<h3>July 2021</h3>
+<p>Pip issues 7995 (originally specifically about <code>pyproject.toml</code> based builds) and 1884 (originally specifically about <code>setup.py</code> based builds) are consolidated.</p>
+<h3>October 2021</h3>
+<p>An interesting comment from issue 1884:</p>
+<blockquote>
+<p>Apologies, I got confused between PEP 621 (Storing project metadata in pyproject.toml) and PEP 643 (Metadata for Package Source Distributions). PEP 621 is irrelevant here, as tools should not read metadata from pyproject.toml. Reading metadata from a sdist via PEP 643 would be useful, and is valid, though. While I guess it's tempting to assume that pip can read pyproject.toml and if it finds PEP 621 data, then use it, it would be wrong because there's no guarantee that the backend supports PEP 621, so there's no reason to believe that the metadata in the generated wheel/sdist would bear any relationship to the PEP 621 data.</p>
+</blockquote>
+<h3>August 2022</h3>
+<p>Issue 1884 is locked, with the comment:</p>
+<blockquote>
+<p>...an easy way to restart discussion is if someone creates a PR with a suggested solution 🙂</p>
+</blockquote>
+<h3>September 2022</h3>
+<p>PEP 625 is accepted.</p>
+<p><a href="https://github.com/pypa/setuptools/issues/3593">Setuptools issue 3593</a>, "[FR] Implement PEP 625 - File Name of a Source Distribution", is opened.</p>
+<h3>April 2024</h3>
+<p>Setuptools issue 3593 is closed and then promptly reopened due to confusion over "trailing zeros" in version numbers (e.g. a version number like <code>1.0.0</code> being normalized to <code>1</code>).</p>
+<h3>June 2024</h3>
+<p>Setuptools issue 3593 <a href="https://github.com/pypa/setuptools/pull/4434">is properly closed again, fixed by PR 4434</a> - although there is additional discussion in the meantime of other backwards compatibility issues which may not have been addressed.</p>
+<p><br></p>
+        </div>
+    </article><hr>
+<section class="comments hidden-print"><hr style="margin-top:1rem; margin-bottom:1rem">
+<h2>Comments</h2>
+        <div class="giscus" id="giscus-comments"></div>
+        </section><script src="https://giscus.app/client.js" data-repo="zahlman/zahlman.github.io" data-repo-id="R_kgDOG78NTA" data-category="Announcements" data-category-id="DIC_kwDOG78NTM4ClvWS" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="en" data-loading="lazy" crossorigin="anonymous" async>
+        </script><nav aria-label="Post navigation"><ul class="pager hidden-print">
+<li class="previous">
+        <a href="../../../12/31/oxidation/" class="page-link" aria-label="Next post (December 31, 2025)">
+                <span aria-hidden="true">« Next post (December 31, 2025)</span>
+        </a>
+    </li>
+
+
+            
+        
+        
+    <li class="next">
+        <a href="../../../01/24/leaning-in-to-my-ux/" class="page-link" aria-label="Previous post (January 24, 2025)">
+                <span aria-hidden="true">Previous post (January 24, 2025) »</span>
+        </a>
+    </li>
+
+
+        </ul></nav><br>
+</div>
+                </div>
+
+                <footer id="footer">
+                    
+                    Contents © 2022-2026 <a href="mailto:zahlman@proton.me">Karl Knechtel</a> - Powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a>
+                </footer>
+</div>
+        </div>
+
+        
+        <script src="../../../../../assets/js/all-nocdn.js"></script><!-- Social buttons --><!-- End of social buttons --><script>
+        baguetteBox.run('div#content', {
+            ignoreClass: 'islink',
+            captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+        </script>
+</body>
+</html>
