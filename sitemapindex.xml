@@ -7,11 +7,19 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <sitemap>
   <loc>https://zahlman.github.io/rss.xml</loc>
-  <lastmod>2025-03-01T01:43:00Z</lastmod>
+  <lastmod>2026-01-01T04:40:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://zahlman.github.io/sitemap.xml</loc>
-  <lastmod>2025-03-01T01:43:00Z</lastmod>
+  <lastmod>2026-01-01T04:40:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/tags-and-series/bloat.xml</loc>
+  <lastmod>2025-04-19T01:49:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://zahlman.github.io/tags-and-series/design.xml</loc>
+  <lastmod>2026-01-01T04:40:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://zahlman.github.io/tags-and-series/jekyll.xml</loc>
@@ -35,7 +43,7 @@
  </sitemap>
  <sitemap>
   <loc>https://zahlman.github.io/tags-and-series/pip.xml</loc>
-  <lastmod>2025-03-01T01:43:00Z</lastmod>
+  <lastmod>2026-01-01T04:40:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://zahlman.github.io/tags-and-series/pipx.xml</loc>
@@ -59,11 +67,11 @@
  </sitemap>
  <sitemap>
   <loc>https://zahlman.github.io/tags-and-series/python.xml</loc>
-  <lastmod>2025-03-01T01:43:00Z</lastmod>
+  <lastmod>2026-01-01T04:40:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://zahlman.github.io/tags-and-series/security.xml</loc>
-  <lastmod>2025-03-01T01:43:00Z</lastmod>
+  <lastmod>2025-03-01T01:52:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://zahlman.github.io/tags-and-series/series-python-discourse-ban.xml</loc>
@@ -71,18 +79,22 @@
  </sitemap>
  <sitemap>
   <loc>https://zahlman.github.io/tags-and-series/series-python-packaging.xml</loc>
-  <lastmod>2025-03-01T01:43:00Z</lastmod>
+  <lastmod>2026-01-01T04:40:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://zahlman.github.io/tags-and-series/setuptools.xml</loc>
-  <lastmod>2025-03-01T01:43:00Z</lastmod>
+  <lastmod>2025-03-01T01:52:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://zahlman.github.io/tags-and-series/the-psf.xml</loc>
   <lastmod>2025-03-01T01:43:00Z</lastmod>
  </sitemap>
  <sitemap>
+  <loc>https://zahlman.github.io/tags-and-series/uv.xml</loc>
+  <lastmod>2026-01-01T04:40:00Z</lastmod>
+ </sitemap>
+ <sitemap>
   <loc>https://zahlman.github.io/tags-and-series/virtual-environments.xml</loc>
-  <lastmod>2025-03-01T01:43:00Z</lastmod>
+  <lastmod>2026-01-01T04:40:00Z</lastmod>
  </sitemap>
 </sitemapindex>
