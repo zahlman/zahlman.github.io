@@ -1,4 +1,4 @@
-# Leaning IN to my U/X #linux #personal
+# Leaning IN to my U/X #linux #personal ?2025-01-24
 
     :::bash
     $ stat / | grep Birth | cut -d ' ' -f 3

@@ -10,7 +10,7 @@ class _accumulated:
 
 
     def __init__(self):
-        self._title, self._formatted_title = '', ''
+        self._title, self._formatted_title, self._date = '', '', None
         self._category, self._tags = None, []
 
 
@@ -22,6 +22,17 @@ class _accumulated:
         if self._category is not None:
             raise ValueError("May only mark one category.")
         self._category = category
+
+
+    def _set_date(self, date):
+        if self._date is not None:
+            raise ValueError("May only mark one post date.")
+        self._date = date
+
+
+    def _handle_tag(self, marking):
+        k, v = marking[0], marking[1:]
+        {'@': self._set_category, '#': self._add_tag, '?': self._set_date}[k](v)
 
 
     def _formatted_line(self, line):
@@ -37,8 +48,7 @@ class _accumulated:
         self._formatted_title += self._formatted_line(title)
         self._title += self._plain_line(title)
         for marking in markings.split():
-            action = {'@': self._set_category, '#': self._add_tag}[marking[0]]
-            action(marking[1:])
+            self._handle_tag(marking)
 
 
     def result(self):
@@ -48,6 +58,8 @@ class _accumulated:
         }
         if self._category is not None:
             result['category'] = self._category
+        if self._date is not None:
+            result['date'] = self._date
         return result
 
 
@@ -60,7 +72,7 @@ class TitleFromH1(MetadataExtractor):
     priority = MetaPriority.specialized
     supports_write = True
     split_metadata_re = re.compile('\n\n')
-    h1_re = re.compile(r'^# (.*?)((?:\s+[#@][a-zA-Z-]+)*)$')
+    h1_re = re.compile(r'^# (.*?)((?:\s+[#@?][0-9a-zA-Z-]+)*)$')
 
 
     def _extract_metadata_from_text(self, source_text: str) -> dict:
@@ -77,7 +89,8 @@ class TitleFromH1(MetadataExtractor):
         title = metadata.get('title', '')
         category = metadata.get('category', '')
         tags = metadata.get('tags', '')
+        date = metadata['date']
         tags = tags.split(',') if tags else ()
         tagtext = ''.join(f' #{t.strip()}' for t in tags)
         tagtext = (f' @{category}' if category else '') + tagtext
-        return f'# {title}{tagtext}\n\n'
+        return f'# {title}{tagtext} ?{date}\n\n'

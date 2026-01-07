@@ -1,4 +1,4 @@
-# New year, new blog #meta #python #nikola #jekyll
+# New year, new blog #meta #python #nikola #jekyll ?2025-01-01
 
 You're not imagining things - the blog has a whole new look, in large part as a result of switching to the [Nikola](https://getnikola.com) site generator.
 

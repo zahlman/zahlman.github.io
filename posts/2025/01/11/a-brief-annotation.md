@@ -1,4 +1,4 @@
-# A Brief Annotation #python
+# A Brief Annotation #python ?2025-01-11
 
 I've been quite busy working on both the next article in my [packaging series](/tags-and-series/series-python-packaging) and on the overall appearance of the blog (I wasn't able to keep that confined to the weekend, apparently).
 

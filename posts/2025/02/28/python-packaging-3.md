@@ -1,5 +1,5 @@
 # Python packaging: Why we can't have nice things @python-packaging
-# Part 3: Premature Compilation #python #pip #security #setuptools
+# Part 3: Premature Compilation #python #pip #security #setuptools ?2025-02-28
 
 Pip 25.0 [has been out](https://discuss.python.org/t/_/78392) for [a bit over a month now](https://github.com/pypa/pip/releases/tag/25.0); and we now also have an [official blog post](https://ichard26.github.io/blog/2025/01/whats-new-in-pip-25.0/) about the release, as well as a 25.0.1 patch for a regression.
 

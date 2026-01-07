@@ -1,4 +1,4 @@
-# <code># TODO: finish todo list</code> #meta #personal
+# <code># TODO: finish todo list</code> #meta #personal ?2024-12-20
 
 This is a difficult post to write, largely because of the self-critique involved. Which is part of why I've been putting it off. For months, if I'm honest with myself.
 
