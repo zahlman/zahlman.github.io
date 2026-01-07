@@ -1,7 +1,0 @@
-#!/usr/bin/bash
-
-rm -rf docs/
-nikola build
-mv output/ docs/
-touch docs/.nojekyll
-git add docs/

@@ -87,7 +87,7 @@ FRONT_INDEX_HEADER = ''
 # URL_TYPE = 'rel_path'
 
 # Override default output and cache folders
-# OUTPUT_FOLDER = 'output'
+OUTPUT_FOLDER = 'docs'
 # CACHE_FOLDER = 'cache'
 
 # Data about post-per-page indexes.

@@ -1,0 +1,18 @@
+#!/usr/bin/bash
+
+if [ $# -gt 0 ]; then
+    case "$1" in
+        clean)
+            rm -r docs/
+            ;;
+        *)
+            echo "usage: '$0' | '$0 clean'"
+            exit 1
+            ;;
+    esac
+fi
+
+nikola build
+touch docs/.nojekyll
+git add docs/
+git commit -m "Rebuild site"
