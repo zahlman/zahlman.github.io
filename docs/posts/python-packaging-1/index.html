@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Python packaging: Why we can't have nice things - Part 1: The Old Refrain | Zahlblog</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://zahlman.github.io/posts/python-packaging-1/">
+<link rel="icon" href="../../icon_32x32.png" sizes="32x32">
+<link rel="icon" href="../../icon_192x192.png" sizes="192x192">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Karl Knechtel">
+<link rel="prev" href="../todo-finish-todo-list/" title="# TODO: finish todo list" type="text/html">
+<link rel="next" href="../todo-list-2/" title="fixup! added list - The rest of the TODOwl" type="text/html">
+<meta property="og:site_name" content="Zahlblog">
+<meta property="og:title" content="Python packaging: Why we can't have nice things - Part 1: The Old Refr">
+<meta property="og:url" content="https://zahlman.github.io/posts/python-packaging-1/">
+<meta property="og:description" content="This post is a start of a series I've planned about how packaging currently works in Python, what's wrong with it, and how to cope with the problems. But before I get into the meat of it, I want to ta">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2024-12-24T00:00:00-05:00">
+<meta property="article:tag" content="pip">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="virtual-environments">
+</head>
+<body>
+        <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+        <div class="container">
+            <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+        <div class="col-md-0 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="zb-sidebar" aria-expanded="true" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+        <div class="col-md-12 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="../../">
+            <span id="blog-title">Zahlblog</span>
+            </a>
+        </div>
+    </div>
+
+            </header>
+</div>
+
+        <div class="container" id="content" role="main">
+            <div class="body-content">
+                <div class="row">
+                    <aside id="zb-sidebar" class="col-md-4 blog-sidebar bs-nav-collapsible collapse show"><p class="sidebar-heading">Search</p>
+    
+<!-- DuckDuckGo custom search -->
+<form method="get" id="search" action="https://duckduckgo.com/" class="navbar-form pull-left">
+<img src="https://duckduckgo.com/assets/logo_header.v109.svg" width="28" height="28"><input type="hidden" name="sites" value="https://zahlman.github.io/"><input type="hidden" name="k8" value="#444444"><input type="hidden" name="k9" value="#D51920"><input type="hidden" name="kt" value="h"><input type="text" name="q" maxlength="255" placeholder="Search…" class="span2" style="margin-top:4px;margin-left:4px;"><input type="submit" value="DuckDuckGo Search" style="visibility: hidden;">
+</form>
+<!-- End of custom search -->
+
+    <p class="sidebar-heading">Posts by year
+    </p>
+<ul>
+<li><a href="../../2025">2025</a></li>
+        <li><a href="../../2024">2024</a></li>
+        <li><a href="../../2023">2023</a></li>
+        <li><a href="../../2022">2022</a></li>
+    </ul>
+<p class="sidebar-standalone"><a href="../../tags-and-series">Tags</a> | <a href="../../rss.xml">RSS feed</a></p>
+<p>
+    </p>
+<hr>
+<p class="sidebar-heading">Info</p>
+    <ul>
+<li><a href="../../pages/about">About Me</a></li>
+        <li><a href="../../pages/codidact">Codidact</a></li>
+        <li><a href="../../pages/dpo">My archived posts from discuss.python.org</a></li>
+    </ul></aside><div class="col-md-8 blog-main">
+                        
+    
+        <h1 class="p-name">
+            <a href="." rel="bookmark" class="u-url">
+                Python packaging: Why we can't have nice things<br><small>Part 1: The Old Refrain</small>
+            </a>
+        </h1>
+    
+
+    
+    <nav aria-label="Post navigation"><ul class="pager hidden-print">
+<li class="previous">
+        <a href="../todo-list-2/" class="page-link" aria-label="Next post (December 31, 2024)">
+                <span aria-hidden="true">« Next post (December 31, 2024)</span>
+        </a>
+    </li>
+
+
+            
+        
+        
+    <li class="next">
+        <a href="../todo-finish-todo-list/" class="page-link" aria-label="Previous post (December 20, 2024)">
+                <span aria-hidden="true">Previous post (December 20, 2024) »</span>
+        </a>
+    </li>
+
+
+        </ul></nav><article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><div class="metadata">
+                
+    <p class="byline author vcard p-author h-card">
+        <span class="byline-name fn p-name" itemprop="author">
+            Karl Knechtel
+        </span>
+    </p>
+
+                
+    <p class="dateline">
+        <a href="." rel="bookmark">
+            
+    
+    <time class="published dt-published" datetime="2024-12-24T00:00:00-05:00" itemprop="datePublished" title="December 24, 2024">
+        December 24, 2024
+    </time></a>
+    </p>
+
+                
+        <p class="commentline">
+            <a href="#giscus-comments">Comments</a>
+        </p>
+
+            </div>
+        </header><div class="p-summary entry-summary">
+            <p>This post is a start of a series I've planned about how packaging currently works in Python, what's wrong with it, and how to cope with the problems. But before I get into the meat of it, I want to talk about common complaints that <em>don't</em> resonate with me.</p>
+<!-- TEASER_END -->
+
+<h2>Meta</h2>
+<p>
+<a href="https://hits.sh/zahlman.github.io+python-packaging-1/"><img alt="Hits since January 1, 2025 (powered by hits.sh)" src="https://hits.sh/zahlman.github.io+python-packaging-1.svg?view=today-total&amp;label=Hits+since+January+1%2C+2025+%28powered+by+hits.sh%29&amp;color=02b983"></a>
+ (<a href="https://hits.sh/zahlman.github.io%202024%20python-packaging-1/">Stats for old temporary hit counter</a>)</p>
+<h3>Changelog</h3>
+<p><strong>January 1, 2025</strong>: Split off most of the original intro section, leaving the first paragraph as a teaser (since the default Nikola configuration expects one). Also added this Meta section and moved the hit counter into it (using a new and improved hit counter setup), to keep the counter out of the teaser (where it would log extra hits).</p>
+<h2>Simple is better than complex, complex is better than complicated</h2>
+<p>It's no secret that <a href="https://duckduckgo.com/?q=python+packaging+is+a+mess">lots of people are unhappy with the system</a> and have been for a long time. It's <a href="https://xkcd.com/1987/">practically a meme</a>. And to be clear, things <a href="https://nielscautaerts.xyz/python-dependency-management-is-a-dumpster-fire.html">really aren't as good as they ought to be</a>. There are plenty of problems that can be fixed, should be fixed, don't happen for other programming languages and have existed for an embarrassingly long time. And there are plenty of <a href="https://discuss.python.org/t/pep-751-now-with-graphs/69721">discussions about how to fix things properly that drag on forever</a>, sometimes <a href="https://discuss.python.org/t/pep-582-python-local-packages-directory/963">ultimately leading to a dead end</a>. (More about the ways that <em>discussing change proposals</em> fails, in a later post.)</p>
+<p>But many of the things I hear people complain about constantly... are not like that.</p>
+<p>I've gathered a handful of these points below, recasting them as some <a href="https://en.wikipedia.org/wiki/Complicated_(Avril_Lavigne_song)">well known pop rock lyrics</a>. Feel free to sing or hum along if you know the <a href="https://www.youtube.com/watch?v=5NPBIwQyPWE">tune</a>. </p>
+<p>With that explanation out of the way, let me te-e-ell you:</p>
+<h2>Wheels and eggs and sdists make it seem so complicated</h2>
+<p>The idea of <a href="https://wiki.python.org/moin/VaultsOfParnassus">sharing your Python code on the Internet</a> is older than the idea of <a href="https://wiki.python.org/moin/Distutils">properly "packaging" it</a>, which is older than the <a href="https://en.wikipedia.org/wiki/Python_Package_Index#History">idea</a> of distributing it on the Internet through a <a href="https://pypi.org">central repository</a> (which <a href="https://pyfound.blogspot.com/2018/08/redesigning-python-package-index.html">hasn't had its current look for all that long</a>), which is older than the idea of having an <a href="https://setuptools.pypa.io/en/latest/deprecated/easy_install.html">automated installer</a>, which is older than the idea of <a href="https://packaging.python.org/en/latest/discussions/pip-vs-easy-install/">even trying to install dependencies automatically at all</a>...</p>
+<p>... And that only gets us to just past the halfway point of Python's <a href="https://en.wikipedia.org/wiki/History_of_Python">history</a>, 35 years and counting.</p>
+<p>So, yes, of course there are a lot of historical formats for packaging Python code. But in practical terms, unless you maintain a Linux distribution (and need to build <code>.deb</code> or <code>.rpm</code> etc. for the system package manager to use), the <a href="https://packaging.python.org/en/latest/discussions/package-formats/">only formats that still matter are wheels and sdists</a>.</p>
+<p>Eggs are a legacy format, and <a href="https://blog.pypi.org/posts/2023-06-26-deprecate-egg-uploads/">it has not been possible to upload them to PyPI for about a year and a half now</a>. Yes, <a href="https://setuptools.pypa.io/en/latest/deprecated/commands.html#bdist-egg-create-a-python-egg-for-the-project">you can still <em>make</em> an egg</a> with Setuptools, but both the format <em>and the necessary <a href="https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html">workflow</a></em> are deprecated. (And yes, Setuptools still understands an <code>egg_info</code> command, and Pip may still use it; but this should be considered purely an implementation detail.) Even if you ignored all the advice, made an egg and created your own package index to share it with your clients, they would in turn have to go out of their way to find a way to install it. (Using Pip, they'd need a very out-of-date version, which would in turn constrain what Python version they could use.)</p>
+<p>Nobody expects <code>.exe</code> installer wrappers on Windows any more like Setuptools <a href="https://setuptools.pypa.io/en/latest/deprecated/distutils/builtdist.html">made long ago, in prehistory</a>. Unless perhaps your users literally don't even know what Python is. If you're expecting others to <code>import</code> your code, you are not in this position; if you're in this position, you don't have to worry about "the ecosystem" at all and should instead be worrying about the <em>separate</em> choice of tools available for your very specific niche.</p>
+<p>If you're writing code today to distribute on PyPI, all you need to understand is:</p>
+<ul>
+<li>
+<p><strong>If your project <em>requires</em> the user to compile <em>your</em> non-Python code locally, use an sdist.</strong> (And prepare to document the build process, especially on Windows, because chances are that your users don't have the necessary compiler(s) and Pip can't automatically set them up - people are <a href="https://peps.python.org/pep-0725/">still working on metadata for that</a>. And keep in mind that your project could become someone else's dependency, and <em>those</em> users will yell at you one day.)</p>
+</li>
+<li>
+<p><strong>If it doesn't, use a wheel.</strong> That is, if it's at all feasible for you to do whatever necessary compilation etc. steps on your own machine first, use a wheel. Do this even - <em>especially</em> - if there are no compilation steps at all: if you <a href="https://pradyunsg.me/blog/2022/12/31/wheels-are-faster-pure-python/">have only Python code</a>, or if the non-Python code is all pushed into your dependencies. Not only is this faster and more streamlined, it gives your users peace of mind - they can <a href="https://pip.pypa.io/en/stable/cli/pip_install/#cmdoption-only-binary">forbid Pip to build anything</a> (which would <em>run</em> arbitrary code in order to orchestrate the build) and still install your project (which, since it doesn't require building anything, shouldn't act like it does).</p>
+</li>
+</ul>
+<p>Despite the name, sdists aren't really a good tool for publishing your source and making it inspectable. The kinds of users who <em>want to</em> compile your non-Python code locally, generally also want to <em>read</em> the code first. The sdist format exists so that Pip (or other such tooling, like <code>uv</code> or future hypothetical competitors) can download code and immediately (try to) build it automatically and then install the result. That's what online VCS hosting services (like GitHub) are for. (Especially since systems for <em>verifying that an sdist corresponds to any particular VCS commit</em> - as <a href="https://en.wikipedia.org/wiki/XZ_Utils_backdoor">necessary</a> as you might think them - are still very much a work in progress.)</p>
+<h2>Your package name that ain't what you <code>import</code>, makes me frustrated</h2>
+<p>A lot of users express annoyance that when they get an <code>ImportError</code> and trace it to code that tries to <code>import foo</code> from a missing third-party library (supposing the library is indeed missing, after ruling out <a href="https://stackoverflow.com/questions/14295680">configuration issues</a>), that doesn't give the name that needs to be used to install the code with Pip. <strong>In general, <code>pip install foo</code> might seem like a reasonable guess, but it would often be wrong.</strong> For example, to be able to <a href="https://pillow.readthedocs.io/en/stable/handbook/tutorial.html"><code>import PIL</code></a> one must install <a href="https://pypi.org/project/pillow/"><code>pillow</code></a>; for <a href="https://docs.opencv.org/4.x/db/deb/tutorial_display_image.html"><code>cv2</code></a>, one needs <a href="https://pypi.org/project/opencv-python/"><code>opencv-python</code></a> (or a <a href="https://github.com/opencv/opencv-python?tab=readme-ov-file#installation-and-usage">variant chosen after reading the documentation</a>); and so on.</p>
+<p>In principle, when you use someone else's code, the author of that code is supposed to worry about those issues for the <code>import</code>s in that code. A major part of the point of current systems is that you can install something and Pip will automatically ensure that you also have the dependencies; it does so by following metadata provided alongside the code - a <code>METADATA</code> file included in the wheel, which is generated by building the corresponding sdist. (There are multiple different ways to specify metadata declaratively in an sdist. Right now you aren't really required to use any of them; this <em>is</em> a problem and I will cover it properly in due time.)</p>
+<p>But of course, if <em>you're the author</em> and you want to use someone else's third-party code as a dependency, then <strong>you'll need to research both the dependency name to include in that metadata, and the name to <code>import</code></strong> in the code. And this is equally true if you <em>don't</em> intend to distribute your code - if, say, you're relatively new to Python and trying to follow a poorly written tutorial that assumes your environment is already set up. Or if you're trying to "learn by doing" and grabbing code examples anywhere you can find them (perhaps from LLM output).</p>
+<p>And even if you <em>do</em> understand it, of course, you might find it strange. A lot of people do seem to feel like it shouldn't be this way.</p>
+<p><strong>But in the current Python ecosystem, it really does need to be this way</strong> - for a few reasons:</p>
+<ul>
+<li>
+<p><a href="https://news.ycombinator.com/item?id=42422076">As I pointed out on HN recently</a>, what you install may provide <em>zero or more</em> importable top-level names for your code: it isn't required to make any new <code>import</code> statement work (i.e. you're allowed to offer something installable that is installed purely for side effects of the installation process), and it may make multiple such statements work.</p>
+</li>
+<li>
+<p>Conversely (as alluded to above), <em>multiple different installations could provide the same <code>import</code>able name</em>, and there are some valid use cases for that. Aside from OpenCV providing separate versions for headless servers and/or including third-party (fourth-party?) contributions, one could use this to allow multiple different backends to provide a service to a frontend module that can then always <code>import</code> the same name.</p>
+</li>
+</ul>
+<p>(Actually, the OpenCV use case isn't so vital any more, because of the ability to give lists of "optional" dependencies. But this fails if you need to change the rest of the code to account for the presence or absence of an optional dependency; and for the "headless" version it's awkward since you'd prefer to <em>default</em> to including certain dependencies and have a way to <em>withhold</em> them - which optional dependency lists can't do.)</p>
+<ul>
+<li>
+<p>Many projects would like to give themselves clever names for "marketing" purposes, and many of those are not valid Python identifier names. They do get <a href="https://packaging.python.org/en/latest/specifications/name-normalization/">normalized</a> (such that that part of a Pip command line is case insensitive); but even after following that normalization algorithm and then replacing hyphens with underscores, you'd still have names that <em>start with a digit</em>.</p>
+</li>
+<li>
+<p>Python developers tend to care about backwards compatibility (frequently they care far too much, in my opinion; but that, too, is a topic for another day). Sometimes project names change for open-source-political reasons, but it's important not to break existing code and people get upset even when you ask them to make one-line fixes. That's what happened with Pillow/PIL.</p>
+</li>
+</ul>
+<p>This is probably not an exhaustive list.</p>
+<p>The careful reader may notice I've been avoiding a word in the above discussion: "package". Unfortunately, this has several meanings in the Python world, and it shouldn't be like that - but it's too late now. (And to be fair, it's nowhere near as bad as, say, the word <code>static</code> in the world of C/C++/C#/Java taken collectively.) There are <a href="https://packaging.python.org/en/latest/discussions/distribution-package-vs-import-package/">efforts</a> to fix the terminology: documentation now says "distribution package" to mean something that you download from PyPI (and thus, one puts a "distribution package name" on a Pip command line), and "import package" to mean something you use in the code (thus, one writes an "import package name" in an <code>import</code> statement). (A note here: where the above link claims "An import package is a Python module", this <em>does</em> include both "modules" created from an ordinary <code>.py</code> file and "packages" created from a folder or <code>__init__.py</code>. From the perspective of Python's type system, <em>those are the same thing</em> - neither is even a subtype of the other.)</p>
+<h2>Life's like this: you resolve, and install, and it breaks</h2>
+<p>There are two basic problems that I want to consider together under this heading.</p>
+<p>First, "dependency hell". Installing a (distribution) package isn't as simple as just installing its dependencies and then the package itself. Well, it <em>is</em>, but it turns out that in the real world, your dependencies are themselves very likely to have dependencies. So actually, an installer like Pip has to compute the entire transitive cover of those dependencies.</p>
+<p>No big deal, except that libraries can also have version incompatibilities, such that only certain versions of a dependency will work. Eventually you reach a point where the requirements are simply not satisfiable. Say for example that a project A depends on B and C; both of them depend on D; but they can't agree on a version of D that they'll both accept.</p>
+<p>How does it happen that A ends up on PyPI in this state? Simple: the author explicitly installed a D version that <em>works with</em> both B and C <em>when the A code is tested</em>, but which either or both doesn't <em>claim to</em> support. Or author used out-of-date versions of both B and C that used to play together harmoniously, but the current versions don't.</p>
+<p>You could reasonably blame many different people for this. Perhaps B and C authors made a <a href="https://iscinumpy.dev/post/bound-version-constraints/">needless</a> restriction, perhaps following a "best practices" opinion from a packaging tool that blindly applied a <a href="https://semver.org/">vision of how versioning should work</a> that just doesn't fit the reality of the Python ecosystem. Surely, A should have tested deployment in a new, pristine environment.</p>
+<p>You might even blame the design of Python itself. Python environments don't properly support multiple versions of the same library - they really <em>can't</em>, because:</p>
+<ul>
+<li>
+<p>there's no way <em>in the standard <code>import</code> syntax</em> to specify a version number unless it's actually part of the name;</p>
+</li>
+<li>
+<p>the import is resolved dynamically, so you can't arrange ahead of time to have different parts of the code look in different library paths (you have to make it happen at runtime, which entails having code run before the <code>import</code>); </p>
+</li>
+<li>
+<p>by design, <code>import</code>s are singleton (stored in a global cache accessible as <code>sys.modules</code>) and <em>many modules depend on this for correctness</em>. (If the module API involves changing its global state, you really want it to be singleton. The module can always expose a class for you to instantiate if you <em>don't</em> want to share state. For example, if you circumvented <code>sys.modules</code> to obtain a fresh copy of the <code>random</code> standard library module, you'd end up producing a separate, separately-seeded PRN stream - not what you wanted, or you would have instantiated <code>random.Random</code>.)</p>
+</li>
+</ul>
+<p>Because of this design, you can't just <a href="https://www.youtube.com/watch?v=vqgSO8_cRio">have both</a> versions to avoid the problem.</p>
+<p>But regardless of whether you blame any of the developers, or Python itself, <strong>it's definitely not <em>Pip</em>'s fault.</strong> It really bothers me to see the blame thrown at Pip here, because <em>there are very many things wrong with Pip but this isn't one of them</em>.</p>
+<hr>
+<p>The second problem is that even if Pip can correctly find what to install, it might fail in installation - because it might only be able to find an sdist and then not be able to make a wheel from it <em>on your (as the user) machine</em>. This <em>could be better, but it's hard</em>. Remember the thing I said above about documenting your (as the author) build process? This is why.</p>
+<p>And this is where you get the infamous problem <a href="https://duckduckgo.com/?q=subprocess-exited-with-error">that users only know how to describe as "subprocess-exited-with-error"</a>, which of course often <a href="https://github.com/pypa/pip/issues?q=label%3A%22resolution%3A+wrong+project%22+subprocess-exited-with-error">gets blamed on Pip</a> despite their efforts to explain right in the error message that <code>This is an issue with the package mentioned above, not pip</code>. And of course, when you try to search for help with that issue, you'll find a million other people who had a million different problems with that same symptom - because that isn't the actual diagnostic; <strong>the important part comes <em>above</em> that line</strong>.</p>
+<p>The Pip maintainers are not wrong here. Pip isn't magic. It can't detect that you're missing a specific C compiler, or that the build backend's rules for choosing (or locating) one will fail on your system. It can't know that the library doesn't <em>actually</em> support your Python version despite claiming to in the metadata. It can't know that some legacy project using Setuptools has a hidden build-time dependency that's explained in the <code>setup.py</code>, but is <em>needed in order for <code>setup.py</code> to run</em> so that the need for it can be determined.</p>
+<p>All Pip can do is identify (and possibly install) a build backend following the <a href="https://peps.python.org/pep-0518/">protocol for specifying it</a>, spawn a subprocess for the build backend, ask it to create a wheel from the sdist following the <a href="https://peps.python.org/pep-0517/#build-backend-interface">protocol</a>, grab the resulting wheel (if any), and forward the resulting output. In other words - act as a build frontend.</p>
+<hr>
+<p>Unfortunately, these two problems sometimes play off of each other - because Pip's search for compatible versions might find an sdist that's difficult or impossible for most users to build, and it might give up there even though a wheel exists that could solve the dependency constraints (as they say). There has been a <strong>ton</strong> of discussion about what to do about this (<a href="https://discuss.python.org/t/_/57474">here's a proposal I floated</a>; and here's <a href="https://github.com/pypa/pip/issues/9140">arguably the simplest thing that could possibly work</a>, presented as a GitHub issue) but no clear consensus.</p>
+<p>But it still isn't Pip's fault, and none of this is easily solved stuff that Python is just stumbling over for no reason. In other language ecosystems, installing projects doesn't commonly involve compiling code written in multiple other languages.</p>
+<h2>
+<a href="https://peps.python.org/pep-0668/">668 was a PEP</a>, now I'm learning <code>venv</code>s too</h2>
+<p>(Windows users should probably just skip this part.)</p>
+<p>Ah, yeah, <a href="https://stackoverflow.com/questions/75608323">that one Stack Overflow Q&amp;A with over a million views</a>. The one where a bunch of supposedly technically sophisticated Linux users get a full-screen message, customized by their distro, <a href="https://www.youtube.com/watch?v=35PQrzG0rG4">which exactly explains the problem</a> and suggests multiple reasonable courses of action; and then they throw up their hands in resignation and look for ways to beat the system into submission.</p>
+<p><a href="https://askubuntu.com/questions/802544">For years, Python experts have been trying</a> to get the masses to stop randomly giving Pip <code>sudo</code> rights to install packages so that it can install libraries in the system's <code>site-packages</code> folder. This is dangerous (installation can <strong>run arbitrary code</strong>, and unlike the actual libraries you're about to use in your project, it's code that you won't get to <em>inspect</em> first) and egregiously unnecessary. I've also occasionally seen people randomly "fix" a problem with <code>sudo</code>, not understanding that it really only worked <em>because the root user has different environment variables</em>.</p>
+<p>But not only are huge amounts of people - reminder: people who chose to use Linux as their operating system, who are nominally capable of using a terminal and writing code in a programming language - entirely cavalier about their use of <code>sudo</code> (<a href="https://stackoverflow.com/questions/68673221/">even when explicitly warned</a>); they'll happily add a <code>--break-system-packages</code> flag to a command line, and their only complaint will be that they had to change their workflow. The <em>literal text "break system packages"</em> doesn't seem to give them the <em>slightest</em> pause.</p>
+<p>The distro maintainers - in cooperation with the Pip team - have tried <em>many</em> things to get users to stop compromising their own systems and this is just the most recent. They've tried deliberately crippling the system-installed Python, by omitting Pip (which is included when you build Python from source) so that users have to install a separate package for it. They've gotten Pip to include warnings of its own. For that matter, all the way back in the <code>easy_install</code> days, <code>easy_install</code> would <a href="https://askubuntu.com/questions/378349">install Pip in the user's home folder</a> instead of as part of the system.</p>
+<p>But people just keep refusing to pay attention to clear warnings or to care about important concepts; they just want the code installed so they can run whatever thing. It really makes me wonder why anyone even uses Linux in the first place.</p>
+<hr>
+<p>As explained previously, you can only practically have one version of a library in a given Python environment. As a developer, you're likely to create more than one project eventually. And the requirements of one project could actively create a problem for another, just by being there. The way you solve this problem is by having a separate environment, and the simplest approach is a virtual environment. Seriously.</p>
+<p>(Keep in mind: if you use some all-in-one tool like Hatch, PDM, Poetry or Flit, <em>that tool is just wrapping that virtual environment management for you anyway</em>. Wouldn't you rather understand what it's doing, for debugging purposes?)</p>
+<p>Plus, if you want your users to have a smooth installation experience (and not go yelling at the Pip maintainers about something that was <em>your</em> fault), you'll want to test deploying your code. That requires the ability to start from scratch, which you do with a new virtual environment.</p>
+<hr>
+<p>But now perhaps you wonder: the system environment should be fine for <em>non-programmers</em>, who just want to use someone else's application written in Python... right?</p>
+<p>No, not really.</p>
+<p><a href="https://github.com/pypa/pip/pull/7002">For a while</a>, <code>pip install</code> into the system Python installation, as a normal user, would default to a "user install", putting the packages in a user-specific location. (Before that, you would have to request <code>--user</code> explicitly.) This is supposed to keep them isolated from libraries installed by the system package manager (<code>apt</code>, <code>yum</code>, <code>pacman</code> etc.) and allow installation with user rights, so a renegade <code>setup.py</code> can't just stomp all over everything. (Pip <a href="https://github.com/pypa/pip/issues/11034"><strong>will not drop root privileges</strong></a> for building, <em>even now that it happens in a subprocess</em>. That <em>is</em> a problem, but PEP 668 is not.)</p>
+<p>But such installations are still in the system <em>environment</em>. They can <strong>still interfere with your system's operation despite not being in a system directory</strong>. Because a lot fo the time, you run those tools as yourself, not as root. When you do so, the "user-level" libraries you installed are made available (i.e., the directory will be put on <code>sys.path</code> at startup), and they can therefore shadow imports that should use a system package instead.</p>
+<p>For example, on a Debian-based system you can put modules in the user site-packages that shadow things that the <code>apt</code> script will import, and then user-level invocations of Apt can be broken. Or you can shadow the entire <code>command-not-found</code> utility, breaking the system for suggesting Apt packages to install when you typo a program name.</p>
+<p>It's not a privilege escalation in itself (as far as I can tell - thankfully), but it adds annoyance, and risk. Perhaps, for example, malware on PyPI could drop a fake <code>command-not-found</code> program which then attempts some social engineering to get you to install the real payload, do someting regrettable as root, etc.</p>
+<hr>
+<p>Please, just use the expletive-deleted venv. <a href="https://chriswarrick.com/blog/2018/09/04/python-virtual-environments/">It's not hard</a>. It's really not that bad of a design (there will be a post dedicated to this). It will make your life much easier in the long run.</p>
+<p>The system Python is, generally speaking, just not suitable for development. It's not <em>there</em> to serve your needs as a developer. It's there to serve <em>Linux's</em> needs.</p>
+<p>But it works very well as a base for creating venvs.</p>
+<h2>Honestly, why can't we just have a standard package toolchain?</h2>
+<p>Speaking of all-in-one tools, a lot of people seem to think that Python would be better off including one, and that it was a <a href="https://dublog.net/blog/so-many-python-package-managers/">mistake</a> to allow third parties to develop multiple competing options.</p>
+<p>The thing is: in order to achieve the "ideal" of "only one way to do it", you need to be able to agree on <em>what "it" is</em>. Chris Warrick offers <a href="https://chriswarrick.com/blog/2023/01/15/how-to-improve-python-packaging/#tooling-proliferation-and-the-python-package-authority">one possible short list of "its"</a>; there's quite a lot of room for debate there. For example, "supporting pyproject.toml files" isn't well defined as a separate point; you might need to take <code>pyproject.toml</code> into consideration <em>as part of</em> implementing other functionality (building sdists and wheels), but also some people think that their "one way to do it" tool should provide an interface to <em>update</em> <code>pyproject.toml</code> (what's wrong with, you know, a text editor?), or perhaps <em>automatically</em> update it to correspond to its own "package management".</p>
+<p>Contrasting all the various tools that exist in the Python universe, and counting up the "features" they offer and where they do and don't overlap, is in my view a completely misguided exercise. Most of the tools listed under the <a href="https://packaging.python.org/en/latest/key_projects/">PyPA umbrella</a> are designed to be single-purpose, Unix-philosophy building blocks - and that's how I like it, personally. I don't see a point in "integrating" them under a single application name; running <code>awesome-tool build . &amp;&amp; awesome-tool upload</code> doesn't seem inherently any better than typing <code>pyproject-build . &amp;&amp; twine upload</code>. Sure, maybe the tool combines those steps. And maybe you can write a couple lines of shell script to do it yourself, and have control over how it works. (I'll probably come back to this theme in later posts.)</p>
+<p>The way I see it, <em>users</em> should have a "single tool" so that they don't have to understand virtual environments and can just run applications. And that should include programmers who are just starting out, so that they can be eased into the concept of environments (which, again, is ultimately unavoidable if your code has dependencies and you have multiple projects) while installing libraries as simply as possible. Right now, Pip and the standard library <code>venv</code> can sort of fill this niche, but you end up having to talk non-technical users through a multiple-step command-line process, which is very much not ideal. And Pip has a lot of problems. From the other end, Pipx provides a surprisingly good application-installation experience, but it arbitrarily refuses to install libraries (but you can hack around this - more in part 2) - and it's still based on Pip.</p>
+<p>On the other hand, <em>developers</em> have all of those needs <em>plus several more, which are not universal</em>. Some of them need to handle very complex build processes with CMake, Meson etc. Some might need to cross-compile or interface to CI systems. Some need to default to uploading to a private package index; some need to <em>implement</em> a private package index. Some want lock files, and there are many different opinions about how those should work. Some need to work with containers. Some have subtle nuanced needs that I can't eaisly explain here, or that I don't even understand.</p>
+<p>And then many others will need <em>none</em> of that, and be overwhelmed with a tool that documents way too many options.</p>
+<p>Something that isn't intended to be a secret, but doesn't get mentioned nearly often enough: the PEPs that <a href="https://packaging.python.org/en/latest/specifications/pyproject-toml/">describe pyproject.toml</a> were conceived with the <em>explicit intent</em> that third parties would create multiple different build backends. And the <code>[tool]</code> table was provided so that existing single-purpose tools (such as Black and other linters or formatters, and MyPy and other type checkers, and automation systems like Tox and Nox, etc....) could all put their config data in a single "project" file. (Even though the file <em>nominally</em> existed specifically to <em>describe the wheel-building process</em>, leading to an <a href="https://discuss.python.org/t/_/29684">identity crisis</a> of sorts.) But what ended up happening, of course, is that we got competition in <em>workflow tools</em> trying to manage everything, because that's what the community felt was lacking. And then each of those tools implemented its own build backend anyway.</p>
+<p>In the next post in the series I'll show how the Unix-philosophy approach can be made to work with existing tools, and in later posts I'll comment on how it could be better.</p>
+<h2>Yeah, yeah, yeah</h2>
+<p>Finally: I'd like to make an appeal for <em>honesty</em> from anyone out there complaining about the system. Approach the problems from a place of understanding how they came to be, rather than a place of pure frustration. If you present a "history" of Python packaging, don't just use that as an excuse to rant - it should be abundantly clear that you don't <em>need</em> an excuse. Instead, take the opportunity to show <em>how</em> that history is relevant today (i.e.: people haven't updated their workflows, and tools and standards can't properly fix problems because of the burden of legacy support - a topic for a future post in this series). Don't misrepresent what resources are available to solve the problems - there's no grand conspiracy here, just perhaps some mismanagement.</p>
+<p>Please don't carelessly say that the reason such and such Python tool is so good is because it isn't written in Python. In almost every case, the <em>real</em> benefit is that the tool isn't <em>sharing the environment</em> of the project it's operating on. This line is especially often dropped when talking about <code>uv</code>, often accompanied by explicit Rust evangelism. Sure, Python code can be much slower than in other languages. But that doesn't matter a lot of the time (if you don't believe this, why are you developing in Python?), and a lot of <code>uv</code>'s performance advantages are algorithmic: its package resolution is (to my understanding) less... thorough and pedantic than Pip's, and it has much better strategies for reusing cached downloads.</p>
+<p>And most of all, please don't <a href="https://news.ycombinator.com/item?id=42419822#42420869">throw together a bunch of unrelated names from completely different categories</a> to try to emphasize the point about how complicated things are. There's more than enough <em>actual</em> complication to discuss. After all, no matter how good the system becomes, you'll still have to learn it.</p>
+        </div>
+    </article><hr>
+<section class="comments hidden-print"><hr style="margin-top:1rem; margin-bottom:1rem">
+<h2>Comments</h2>
+        <div class="giscus" id="giscus-comments"></div>
+        </section><script src="https://giscus.app/client.js" data-repo="zahlman/zahlman.github.io" data-repo-id="R_kgDOG78NTA" data-category="Announcements" data-category-id="DIC_kwDOG78NTM4ClvWS" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="en" data-loading="lazy" crossorigin="anonymous" async>
+        </script><nav aria-label="Post navigation"><ul class="pager hidden-print">
+<li class="previous">
+        <a href="../todo-list-2/" class="page-link" aria-label="Next post (December 31, 2024)">
+                <span aria-hidden="true">« Next post (December 31, 2024)</span>
+        </a>
+    </li>
+
+
+            
+        
+        
+    <li class="next">
+        <a href="../todo-finish-todo-list/" class="page-link" aria-label="Previous post (December 20, 2024)">
+                <span aria-hidden="true">Previous post (December 20, 2024) »</span>
+        </a>
+    </li>
+
+
+        </ul></nav><br>
+</div>
+                </div>
+
+                <footer id="footer">
+                    
+                    Contents © 2022-2026 <a href="mailto:zahlman@proton.me">Karl Knechtel</a> - Powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a>
+                </footer>
+</div>
+        </div>
+
+        
+        <script src="../../assets/js/all-nocdn.js"></script><!-- Social buttons --><!-- End of social buttons --><script>
+        baguetteBox.run('div#content', {
+            ignoreClass: 'islink',
+            captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+        </script>
+</body>
+</html>
