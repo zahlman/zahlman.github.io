@@ -3,7 +3,7 @@
 if [ $# -gt 0 ]; then
     case "$1" in
         clean)
-            rm -r docs/
+            rm -r docs/ cache/ __pycache__/ .doit.db
             ;;
         *)
             echo "usage: '$0' | '$0 clean'"
