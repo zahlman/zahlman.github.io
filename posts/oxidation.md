@@ -1,5 +1,5 @@
 # Python Packaging 外伝１: Oxidation and Radiation @python-packaging
-# The Rise of `uv` in 2025 #python #uv #design ?2025-12-31
+# The Rise of <code>uv</code> in 2025 #python #uv #design ?2025-12-31
 
 Today I'm offering a sort of ["side story"](https://en.wikipedia.org/wiki/Spinoff_%28media%29#Sidequels) to my main series on Python packaging. The main thrust of the series has been that everything is broken or historically has been broken; but I've also been trying to fight some common misconceptions and defend some things that people don't seem to like but which are actually quite reasonable in context.
 
